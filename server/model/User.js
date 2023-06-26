@@ -33,7 +33,7 @@ const UserSchema = new Schema(
     },
     bank: {
       accountNumber: {
-        type: Number,
+        type: String,
       },
       accountType: {
         type: String,
