@@ -27,7 +27,7 @@ const UserSchema = new Schema(
       pan: {
         type: Number,
       },
-      full_name: {
+      sourceWealth: {
         type: String,
       },
     },
@@ -36,11 +36,11 @@ const UserSchema = new Schema(
         type: Number,
       },
       accountType: {
-        type: String
+        type: String,
       },
       ifsc: {
-        type: Number
-      }
+        type: Number,
+      },
     },
   },
   {
