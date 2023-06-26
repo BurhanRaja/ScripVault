@@ -3,10 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { jwt_secret } from "../config.js";
 
-// Get User Info
-// Update User Info
-// delete User account
-
 // User Regitration
 export const UserRegister = async (req, res) => {
   let success = false;
@@ -54,7 +50,7 @@ export const UserRegister = async (req, res) => {
   }
 };
 
-// Get User Info
+// Add User Info
 export const userInfo = async (req, res) => {
   let success = false;
 
@@ -138,6 +134,219 @@ export const userLogin = async (req, res) => {
     return res.status(200).send({
       success,
       token,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Get User Info
+export const getUser = async (req, res) => {
+  let success = false;
+
+  try {
+    const user = await User.findOne({ _id: req.user.id });
+    if (!user) {
+      return res.status(404).send({
+        success,
+        message: "User does not exists.",
+      });
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      user,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Update Bank Details
+export const updateBankDetails = async (req, res) => {
+  let success = false;
+
+  try {
+    const { accountNumber, accountType, ifsc } = req.body;
+
+    let user = await User.findOne({ _id: req.user.id });
+
+    if (!user) {
+      return res.status(404).send({
+        success,
+        message: "User does not exists.",
+      });
+    }
+
+    user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $set: {
+          bank: {
+            accountNumber,
+            accountType,
+            ifsc,
+          },
+        },
+      }
+    );
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: "User Bank Details Updated.",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Update Info
+export const updateUserInfo = async (req, res) => {
+  let success = false;
+
+  try {
+    const { dob, pan, sourceWealth } = req.body;
+
+    let user = await User.findOne({ _id: req.user.id });
+
+    if (!user) {
+      return res.status(404).send({
+        success,
+        message: "User does not exists.",
+      });
+    }
+
+    user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $set: {
+          info: {
+            dob,
+            pan,
+            sourceWealth,
+          },
+        },
+      }
+    );
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: "User info Updated.",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Update User
+export const updateUser = async (req, res) => {
+  let success = false;
+
+  try {
+    const { full_name, email, phone } = req.body;
+
+    let user = await User.findOne({ _id: req.user.id });
+
+    if (!user) {
+      return res.status(404).send({
+        success,
+        message: "User does not exists.",
+      });
+    }
+
+    user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $set: {
+          basic: {
+            full_name,
+            email,
+            phone,
+          },
+        },
+      }
+    );
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: "User Updated.",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Change Password
+export const changePassword = async (req, res) => {
+  let success = false;
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    let user = await User.findOne({ _id: req.user.id });
+
+    if (!user) {
+      return res.status(404).send({
+        success,
+        message: "User does not exists.",
+      });
+    }
+
+    if (oldPassword === newPassword) {
+      return res.status(400).send({
+        success,
+        message: "Old Password and New Password are same.",
+      });
+    }
+
+    let checkUserPassword = await bcrypt.compare(
+      oldPassword,
+      user.basic.password
+    );
+
+    if (!checkUserPassword) {
+      return res.status(400).send({
+        success,
+        message: "Old Password does not match.",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const securePassword = await bcrypt.hash(newPassword, salt);
+
+    user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $set: {
+          basic: {
+            password: securePassword,
+          },
+        },
+      }
+    );
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: "User Password changed.",
     });
   } catch (err) {
     return res.status(500).send({
