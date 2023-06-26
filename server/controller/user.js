@@ -1,11 +1,11 @@
 import User from "../model/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { jwt_secret } from "../config.js";
+import config from "../config.js";
 import UserNominate from "../model/UserNominate";
 
 // User Regitration
-export const UserRegister = async (req, res) => {
+export const userRegister = async (req, res) => {
   let success = false;
   try {
     const { full_name, email, phone, password } = req.body;
@@ -130,7 +130,7 @@ export const userLogin = async (req, res) => {
       },
     };
 
-    const token = jwt.sign(data, jwt_secret);
+    const token = jwt.sign(data, config.jwt_secret);
 
     success = true;
 
@@ -443,6 +443,7 @@ export const getAllUserNominate = async (req, res) => {
   }
 };
 
+// Single User Nominate
 export const getSingleUserNominate = async (req, res) => {
   let success = false;
 
