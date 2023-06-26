@@ -2,6 +2,7 @@ import User from "../model/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { jwt_secret } from "../config.js";
+import UserNominate from "../model/UserNominate";
 
 // User Regitration
 export const UserRegister = async (req, res) => {
@@ -45,6 +46,7 @@ export const UserRegister = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
+      success,
       message: "Internal Server Error.",
     });
   }
@@ -91,6 +93,7 @@ export const userInfo = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
+      success,
       message: "Internal Server Error.",
     });
   }
@@ -137,12 +140,13 @@ export const userLogin = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
+      success,
       message: "Internal Server Error.",
     });
   }
 };
 
-// Get User Info
+// Get User
 export const getUser = async (req, res) => {
   let success = false;
 
@@ -163,6 +167,7 @@ export const getUser = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
+      success,
       message: "Internal Server Error.",
     });
   }
@@ -205,6 +210,7 @@ export const updateBankDetails = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
+      success,
       message: "Internal Server Error.",
     });
   }
@@ -247,6 +253,7 @@ export const updateUserInfo = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
+      success,
       message: "Internal Server Error.",
     });
   }
@@ -289,6 +296,7 @@ export const updateUser = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
+      success,
       message: "Internal Server Error.",
     });
   }
@@ -350,6 +358,207 @@ export const changePassword = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// User Nominate
+export const addUserNomination = async (req, res) => {
+  let success = false;
+
+  try {
+    const { relationship, name, dob, address } = req.body;
+
+    let userNominate = await UserNominate.findOne({ user_id: req.user.id });
+
+    if (!userNominate) {
+      userNominate = await UserNominate.create({
+        user_id: req.user.id,
+        nominates: [
+          {
+            relationship,
+            name,
+            dob,
+            address,
+          },
+        ],
+      });
+    } else {
+      userNominate = await UserNominate.findOneAndUpdate(
+        { user_id: req.user.id },
+        {
+          $push: {
+            nominates: {
+              relationship,
+              name,
+              dob,
+              address,
+            },
+          },
+        }
+      );
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: "User Nomination added.",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Get All User Nominate
+export const getAllUserNominate = async (req, res) => {
+  let success = false;
+
+  try {
+    const userNominate = await UserNominate.findOne({ user_id: req.user.id });
+
+    if (!userNominate) {
+      return res.status(404).send({
+        success,
+        message: "User Nominate Not Found",
+      });
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      userNominate,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+export const getSingleUserNominate = async (req, res) => {
+  let success = false;
+
+  try {
+    const userNominate = await UserNominate.findOne({
+      user_id: req.user.id,
+      "nominates._id": req.params.id,
+    });
+
+    if (!userNominate) {
+      return res.status(404).send({
+        success,
+        message: "User Nominate Not Found",
+      });
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      userNominate,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// User Nominate Update
+export const updateUserNominate = async (req, res) => {
+  let success = false;
+
+  try {
+    const { relationship, name, dob, address } = req.body;
+
+    let userNominate = await UserNominate.findOne({
+      user_id: req.user.id,
+      "nominates._id": req.params.id,
+    });
+
+    if (userNominate.nominates.length > 0) {
+      userNominate = await UserNominate.findOneAndUpdate(
+        {
+          user_id: req.user.id,
+          "nominates._id": req.params.id,
+        },
+        {
+          $set: {
+            "nominates.relationship": relationship,
+            "nominates.name": name,
+            "nominates.dob": dob,
+            "nominates.address": address,
+          },
+        }
+      );
+    } else {
+      return res.status(400).send({
+        success,
+        message: "User Nominate not found",
+      });
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: "User Nominate updated.",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// User Nominate Delete
+export const deleteUserNominate = async (req, res) => {
+  let success = false;
+
+  try {
+    let userNominate = await UserNominate.findOne({
+      user_id: req.user.id,
+      "nominates._id": req.params.id,
+    });
+
+    if (userNominate.nominates.length > 0) {
+      userNominate = await UserNominate.findOneAndUpdate(
+        {
+          user_id: req.user.id,
+          "nominates._id": req.params.id,
+        },
+        {
+          $pull: {
+            nominates: { _id: req.params.id },
+          },
+        }
+      );
+    } else {
+      return res.status(400).send({
+        success,
+        message: "User Nominate not found",
+      });
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: "User Nominate deleted.",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
       message: "Internal Server Error.",
     });
   }
