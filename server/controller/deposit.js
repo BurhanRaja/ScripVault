@@ -11,6 +11,17 @@ export const addDeposit = async (req, res) => {
 
     let transaction_id = randomHash(14);
 
+    let bankBalance = await BankBalance.findOne({
+      user_id: req.user.id,
+    });
+
+    if (bankBalance.balance < amount) {
+      return res.status(400).send({
+        success,
+        message: "Some Error Occured.",
+      });
+    }
+
     let deposit = await Deposit.create({
       amount,
       bank_account_number,
@@ -69,7 +80,6 @@ export const getAllDeposits = async (req, res) => {
       success,
       deposits,
     });
-    
   } catch (err) {
     return res.status(500).send({
       success,
