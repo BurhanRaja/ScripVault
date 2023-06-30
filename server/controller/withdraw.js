@@ -3,6 +3,7 @@ import Wallet from "../model/Wallet";
 import Withdraw from "../model/Withdraw";
 import randomHash from "../utils/randomHash";
 
+// Add Withdraw
 export const addWithdraw = async (req, res) => {
   let success = false;
 
@@ -56,6 +57,7 @@ export const addWithdraw = async (req, res) => {
   }
 };
 
+// All Withdraw
 export const getAllWithdraws = async (req, res) => {
   let success = false;
 

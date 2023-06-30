@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config.js";
 import UserNominate from "../model/UserNominate";
+import BankBalance from "../model/BankBalance";
 
 // User Regitration
 export const userRegister = async (req, res) => {
@@ -84,6 +85,10 @@ export const userInfo = async (req, res) => {
         },
       }
     );
+
+    await BankBalance.create({
+      user_id: id,
+    })
 
     success = true;
 

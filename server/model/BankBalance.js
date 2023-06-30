@@ -9,6 +9,8 @@ const BankBalanceSchema = new Schema({
     type: Number,
     default: 1_00_000,
   },
+}, {
+  timestamps: true
 });
 
 export default mongoose.model("BankBalance", BankBalanceSchema);

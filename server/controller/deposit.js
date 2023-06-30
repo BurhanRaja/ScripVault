@@ -3,6 +3,7 @@ import Deposit from "../model/Deposit";
 import Wallet from "../model/Wallet";
 import randomHash from "../utils/randomHash";
 
+// Add Deposit
 export const addDeposit = async (req, res) => {
   let success = false;
 
@@ -68,6 +69,7 @@ export const addDeposit = async (req, res) => {
   }
 };
 
+// All Deposit
 export const getAllDeposits = async (req, res) => {
   let success = false;
 
