@@ -6,84 +6,33 @@ import config from "../config";
 export const addWatchlist = async (req, res) => {
   let success = false;
   try {
+    // stocks, mutual_funds, etfs
     const { name, symbol, type } = req.body;
 
     let watchlist = await Watchlist.findOne({ user_id: req.user.id });
 
     if (!watchlist) {
-      if (type === "stock") {
-        watchlist = await Watchlist.create({
-          user_id: req.user.id,
-          stocks: [
-            {
-              name,
-              symbol,
-            },
-          ],
-        });
-      }
-      if (type === "mutual-fund") {
-        watchlist = await Watchlist.create({
-          user_id: req.user.id,
-          mutual_funds: [
-            {
-              name,
-              symbol,
-            },
-          ],
-        });
-      }
-      if (type === "etf") {
-        watchlist = await Watchlist.create({
-          user_id: req.user.id,
-          etfs: [
-            {
-              name,
-              symbol,
-            },
-          ],
-        });
-      }
+      watchlist = await Watchlist.create({
+        user_id: req.user.id,
+        [type]: [
+          {
+            name,
+            symbol,
+          },
+        ],
+      });
     } else {
-      if (type === "stock") {
-        watchlist = await Watchlist.findOneAndUpdate(
-          { user_id: req.user.id },
-          {
-            $push: {
-              stocks: {
-                name,
-                symbol,
-              },
+      watchlist = await Watchlist.findOneAndUpdate(
+        { user_id: req.user.id },
+        {
+          $push: {
+            [type]: {
+              name,
+              symbol,
             },
-          }
-        );
-      }
-      if (type === "mutual-fund") {
-        watchlist = await Watchlist.findOneAndUpdate(
-          { user_id: req.user.id },
-          {
-            $push: {
-              mutual_funds: {
-                name,
-                symbol,
-              },
-            },
-          }
-        );
-      }
-      if (type === "etf") {
-        watchlist = await Watchlist.findOneAndUpdate(
-          { user_id: req.user.id },
-          {
-            $push: {
-              etfs: {
-                name,
-                symbol,
-              },
-            },
-          }
-        );
-      }
+          },
+        }
+      );
     }
 
     success = true;
@@ -120,6 +69,29 @@ export const getAllWatchlist = async (req, res) => {
       );
       stocksData.push(data);
     }
+
+    for (let mf in mutualFunds) {
+      let data = await axios.get(
+        config.stock_api + "/mutualfund/current/price" + mf.symbol
+      );
+      mutualFundsData.push(data);
+    }
+
+    for (let etf in etfs) {
+      let data = await axios.get(
+        config.stock_api + "/etf/current/price/" + etf.symbol
+      );
+      etfsData.push(data);
+    }
+
+    return res.status(200).send({
+      success,
+      data: {
+        stocksData,
+        mutualFundsData,
+        etfsData,
+      },
+    });
   } catch (err) {
     return res.status(500).send({
       success,
