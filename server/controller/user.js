@@ -88,7 +88,7 @@ export const userInfo = async (req, res) => {
 
     await BankBalance.create({
       user_id: id,
-    })
+    });
 
     success = true;
 

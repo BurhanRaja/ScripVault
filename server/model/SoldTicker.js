@@ -6,7 +6,7 @@ const SoldTickerSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
-    tickers: [
+    stocks: [
       {
         name: {
           type: String,
@@ -23,8 +23,64 @@ const SoldTickerSchema = new Schema(
         no_of_shares: {
           type: Number,
         },
-        type: {
+        date_of_buy: {
+          type: Date,
+        },
+        date_of_sell: {
+          type: Date,
+        },
+        profit: {
+          type: Number,
+        },
+      },
+    ],
+    mutual_funds: [
+      {
+        name: {
           type: String,
+        },
+        symbol: {
+          type: String,
+        },
+        buy_price: {
+          type: Number,
+        },
+        type_mf: {
+          type: Number,
+        },
+        total_years: {
+          type: Number,
+        },
+        year_sell: {
+          type: Number,
+        },
+        date_of_buy: {
+          type: Date,
+        },
+        date_of_sell: {
+          type: Date,
+        },
+        profit: {
+          type: Number,
+        },
+      },
+    ],
+    etfs: [
+      {
+        name: {
+          type: String,
+        },
+        symbol: {
+          type: String,
+        },
+        buy_price: {
+          type: Number,
+        },
+        date_of_buy: {
+          type: Date,
+        },
+        date_of_sell: {
+          type: Date,
         },
         profit: {
           type: Number,

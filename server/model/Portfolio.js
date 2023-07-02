@@ -6,7 +6,7 @@ const PortfolioSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
-    portfolio: [
+    stocks: [
       {
         name: {
           type: String,
@@ -20,16 +20,59 @@ const PortfolioSchema = new Schema(
         no_of_shares: {
           type: Number,
         },
-        type: {
+        date_of_buy: {
+          type: Date,
+        },
+      },
+    ],
+    mutual_funds: [
+      {
+        name: {
           type: String,
+        },
+        symbol: {
+          type: String,
+        },
+        buy_price: {
+          type: Number,
+        },
+        type_mf: {
+          type: Number,
+        },
+        total_years: {
+          type: Number,
+        },
+        year_sell: {
+          type: Number,
+        },
+        date_of_buy: {
+          type: Date,
+        },
+      },
+    ],
+    etfs: [
+      {
+        name: {
+          type: String,
+        },
+        symbol: {
+          type: String,
+        },
+        buy_price: {
+          type: Number,
+        },
+        date_of_buy: {
+          type: Date,
         },
       },
     ],
     total_investment: {
       type: Number,
+      default: 0,
     },
     total_profit: {
       type: Number,
+      default: 0,
     },
   },
   {

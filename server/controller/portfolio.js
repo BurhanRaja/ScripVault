@@ -4,11 +4,11 @@ import SoldTicker from "../model/SoldTicker";
 import Wallet from "../model/Wallet";
 import config from "../config";
 
-// Buy and add to Portfolio
-export const buyTicker = async (req, res) => {
+// Stock Buy
+export const stockBuyTicker = async (req, res) => {
   let success = false;
   try {
-    const { name, symbol, buy_price, no_of_shares, type } = req.body;
+    const { name, symbol, buy_price, no_of_shares, date_of_buy } = req.body;
 
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
@@ -24,13 +24,13 @@ export const buyTicker = async (req, res) => {
     if (!portfolio) {
       portfolio = await Portfolio.create({
         user_id: req.user.id,
-        portfolio: [
+        stocks: [
           {
             name,
             symbol,
             no_of_shares,
             buy_price,
-            type,
+            date_of_buy,
           },
         ],
         total_investment: buy_price * no_of_shares,
@@ -40,12 +40,12 @@ export const buyTicker = async (req, res) => {
         { user_id: req.user.id },
         {
           $push: {
-            portfolio: {
+            stocks: {
               name,
               symbol,
               no_of_shares,
               buy_price,
-              type,
+              date_of_buy,
             },
           },
           $inc: {
@@ -59,7 +59,147 @@ export const buyTicker = async (req, res) => {
 
     return res.status(200).send({
       success,
-      message: `${type} bought successfully`,
+      message: `Stock bought successfully`,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Mutual Funds Buy
+export const mutualFundBuyTicker = async (req, res) => {
+  let success = false;
+  try {
+    const {
+      name,
+      symbol,
+      buy_price,
+      type_mf,
+      date_of_buy,
+      total_years,
+      year_sell,
+    } = req.body;
+
+    let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    let wallet = await Wallet.findOneAndUpdate(
+      { user_id: req.user.id },
+      {
+        $inc: {
+          balance: -buy_price,
+        },
+      }
+    );
+
+    if (!portfolio) {
+      portfolio = await Portfolio.create({
+        user_id: req.user.id,
+        mutual_funds: [
+          {
+            name,
+            symbol,
+            type_mf,
+            buy_price,
+            date_of_buy,
+            total_years,
+            year_sell,
+          },
+        ],
+        total_investment: buy_price,
+      });
+    } else {
+      portfolio = await Portfolio.findOneAndUpdate(
+        { user_id: req.user.id },
+        {
+          $push: {
+            mutual_funds: {
+              name,
+              symbol,
+              type_mf,
+              buy_price,
+              date_of_buy,
+              total_years,
+              year_sell,
+            },
+          },
+          $inc: {
+            total_investment: buy_price,
+          },
+        }
+      );
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: `Mutual Fund bought successfully`,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Buy ETF
+export const etfBuyTicker = async (req, res) => {
+  let success = false;
+  try {
+    const { name, symbol, buy_price, date_of_buy } = req.body;
+
+    let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    let wallet = await Wallet.findOneAndUpdate(
+      { user_id: req.user.id },
+      {
+        $inc: {
+          balance: -buy_price,
+        },
+      }
+    );
+
+    if (!portfolio) {
+      portfolio = await Portfolio.create({
+        user_id: req.user.id,
+        stocks: [
+          {
+            name,
+            symbol,
+            buy_price,
+            date_of_buy,
+          },
+        ],
+        total_investment: buy_price,
+      });
+    } else {
+      portfolio = await Portfolio.findOneAndUpdate(
+        { user_id: req.user.id },
+        {
+          $push: {
+            stocks: {
+              name,
+              symbol,
+              buy_price,
+              date_of_buy,
+            },
+          },
+          $inc: {
+            total_investment: buy_price,
+          },
+        }
+      );
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: `ETF bought successfully`,
     });
   } catch (err) {
     return res.status(500).send({
@@ -222,3 +362,4 @@ export const getProfit = async (req, res) => {
 };
 
 // Invest (Process) list of mutual fund -> lumpsum or SIP -> Set Amount on previous choice -> Confirm -> add to portfolio
+export const investSIP = async (req, res) => {};

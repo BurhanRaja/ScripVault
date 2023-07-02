@@ -30,6 +30,9 @@ const UserSchema = new Schema(
       sourceWealth: {
         type: String,
       },
+      address: {
+        type: String
+      }
     },
     bank: {
       accountNumber: {
