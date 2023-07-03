@@ -4,11 +4,11 @@ import Input from "../../components/Input";
 const UserInfo = () => {
   return (
     <>
-      <section className="bg-gray-900 h-[100vh] flex justify-center items-center">
-        <div class="max-w-4xl w-1/2 p-6 mx-auto  rounded-md shadow-md bg-slate-800">
+      <section className="bg-gray-200 flex justify-center items-center">
+        <div class="max-w-4xl w-[60%] p-6 my-10 mx-auto rounded-md shadow-md bg-white">
           <form>
-            <p className="text-2xl text-center font-semibold text-gray-200 capitalize">
-              Your Information
+            <p className="text-3xl text-center font-bold text-gray-900 capitalize mb-6">
+              Information
             </p>
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
               <div className="mb-4">
@@ -37,7 +37,7 @@ const UserInfo = () => {
               </div>
             </div>
 
-            <p className="text-2xl text-center font-semibold text-gray-200 capitalize mt-6">
+            <p className="text-3xl text-center font-bold text-gray-900 capitalize mb-6 mt-6">
               Bank Details
             </p>
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
@@ -64,7 +64,7 @@ const UserInfo = () => {
               </div>
             </div>
             <div class="flex justify-center mt-6">
-              <button class="py-2.5 leading-5 text-black transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-gray-600 hover:text-white focus:outline-none focus:bg-gray-600 w-1/2">
+              <button class="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-1/2">
                 Submit
               </button>
             </div>

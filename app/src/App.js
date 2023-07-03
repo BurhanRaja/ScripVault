@@ -7,14 +7,14 @@ import UserNominate from "./pages/website/UserNominate";
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/user/info" element={<UserInfo />} />
-          <Route path="/user/nominate" element={<UserNominate />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/user/info' element={<UserInfo />} />
+          <Route path='/user/nominate' element={<UserNominate />} />
         </Routes>
       </BrowserRouter>
     </div>
