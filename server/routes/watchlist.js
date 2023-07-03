@@ -1,6 +1,6 @@
 import {Router} from "express"
-import checkuser from "../middleware/checkuser"
-import { addWatchlist, getAllWatchlist, removeWatchlist } from "../controller/watchlist"
+import checkuser from "../middleware/checkuser.js"
+import { addWatchlist, getAllWatchlist, removeWatchlist } from "../controller/watchlist.js"
 
 const router = Router()
 

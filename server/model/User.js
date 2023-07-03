@@ -25,7 +25,7 @@ const UserSchema = new Schema(
         type: Date,
       },
       pan: {
-        type: Number,
+        type: String,
       },
       sourceWealth: {
         type: String,
@@ -42,7 +42,7 @@ const UserSchema = new Schema(
         type: String,
       },
       ifsc: {
-        type: Number,
+        type: String,
       },
     },
   },

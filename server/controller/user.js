@@ -1,16 +1,16 @@
-import User from "../model/User";
+import User from "../model/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config.js";
-import UserNominate from "../model/UserNominate";
-import BankBalance from "../model/BankBalance";
+import UserNominate from "../model/UserNominate.js";
+import BankBalance from "../model/BankBalance.js";
 
 // User Regitration
 export const userRegister = async (req, res) => {
   let success = false;
   try {
     const { full_name, email, phone, password } = req.body;
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ "basic.email": email });
 
     if (user) {
       return res.status(400).send({
@@ -22,7 +22,7 @@ export const userRegister = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const securePassword = await bcrypt.hash(password, salt);
 
-    user = User.create({
+    user = await User.create({
       basic: {
         full_name,
         email,
@@ -43,7 +43,7 @@ export const userRegister = async (req, res) => {
     return res.status(200).send({
       success,
       message: "User Registered Successfully.",
-      user_id: user.id,
+      user_id: user._id,
     });
   } catch (err) {
     return res.status(500).send({
@@ -58,8 +58,16 @@ export const userInfo = async (req, res) => {
   let success = false;
 
   try {
-    const { id, dob, pan, sourceWealth, accountNumber, accountType, ifsc } =
-      req.body;
+    const {
+      id,
+      dob,
+      pan,
+      sourceWealth,
+      accountNumber,
+      accountType,
+      ifsc,
+      address,
+    } = req.body;
 
     if (!id) {
       return res.status(400).send({
@@ -76,6 +84,7 @@ export const userInfo = async (req, res) => {
             dob,
             pan,
             sourceWealth,
+            address,
           },
           bank: {
             accountNumber,
@@ -111,7 +120,7 @@ export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ "basic.email": email });
 
     if (!user) {
       return res.status(400).send({
@@ -226,7 +235,7 @@ export const updateUserInfo = async (req, res) => {
   let success = false;
 
   try {
-    const { dob, pan, sourceWealth } = req.body;
+    const { dob, pan, sourceWealth, address } = req.body;
 
     let user = await User.findOne({ _id: req.user.id });
 
@@ -245,6 +254,7 @@ export const updateUserInfo = async (req, res) => {
             dob,
             pan,
             sourceWealth,
+            address,
           },
         },
       }
@@ -374,13 +384,13 @@ export const addUserNomination = async (req, res) => {
   let success = false;
 
   try {
-    const { relationship, name, dob, address } = req.body;
+    const { id, relationship, name, dob, address } = req.body;
 
-    let userNominate = await UserNominate.findOne({ user_id: req.user.id });
+    let userNominate = await UserNominate.findOne({ user_id: id });
 
     if (!userNominate) {
       userNominate = await UserNominate.create({
-        user_id: req.user.id,
+        user_id: id,
         nominates: [
           {
             relationship,
@@ -392,7 +402,7 @@ export const addUserNomination = async (req, res) => {
       });
     } else {
       userNominate = await UserNominate.findOneAndUpdate(
-        { user_id: req.user.id },
+        { user_id: id },
         {
           $push: {
             nominates: {
@@ -413,6 +423,7 @@ export const addUserNomination = async (req, res) => {
       message: "User Nomination added.",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -456,7 +467,7 @@ export const getSingleUserNominate = async (req, res) => {
     const userNominate = await UserNominate.findOne({
       user_id: req.user.id,
       "nominates._id": req.params.id,
-    });
+    }, {"nominates.$": 1});
 
     if (!userNominate) {
       return res.status(404).send({
@@ -499,10 +510,10 @@ export const updateUserNominate = async (req, res) => {
         },
         {
           $set: {
-            "nominates.relationship": relationship,
-            "nominates.name": name,
-            "nominates.dob": dob,
-            "nominates.address": address,
+            "nominates.$.relationship": relationship,
+            "nominates.$.name": name,
+            "nominates.$.dob": dob,
+            "nominates.$.address": address,
           },
         }
       );
@@ -520,6 +531,7 @@ export const updateUserNominate = async (req, res) => {
       message: "User Nominate updated.",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",

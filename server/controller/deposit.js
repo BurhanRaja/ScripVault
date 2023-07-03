@@ -1,7 +1,7 @@
-import BankBalance from "../model/BankBalance";
-import Deposit from "../model/Deposit";
-import Wallet from "../model/Wallet";
-import randomHash from "../utils/randomHash";
+import BankBalance from "../model/BankBalance.js";
+import Deposit from "../model/Deposit.js";
+import Wallet from "../model/Wallet.js";
+import randomHash from "../utils/randomHash.js";
 
 // Add Deposit
 export const addDeposit = async (req, res) => {

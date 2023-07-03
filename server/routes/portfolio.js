@@ -9,7 +9,7 @@ import {
   sellMutualFundsTicker,
   sellStocksTicker,
   stockBuyTicker,
-} from "../controller/portfolio";
+} from "../controller/portfolio.js";
 
 const router = Router();
 

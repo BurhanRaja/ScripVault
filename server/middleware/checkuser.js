@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import config from "../config.js";
 
-export default checkUser = async (req, res, next) => {
+
+const checkUser = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
 
@@ -23,3 +24,5 @@ export default checkUser = async (req, res, next) => {
     });
   }
 };
+
+export default checkUser

@@ -1,8 +1,8 @@
 import axios from "axios";
-import Portfolio from "../model/Portfolio";
-import SoldTicker from "../model/SoldTicker";
-import Wallet from "../model/Wallet";
-import config from "../config";
+import Portfolio from "../model/Portfolio.js";
+import SoldTicker from "../model/SoldTicker.js";
+import Wallet from "../model/Wallet.js";
+import config from "../config.js";
 
 // Stock Buy ---------------------------------------------------------------------------
 export const stockBuyTicker = async (req, res) => {

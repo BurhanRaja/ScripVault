@@ -1,6 +1,6 @@
-import Watchlist from "../model/Watchlist";
+import Watchlist from "../model/Watchlist.js";
 import axios from "axios";
-import config from "../config";
+import config from "../config.js";
 
 // Add to Watchlist
 export const addWatchlist = async (req, res) => {

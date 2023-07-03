@@ -1,4 +1,4 @@
-import Kyc from "../model/Kyc";
+import Kyc from "../model/Kyc.js";
 
 export const addKyc = async (req, res) => {
     let success = false;

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import checkuser from "../middleware/checkuser";
-import { addWithdraw, getAllWithdraws } from "../controller/withdraw";
+import checkuser from "../middleware/checkuser.js";
+import { addWithdraw, getAllWithdraws } from "../controller/withdraw.js";
 
 const router = Router();
 

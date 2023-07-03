@@ -1,5 +1,5 @@
-import Notification from "../model/Notification";
-import Portfolio from "../model/Portfolio";
+import Notification from "../model/Notification.js";
+import Portfolio from "../model/Portfolio.js";
 
 // Reminder for SIP Payment
 export const investSIPNotification = async (req, res) => {

@@ -13,35 +13,33 @@ import {
   userInfo,
   userLogin,
   userRegister,
-} from "../controller/user";
-import checkuser from "../middleware/checkuser";
+} from "../controller/user.js";
+import checkuser from "../middleware/checkuser.js";
 
-const router = Router();
+export const userRouter = Router();
 
-router.post("/register", userRegister);
+userRouter.post("/register", userRegister);
 
-router.post("/user/info", userInfo);
+userRouter.post("/info", userInfo);
 
-router.post("/user/nominate", addUserNomination);
+userRouter.post("/nominate", addUserNomination);
 
-router.post("/login", userLogin);
+userRouter.post("/login", userLogin);
 
-router.get("/", checkuser, getUser);
+userRouter.get("/", checkuser, getUser);
 
-router.put("/update/userInfo", checkuser, updateUserInfo);
+userRouter.put("/update/userInfo", checkuser, updateUserInfo);
 
-router.put("/update/user", checkuser, updateUser);
+userRouter.put("/update/user", checkuser, updateUser);
 
-router.put("/update/userBank", checkuser, updateBankDetails);
+userRouter.put("/update/userBank", checkuser, updateBankDetails);
 
-router.put("/changepassword", checkuser, changePassword);
+userRouter.put("/changepassword", checkuser, changePassword);
 
-router.get("/all/user/nominate", checkuser, getAllUserNominate);
+userRouter.get("/all/user/nominate", checkuser, getAllUserNominate);
 
-router.get("/user/nominate/:id", checkuser, getSingleUserNominate);
+userRouter.get("/user/nominate/:id", checkuser, getSingleUserNominate);
 
-router.put("/update/user/nominate/:id", checkuser, updateUserNominate);
+userRouter.put("/update/user/nominate/:id", checkuser, updateUserNominate);
 
-router.delete("/delete/user/nominate/:id", checkuser, deleteUserNominate);
-
-export default router;
+userRouter.delete("/delete/user/nominate/:id", checkuser, deleteUserNominate);

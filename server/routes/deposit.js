@@ -1,11 +1,10 @@
 import { Router } from "express";
-import checkuser from "../middleware/checkuser";
-import { addDeposit, getAllDeposits } from "../controller/deposit";
+import checkuser from "../middleware/checkuser.js";
+import { addDeposit, getAllDeposits } from "../controller/deposit.js";
 
-const router = Router();
+export const depositRouter = Router();
 
-router.post("/add/deposit", checkuser, addDeposit);
+depositRouter.post("/add/deposit", checkuser, addDeposit);
 
-router.get("/all/deposit", checkuser, getAllDeposits);
+depositRouter.get("/all/deposit", checkuser, getAllDeposits);
 
-export default router;
