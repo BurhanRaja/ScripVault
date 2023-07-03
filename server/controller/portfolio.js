@@ -209,8 +209,8 @@ export const etfBuyTicker = async (req, res) => {
   }
 };
 
-// Sell and remove from Portfolio
-export const sellTicker = async (req, res) => {
+// Stocks Sell and remove from Portfolio
+export const sellStocksTicker = async (req, res) => {
   let success = false;
 
   try {
@@ -220,17 +220,18 @@ export const sellTicker = async (req, res) => {
       buy_price,
       sell_price,
       no_of_shares,
-      type,
+      date_of_buy,
+      date_of_sell,
       profit,
-      portfolio_id,
+      stocks_id,
     } = req.body;
 
     let portfolio = await Portfolio.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $pull: {
-          portfolio: {
-            _id: portfolio_id,
+          stocks: {
+            _id: stocks_id,
           },
         },
         $inc: {
@@ -244,14 +245,15 @@ export const sellTicker = async (req, res) => {
     if (!soldTicker) {
       soldTicker = await SoldTicker.create({
         user_id: req.user.id,
-        tickers: [
+        stocks: [
           {
             name,
             symbol,
-            sell_price,
             buy_price,
+            sell_price,
             no_of_shares,
-            type,
+            date_of_buy,
+            date_of_sell,
             profit,
           },
         ],
@@ -261,13 +263,14 @@ export const sellTicker = async (req, res) => {
         { user_id: req.user.id },
         {
           $push: {
-            tickers: {
+            stocks: {
               name,
               symbol,
-              sell_price,
               buy_price,
+              sell_price,
               no_of_shares,
-              type,
+              date_of_buy,
+              date_of_sell,
               profit,
             },
           },
@@ -280,6 +283,116 @@ export const sellTicker = async (req, res) => {
       {
         $inc: {
           balance: sell_price * no_of_shares,
+        },
+      }
+    );
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: `${name} successfully Sold.`,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Mutual Funds Sell and remove from Portfolio
+export const sellMutualFundsTicker = async (req, res) => {
+  let success = false;
+
+  try {
+    const {
+      name,
+      symbol,
+      buy_price,
+      type_mf,
+      date_of_buy,
+      total_years,
+      year_sell,
+      sell_price,
+      date_of_sell,
+      profit,
+      mf_id,
+    } = req.body;
+
+    const date = new Date();
+    const sell_date = new Date(year_sell);
+
+    if (sell_date.getTime() !== date.getTime()) {
+      return res.status(405).send({
+        success,
+        message: "You cannot sell your Mutual Fund.",
+      });
+    }
+
+    let portfolio = await Portfolio.findOneAndUpdate(
+      { user_id: req.user.id },
+      {
+        $pull: {
+          stocks: {
+            _id: mf_id,
+          },
+        },
+        $inc: {
+          total_investment: -buy_price,
+        },
+      }
+    );
+
+    let soldTicker = await SoldTicker.findOne({ user_id: req.user.id });
+
+    if (!soldTicker) {
+      soldTicker = await SoldTicker.create({
+        user_id: req.user.id,
+        mutual_funds: [
+          {
+            name,
+            symbol,
+            buy_price,
+            type_mf,
+            date_of_buy,
+            total_years,
+            year_sell,
+            sell_price,
+            date_of_sell,
+            profit,
+          },
+        ],
+      });
+    } else {
+      soldTicker = await SoldTicker.findOneAndUpdate(
+        { user_id: req.user.id },
+        {
+          $push: {
+            mutual_funds: {
+              name,
+              symbol,
+              buy_price,
+              type_mf,
+              date_of_buy,
+              total_years,
+              year_sell,
+              sell_price,
+              date_of_sell,
+              profit,
+            },
+          },
+        }
+      );
+    }
+
+    price = 0;
+
+    let wallet = await Wallet.findOneAndUpdate(
+      { user_id: req.user.id },
+      {
+        $inc: {
+          balance: sell_price,
         },
       }
     );
