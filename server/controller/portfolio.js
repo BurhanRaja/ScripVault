@@ -3,8 +3,9 @@ import Portfolio from "../model/Portfolio";
 import SoldTicker from "../model/SoldTicker";
 import Wallet from "../model/Wallet";
 import config from "../config";
+import Notification from "../model/Notification";
 
-// Stock Buy
+// Stock Buy ---------------------------------------------------------------------------
 export const stockBuyTicker = async (req, res) => {
   let success = false;
   try {
@@ -69,7 +70,7 @@ export const stockBuyTicker = async (req, res) => {
   }
 };
 
-// Mutual Funds Buy
+// Mutual Funds Buy ---------------------------------------------------------------------------
 export const mutualFundBuyTicker = async (req, res) => {
   let success = false;
   try {
@@ -146,7 +147,7 @@ export const mutualFundBuyTicker = async (req, res) => {
   }
 };
 
-// Buy ETF
+// Buy ETF -----------------------------------------------------------------------------------
 export const etfBuyTicker = async (req, res) => {
   let success = false;
   try {
@@ -209,7 +210,7 @@ export const etfBuyTicker = async (req, res) => {
   }
 };
 
-// Stocks Sell and remove from Portfolio
+// Stocks Sell and remove from Portfolio ---------------------------------------------------------------------------
 export const sellStocksTicker = async (req, res) => {
   let success = false;
 
@@ -301,7 +302,7 @@ export const sellStocksTicker = async (req, res) => {
   }
 };
 
-// Mutual Funds Sell and remove from Portfolio
+// Mutual Funds Sell and remove from Portfolio ---------------------------------------------------------------------------
 export const sellMutualFundsTicker = async (req, res) => {
   let success = false;
 
@@ -411,7 +412,108 @@ export const sellMutualFundsTicker = async (req, res) => {
   }
 };
 
-// Update and get Total Portfolio Amount
+// ETF Sell and remove from Portfolio ---------------------------------------------------------------------------
+export const sellEtfTicker = async (req, res) => {
+  let success = false;
+
+  try {
+    const {
+      name,
+      symbol,
+      buy_price,
+      date_of_buy,
+      sell_price,
+      date_of_sell,
+      profit,
+      etf_id,
+    } = req.body;
+
+    const date = new Date();
+    const sell_date = new Date(year_sell);
+
+    if (sell_date.getTime() !== date.getTime()) {
+      return res.status(405).send({
+        success,
+        message: "You cannot sell your Mutual Fund.",
+      });
+    }
+
+    let portfolio = await Portfolio.findOneAndUpdate(
+      { user_id: req.user.id },
+      {
+        $pull: {
+          stocks: {
+            _id: etf_id,
+          },
+        },
+        $inc: {
+          total_investment: -buy_price,
+        },
+      }
+    );
+
+    let soldTicker = await SoldTicker.findOne({ user_id: req.user.id });
+
+    if (!soldTicker) {
+      soldTicker = await SoldTicker.create({
+        user_id: req.user.id,
+        mutual_funds: [
+          {
+            name,
+            symbol,
+            buy_price,
+            date_of_buy,
+            sell_price,
+            date_of_sell,
+            profit,
+          },
+        ],
+      });
+    } else {
+      soldTicker = await SoldTicker.findOneAndUpdate(
+        { user_id: req.user.id },
+        {
+          $push: {
+            mutual_funds: {
+              name,
+              symbol,
+              buy_price,
+              date_of_buy,
+              sell_price,
+              date_of_sell,
+              profit,
+            },
+          },
+        }
+      );
+    }
+
+    price = 0;
+
+    let wallet = await Wallet.findOneAndUpdate(
+      { user_id: req.user.id },
+      {
+        $inc: {
+          balance: sell_price,
+        },
+      }
+    );
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      message: `${name} successfully Sold.`,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Update and get Total Portfolio Amount ---------------------------------------------------------------------------
 export const getProfit = async (req, res) => {
   let success = false;
 
@@ -474,5 +576,48 @@ export const getProfit = async (req, res) => {
   }
 };
 
-// Invest (Process) list of mutual fund -> lumpsum or SIP -> Set Amount on previous choice -> Confirm -> add to portfolio
-export const investSIP = async (req, res) => {};
+// Reminder for SIP Payment
+export const investSIPNotification = async (req, res) => {
+  let success = false;
+  try {
+    let todayDate = new Date();
+
+    let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    for (const el of portfolio.mutual_funds) {
+      let mfDate = new Date(el.date_of_buy);
+
+      if (mfDate.getTime() - todayDate.getTime() === 2592000 && el.type === 1) {
+        const obj = {
+          today_date: todayDate,
+          ...el,
+        };
+        await Notification.create({
+          user_id: req.user.id,
+          data: obj,
+          type: "reminder",
+          read: false,
+        });
+      }
+    }
+
+    let notifications = await Notification({
+      user_id: req.user.id,
+      read: false,
+    });
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      notifications,
+    });
+
+    // Super Pumped
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
