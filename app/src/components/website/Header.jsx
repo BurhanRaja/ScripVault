@@ -29,6 +29,7 @@ const Header = () => {
             textSize='text-sm'
             btnSize='50%'
             textColor="text-white"
+            link="/register"
           />
           <Button
             color='bg-slate-200'
@@ -37,6 +38,7 @@ const Header = () => {
             textSize='ms-4 text-sm'
             btnSize='50%'
             textColor="text-black"
+            link="/login"
           />
         </div>
       </header>

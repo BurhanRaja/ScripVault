@@ -4,6 +4,7 @@ import InvestmentOptionSection from "../../components/website/InvestmentOptionSe
 import FeaturesSection from "../../components/website/FeaturesSection";
 import Header from "../../components/website/Header";
 import Footer from "../../components/website/Footer";
+import Testimony from "../../components/website/Testimony";
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
       <Hero />
       <FeaturesSection />
       <InvestmentOptionSection />
+      <Testimony />
       <Footer />
     </>
   );
