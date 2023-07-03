@@ -512,6 +512,27 @@ export const sellEtfTicker = async (req, res) => {
   }
 };
 
+// Get Portfolio
+export const getPortfolio = async (req, res) => {
+  let success = false;
+
+  try {
+    let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      portfolio,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
 // Update and get Total Portfolio Amount ---------------------------------------------------------------------------
 export const getProfit = async (req, res) => {
   let success = false;
