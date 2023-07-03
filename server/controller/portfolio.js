@@ -3,7 +3,6 @@ import Portfolio from "../model/Portfolio";
 import SoldTicker from "../model/SoldTicker";
 import Wallet from "../model/Wallet";
 import config from "../config";
-import Notification from "../model/Notification";
 
 // Stock Buy ---------------------------------------------------------------------------
 export const stockBuyTicker = async (req, res) => {
@@ -568,52 +567,6 @@ export const getProfit = async (req, res) => {
       success,
       profit: portfolio.total_profit,
     });
-  } catch (err) {
-    return res.status(500).send({
-      success,
-      message: "Internal Server Error.",
-    });
-  }
-};
-
-// Reminder for SIP Payment
-export const investSIPNotification = async (req, res) => {
-  let success = false;
-  try {
-    let todayDate = new Date();
-
-    let portfolio = await Portfolio.findOne({ user_id: req.user.id });
-
-    for (const el of portfolio.mutual_funds) {
-      let mfDate = new Date(el.date_of_buy);
-
-      if (mfDate.getTime() - todayDate.getTime() === 2592000 && el.type === 1) {
-        const obj = {
-          today_date: todayDate,
-          ...el,
-        };
-        await Notification.create({
-          user_id: req.user.id,
-          data: obj,
-          type: "reminder",
-          read: false,
-        });
-      }
-    }
-
-    let notifications = await Notification({
-      user_id: req.user.id,
-      read: false,
-    });
-
-    success = true;
-
-    return res.status(200).send({
-      success,
-      notifications,
-    });
-
-    // Super Pumped
   } catch (err) {
     return res.status(500).send({
       success,
