@@ -7,14 +7,6 @@ const Header = () => {
         <div class='container px-6 py-4 mx-auto'>
           <div class='lg:flex lg:items-center lg:justify-between'>
             <div class='flex items-center justify-between'>
-              <a href='#'>
-                <img
-                  class='w-auto h-6 sm:h-7'
-                  src='https://merakiui.com/images/full-logo.svg'
-                  alt=''
-                />
-              </a>
-
               <div class='flex lg:hidden'>
                 <button
                   type='button'
@@ -56,11 +48,10 @@ const Header = () => {
               </div>
             </div>
 
-            <div class='absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center'>
-              <div class='flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8'></div>
-
-              <div class='flex items-center mt-4 lg:mt-0'>
-                <div class='relative mt-4 md:mt-0'>
+            <div class='absolute w-[50%] inset-x-0 z-20 px-6 py-4 transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center'>
+              {/* <div class='flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8'></div> */}
+              <div class='flex items-center mt-4 lg:mt-0 w-[100%]'>
+                <div class='relative mt-4 md:mt-0 w-[100%]'>
                   <span class='absolute inset-y-0 left-0 flex items-center pl-3'>
                     <svg
                       class='w-5 h-5 text-gray-400'
@@ -85,7 +76,7 @@ const Header = () => {
                 </div>
 
                 <button
-                  class='hidden mx-4 text-gray-600 transition-colors duration-300 transform lg:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none'
+                  class='hidden mx-6 text-gray-600 transition-colors duration-300 transform lg:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none'
                   aria-label='show notifications'
                 >
                   <svg
