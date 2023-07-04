@@ -2,10 +2,9 @@ import { Router } from "express";
 import checkuser from "../middleware/checkuser.js";
 import { addWithdraw, getAllWithdraws } from "../controller/withdraw.js";
 
-const router = Router();
+export const withdrawRouter = Router();
 
-router.post("/add/withdraw", checkuser, addWithdraw);
+withdrawRouter.post("/add/withdraw", checkuser, addWithdraw);
 
-router.get("/all/withdraw", checkuser, getAllWithdraws);
+withdrawRouter.get("/all/withdraw", checkuser, getAllWithdraws);
 
-export default router;

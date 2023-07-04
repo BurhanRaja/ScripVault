@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
-import portfolio from "./routes/portfolio.js";
+import { portfolioRouter } from "./routes/portfolio.js";
 import { userRouter } from "./routes/user.js";
-import watchlist from "./routes/watchlist.js";
+import { watchlistRouter } from "./routes/watchlist.js";
 import { depositRouter } from "./routes/deposit.js";
-import withdraw from "./routes/withdraw.js";
+import { withdrawRouter } from "./routes/withdraw.js";
+import { soldTickerRouter } from "./routes/soldticker.js";
 import connectToMongoDB from "./db.js";
 
 const app = express();
@@ -19,11 +20,12 @@ app.get("/", (req, res) => {
   return res.send("Welcome to the Investment Advisor API");
 });
 
-app.use("/api/portfolio", portfolio);
+app.use("/api/portfolio", portfolioRouter);
 app.use("/api/user", userRouter);
-app.use("/api/watchlist", watchlist);
+app.use("/api/watchlist", watchlistRouter);
 app.use("/api/deposit", depositRouter);
-app.use("/api/withdraw", withdraw);
+app.use("/api/withdraw", withdrawRouter);
+app.use("/api/soldticker", soldTickerRouter);
 
 app.listen(port, () => {
   console.log(`App started at http://localhost:${port}`);

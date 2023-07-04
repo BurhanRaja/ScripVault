@@ -456,7 +456,7 @@ export const sellEtfTicker = async (req, res) => {
     if (!soldTicker) {
       soldTicker = await SoldTicker.create({
         user_id: req.user.id,
-        mutual_funds: [
+        etfs: [
           {
             name,
             symbol,
@@ -473,7 +473,7 @@ export const sellEtfTicker = async (req, res) => {
         { user_id: req.user.id },
         {
           $push: {
-            mutual_funds: {
+            etfs: {
               name,
               symbol,
               buy_price,

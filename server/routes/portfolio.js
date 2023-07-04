@@ -11,7 +11,7 @@ import {
   stockBuyTicker,
 } from "../controller/portfolio.js";
 
-const router = Router();
+export const portfolioRouter = Router();
 
 router.post("/stock/buy", checkuser, stockBuyTicker);
 
@@ -28,5 +28,3 @@ router.post("/etf/sell", checkuser, sellEtfTicker);
 router.get("/all/portfolio", checkuser, getPortfolio);
 
 router.get("/total/profit", checkuser, getProfit);
-
-export default router;
