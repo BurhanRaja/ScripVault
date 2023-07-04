@@ -27,7 +27,7 @@ const Header = () => {
             hoverColor="hover:bg-indigo-600"
             text={<>Register</>}
             textSize='text-sm'
-            btnSize='50%'
+            btnSize='20%'
             textColor="text-white"
             link="/register"
           />
@@ -36,7 +36,7 @@ const Header = () => {
             hoverColor='hover:bg-slate-300'
             text={<>Login</>}
             textSize='ms-4 text-sm'
-            btnSize='50%'
+            btnSize='20%'
             textColor="text-black"
             link="/login"
           />
