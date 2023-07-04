@@ -1,11 +1,11 @@
 import axios from "axios";
-import { node_url } from "../config";
+import config from "../config";
 
-let token = localStorage.get("token");
+let token = localStorage.getItem("token");
 
 // User Register
 export const userRegister = async (data) => {
-  const response = await axios.post(node_url + "/api/user/register", {
+  const response = await axios.post(config.node_url + "/api/user/register", {
     data,
   });
 
@@ -14,7 +14,7 @@ export const userRegister = async (data) => {
 
 // User Login
 export const userLogin = async (data) => {
-  const response = await axios.post(node_url + "/api/user/login", {
+  const response = await axios.post(config.node_url + "/api/user/login", {
     data,
   });
 
@@ -23,7 +23,7 @@ export const userLogin = async (data) => {
 
 // User Info
 export const addUserInfo = async (data) => {
-  const response = await axios.post(node_url + "/api/user/info", {
+  const response = await axios.post(config.node_url + "/api/user/info", {
     data,
   });
   return response.data;
@@ -31,7 +31,7 @@ export const addUserInfo = async (data) => {
 
 // User Nominate
 export const addUserNominate = async (data) => {
-  const response = await axios.post(node_url + "/api/user/nominate", {
+  const response = await axios.post(config.node_url + "/api/user/nominate", {
     data,
   });
   return response.data;
@@ -39,7 +39,7 @@ export const addUserNominate = async (data) => {
 
 // Get User
 export const getUser = async () => {
-  const response = await axios.get(node_url + "/api/user/", {
+  const response = await axios.get(config.node_url + "/api/user/", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -50,7 +50,7 @@ export const getUser = async () => {
 // Update User
 export const updateUser = async (data) => {
   const response = await axios.put(
-    node_url + "/api/user/update/user",
+    config.node_url + "/api/user/update/user",
     {
       data,
     },
@@ -67,7 +67,7 @@ export const updateUser = async (data) => {
 // Update User Info
 export const updateUserInfo = async (data) => {
   const response = await axios.put(
-    node_url + "/api/user/update/userInfo",
+    config.node_url + "/api/user/update/userInfo",
     {
       data,
     },
@@ -84,7 +84,7 @@ export const updateUserInfo = async (data) => {
 // Update Bank Details
 export const updateBankDetails = async (data) => {
   const response = await axios.put(
-    node_url + "/api/user/update/userBank",
+    config.node_url + "/api/user/update/userBank",
     {
       data,
     },
@@ -100,7 +100,7 @@ export const updateBankDetails = async (data) => {
 
 // Get User Nominate
 export const getUserNominate = async () => {
-  const response = await axios.get(node_url + "/api/user/all/nominate", {
+  const response = await axios.get(config.node_url + "/api/user/all/nominate", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -110,7 +110,7 @@ export const getUserNominate = async () => {
 
 // Get Single User Nominate
 export const getSingleUserNominate = async (id) => {
-  const response = await axios.get(node_url + `/api/user/nominate/${id}`, {
+  const response = await axios.get(config.node_url + `/api/user/nominate/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -121,7 +121,7 @@ export const getSingleUserNominate = async (id) => {
 // Update User Nominate
 export const updateUserNominate = async (id, data) => {
   const response = await axios.put(
-    node_url + `/api/user/update/nominate/${id}`,
+    config.node_url + `/api/user/update/nominate/${id}`,
     {
       data,
     },
@@ -138,7 +138,7 @@ export const updateUserNominate = async (id, data) => {
 // Change User Password
 export const changeUserPassword = async (data) => {
   const response = await axios.put(
-    node_url + "/api/user/changepassword",
+    config.node_url + "/api/user/changepassword",
     {
       data,
     },
@@ -155,7 +155,7 @@ export const changeUserPassword = async (data) => {
 // Delete User Nominate
 export const deleteUserNominate = async (id) => {
   const response = await axios.delete(
-    node_url + `/api/user/delete/nominate/${id}`
+    config.node_url + `/api/user/delete/nominate/${id}`
   );
   return response.data;
 };
