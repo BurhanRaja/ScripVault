@@ -48,7 +48,7 @@ const Header = () => {
               </div>
             </div>
 
-            <div class='absolute w-[50%] inset-x-0 z-20 px-6 py-4 transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center'>
+            <div class='absolute inset-x-0 z-20 px-6 py-4 transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:bg-transparent lg:w-[50%] lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center'>
               {/* <div class='flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8'></div> */}
               <div class='flex items-center mt-4 lg:mt-0 w-[100%]'>
                 <div class='relative mt-4 md:mt-0 w-[100%]'>
@@ -71,7 +71,7 @@ const Header = () => {
                   <input
                     type='text'
                     class='w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300'
-                    placeholder='Search'
+                    placeholder='Search Tickers'
                   />
                 </div>
 
