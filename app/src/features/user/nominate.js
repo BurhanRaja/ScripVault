@@ -1,10 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addUserNominate, updateUserNominate } from "../../api/user";
+import {
+  addUserNominate,
+  getSingleUserNominate,
+  getUserNominate,
+  updateUserNominate,
+} from "../../api/user";
 
 const initialState = {
   isSuccess: false,
   isLoading: false,
   isError: false,
+  nominate: {},
 };
 
 export const addNominateThunk = createAsyncThunk(
@@ -23,11 +29,27 @@ export const updateNominateThunk = createAsyncThunk(
   }
 );
 
+export const getNominatesThunk = createAsyncThunk(
+  "nominate/allNominates",
+  async () => {
+    let res = await getUserNominate();
+    return res;
+  }
+);
+
+export const getSingleNominateThunk = createAsyncThunk(
+  "nominate/singleNominate",
+  async (id) => {
+    let res = await getSingleUserNominate(id);
+    return res;
+  }
+);
+
 const nominateSlice = createSlice({
   name: "nominate",
   initialState,
   reducers: {
-    clearNominateState: () => initialState,
+    clearUserNominateState: () => initialState,
   },
   extraReducers: (build) => {
     build
@@ -50,6 +72,30 @@ const nominateSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(updateNominateThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getNominatesThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getNominatesThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.nominate = payload;
+      })
+      .addCase(getNominatesThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getSingleNominateThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getSingleNominateThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.nominate = payload;
+      })
+      .addCase(getSingleNominateThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });
