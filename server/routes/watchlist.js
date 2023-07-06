@@ -5,6 +5,7 @@ import {
   getAllWatchlist,
   removeWatchlist,
 } from "../controller/watchlist.js";
+import checkKyc from "../middleware/checkKYC.js";
 
 export const watchlistRouter = Router();
 

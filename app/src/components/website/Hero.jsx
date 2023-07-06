@@ -9,8 +9,9 @@ const Hero = () => {
         <div class='container mx-auto flex px-5 py-24 md:flex-row flex-col items-center'>
           <div class='lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center'>
             <h1 class='title-font md:text-5xl sm:text-4xl leading-normal font-extrabold text-3xl mb-4 text-gray-900'>
-              ScripVault: <span className="text-3xl font-bold">The Best Investment Advisor</span>
+              ScripVault
             </h1>
+            <span className="text-3xl font-bold mb-3 text-gray-700">The Best Investment Advisor</span>
             <p class='mb-8 leading-relaxed text-xl'>
               Fast, Efficient and Research oriented Investment Recommendations
               at your fingertips.

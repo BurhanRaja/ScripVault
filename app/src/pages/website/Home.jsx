@@ -10,7 +10,9 @@ const Home = () => {
   return (
     <>
       <Header />
-      <Hero />
+      <div className="mx-auto lg:w-[80%] md:w-[90%] sm:w-[100%]">
+        <Hero />
+      </div>
       <FeaturesSection />
       <InvestmentOptionSection />
       <Testimony />

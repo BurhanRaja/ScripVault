@@ -10,6 +10,7 @@ import {
   sellStocksTicker,
   stockBuyTicker,
 } from "../controller/portfolio.js";
+import checkKyc from "../middleware/checkKYC.js";
 
 export const portfolioRouter = Router();
 

@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   token: "",
+  id: "",
 };
 
 export const userRegisterThunk = createAsyncThunk(
@@ -32,9 +33,10 @@ export const authSlice = createSlice({
       .addCase(userRegisterThunk.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(userRegisterThunk.fulfilled, (state) => {
+      .addCase(userRegisterThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.id = payload.user_id;
       })
       .addCase(userRegisterThunk.rejected, (state) => {
         state.isLoading = false;
