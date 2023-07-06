@@ -4,7 +4,6 @@ import { addDeposit, getAllDeposits } from "../controller/deposit.js";
 
 export const depositRouter = Router();
 
-depositRouter.post("/add/deposit", checkuser, addDeposit);
+depositRouter.post("/add", checkuser, addDeposit);
 
-depositRouter.get("/all/deposit", checkuser, getAllDeposits);
-
+depositRouter.get("/all", checkuser, getAllDeposits);

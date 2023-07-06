@@ -11,6 +11,9 @@ const KycSchema = new Schema(
     poi: {
       type: String,
     },
+    status: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

@@ -1,11 +1,15 @@
-import {Router} from "express"
-import checkuser from "../middleware/checkuser.js"
-import { addWatchlist, getAllWatchlist, removeWatchlist } from "../controller/watchlist.js"
+import { Router } from "express";
+import checkuser from "../middleware/checkuser.js";
+import {
+  addWatchlist,
+  getAllWatchlist,
+  removeWatchlist,
+} from "../controller/watchlist.js";
 
-export const watchlistRouter = Router()
+export const watchlistRouter = Router();
 
-watchlistRouter.post("/add/watchlist", checkuser, addWatchlist);
+watchlistRouter.post("/add", checkuser, addWatchlist);
 
-watchlistRouter.get("/all/watchlist", checkuser, getAllWatchlist);
+watchlistRouter.get("/all", checkuser, getAllWatchlist);
 
-watchlistRouter.post("/remove/watchlist", checkuser, removeWatchlist);
+watchlistRouter.post("/remove/:type/:id", checkuser, removeWatchlist);

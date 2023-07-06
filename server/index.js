@@ -21,6 +21,8 @@ app.get("/", (req, res) => {
   return res.send("Welcome to the Investment Advisor API");
 });
 
+app.use(express.static('uploads'));
+
 app.use("/api/user", userRouter);
 app.use("/api/portfolio", portfolioRouter);
 app.use("/api/watchlist", watchlistRouter);

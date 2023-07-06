@@ -34,7 +34,7 @@ userRouter.put("/update/user", checkuser, updateUser); //
 
 userRouter.put("/update/userBank", checkuser, updateBankDetails); //
 
-userRouter.put("/changepassword", checkuser, changePassword);
+userRouter.put("/changepassword", checkuser, changePassword); //
 
 userRouter.get("/all/nominate", checkuser, getAllUserNominate); //
 
@@ -42,4 +42,4 @@ userRouter.get("/nominate/:id", checkuser, getSingleUserNominate); //
 
 userRouter.put("/update/nominate/:id", checkuser, updateUserNominate); //
 
-userRouter.delete("/delete/nominate/:id", checkuser, deleteUserNominate);
+userRouter.delete("/delete/nominate/:id", checkuser, deleteUserNominate); //
