@@ -6,10 +6,11 @@ import { watchlistRouter } from "./routes/watchlist.js";
 import { depositRouter } from "./routes/deposit.js";
 import { withdrawRouter } from "./routes/withdraw.js";
 import { soldTickerRouter } from "./routes/soldticker.js";
+import config from "./config.js";
 import connectToMongoDB from "./db.js";
 
 const app = express();
-const port = 3000;
+const port = config.port;
 
 connectToMongoDB();
 
@@ -20,8 +21,8 @@ app.get("/", (req, res) => {
   return res.send("Welcome to the Investment Advisor API");
 });
 
-app.use("/api/portfolio", portfolioRouter);
 app.use("/api/user", userRouter);
+app.use("/api/portfolio", portfolioRouter);
 app.use("/api/watchlist", watchlistRouter);
 app.use("/api/deposit", depositRouter);
 app.use("/api/withdraw", withdrawRouter);

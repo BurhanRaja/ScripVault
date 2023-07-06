@@ -13,18 +13,18 @@ import {
 
 export const portfolioRouter = Router();
 
-router.post("/stock/buy", checkuser, stockBuyTicker);
+portfolioRouter.post("/stock/buy", checkuser, stockBuyTicker);
 
-router.post("/mutual-funds/buy", checkuser, mutualFundBuyTicker);
+portfolioRouter.post("/mutual-funds/buy", checkuser, mutualFundBuyTicker);
 
-router.post("/etf/buy", checkuser, etfBuyTicker);
+portfolioRouter.post("/etf/buy", checkuser, etfBuyTicker);
 
-router.post("/stock/sell", checkuser, sellStocksTicker);
+portfolioRouter.post("/stock/sell", checkuser, sellStocksTicker);
 
-router.post("/mutual-funds/sell", checkuser, sellMutualFundsTicker);
+portfolioRouter.post("/mutual-funds/sell", checkuser, sellMutualFundsTicker);
 
-router.post("/etf/sell", checkuser, sellEtfTicker);
+portfolioRouter.post("/etf/sell", checkuser, sellEtfTicker);
 
-router.get("/all/portfolio", checkuser, getPortfolio);
+portfolioRouter.get("/all/portfolio", checkuser, getPortfolio);
 
-router.get("/total/profit", checkuser, getProfit);
+portfolioRouter.get("/total/profit", checkuser, getProfit);

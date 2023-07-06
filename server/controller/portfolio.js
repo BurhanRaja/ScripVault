@@ -8,7 +8,7 @@ import config from "../config.js";
 export const stockBuyTicker = async (req, res) => {
   let success = false;
   try {
-    const { name, symbol, buy_price, no_of_shares, date_of_buy } = req.body;
+    const { name, symbol, buy_price, no_of_shares } = req.body;
 
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
@@ -30,7 +30,7 @@ export const stockBuyTicker = async (req, res) => {
             symbol,
             no_of_shares,
             buy_price,
-            date_of_buy,
+            date_of_buy: new Date(),
           },
         ],
         total_investment: buy_price * no_of_shares,
@@ -77,8 +77,8 @@ export const mutualFundBuyTicker = async (req, res) => {
       name,
       symbol,
       buy_price,
+      investment,
       type_mf,
-      date_of_buy,
       total_years,
       year_sell,
     } = req.body;
@@ -103,12 +103,13 @@ export const mutualFundBuyTicker = async (req, res) => {
             symbol,
             type_mf,
             buy_price,
-            date_of_buy,
+            no_of_units: Math.floor(investment / buy_price),
+            date_of_buy: new Date(),
             total_years,
             year_sell,
           },
         ],
-        total_investment: buy_price,
+        total_investment: Math.floor(investment / buy_price) * buy_price,
       });
     } else {
       portfolio = await Portfolio.findOneAndUpdate(
@@ -120,13 +121,14 @@ export const mutualFundBuyTicker = async (req, res) => {
               symbol,
               type_mf,
               buy_price,
-              date_of_buy,
+              no_of_units: Math.floor(investment / buy_price),
+              date_of_buy: new Date(),
               total_years,
               year_sell,
             },
           },
           $inc: {
-            total_investment: buy_price,
+            total_investment: Math.floor(investment / buy_price) * buy_price,
           },
         }
       );
@@ -150,7 +152,7 @@ export const mutualFundBuyTicker = async (req, res) => {
 export const etfBuyTicker = async (req, res) => {
   let success = false;
   try {
-    const { name, symbol, buy_price, date_of_buy } = req.body;
+    const { name, symbol, buy_price, no_of_shares } = req.body;
 
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
@@ -171,7 +173,8 @@ export const etfBuyTicker = async (req, res) => {
             name,
             symbol,
             buy_price,
-            date_of_buy,
+            date_of_buy: new Date(),
+            no_of_shares,
           },
         ],
         total_investment: buy_price,
@@ -185,7 +188,8 @@ export const etfBuyTicker = async (req, res) => {
               name,
               symbol,
               buy_price,
-              date_of_buy,
+              date_of_buy: new Date(),
+              no_of_shares,
             },
           },
           $inc: {
@@ -312,6 +316,7 @@ export const sellMutualFundsTicker = async (req, res) => {
       buy_price,
       type_mf,
       date_of_buy,
+      no_of_units,
       total_years,
       year_sell,
       sell_price,
@@ -339,7 +344,7 @@ export const sellMutualFundsTicker = async (req, res) => {
           },
         },
         $inc: {
-          total_investment: -buy_price,
+          total_investment: -(buy_price * no_of_units),
         },
       }
     );
@@ -356,6 +361,7 @@ export const sellMutualFundsTicker = async (req, res) => {
             buy_price,
             type_mf,
             date_of_buy,
+            no_of_units,
             total_years,
             year_sell,
             sell_price,
@@ -392,7 +398,7 @@ export const sellMutualFundsTicker = async (req, res) => {
       { user_id: req.user.id },
       {
         $inc: {
-          balance: sell_price,
+          balance: sell_price * no_of_units,
         },
       }
     );
@@ -532,6 +538,11 @@ export const getPortfolio = async (req, res) => {
     });
   }
 };
+
+// Get Total Investment
+export const getTotalInvestment = () => {
+  
+}
 
 // Update and get Total Portfolio Amount ---------------------------------------------------------------------------
 export const getProfit = async (req, res) => {

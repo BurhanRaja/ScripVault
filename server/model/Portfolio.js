@@ -36,6 +36,9 @@ const PortfolioSchema = new Schema(
         buy_price: {
           type: Number,
         },
+        no_of_units: {
+          type: Number,
+        },
         type_mf: {
           type: Number,
         },
@@ -59,6 +62,9 @@ const PortfolioSchema = new Schema(
           type: String,
         },
         buy_price: {
+          type: Number,
+        },
+        no_of_shares: {
           type: Number,
         },
         date_of_buy: {

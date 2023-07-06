@@ -3,6 +3,7 @@ import config from "../config.js";
 
 
 const checkUser = async (req, res, next) => {
+  let success = false;
   try {
     const token = req.headers.authorization.split(" ")[1];
 
