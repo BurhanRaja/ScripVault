@@ -8,8 +8,8 @@ import {
 
 export const watchlistRouter = Router();
 
-watchlistRouter.post("/add", checkuser, addWatchlist);
+watchlistRouter.post("/add", checkuser, checkKyc, addWatchlist);
 
-watchlistRouter.get("/all", checkuser, getAllWatchlist);
+watchlistRouter.get("/all", checkuser, checkKyc, getAllWatchlist);
 
-watchlistRouter.post("/remove/:type/:id", checkuser, removeWatchlist);
+watchlistRouter.post("/remove/:type/:id", checkuser, checkKyc, removeWatchlist);

@@ -4,6 +4,6 @@ import { addWithdraw, getAllWithdraws } from "../controller/withdraw.js";
 
 export const withdrawRouter = Router();
 
-withdrawRouter.post("/add", checkuser, addWithdraw);
+withdrawRouter.post("/add", checkuser, checkKyc, addWithdraw);
 
-withdrawRouter.get("/all", checkuser, getAllWithdraws);
+withdrawRouter.get("/all", checkuser, checkKyc, getAllWithdraws);

@@ -4,6 +4,6 @@ import { getAllProfitEarned, getAllSoldTicker } from "../controller/soldticker.j
 
 export const soldTickerRouter = express.Router();
 
-soldTickerRouter.get("/soldticker", checkuser, getAllSoldTicker);
+soldTickerRouter.get("/soldticker", checkuser, checkKyc, getAllSoldTicker);
 
-soldTickerRouter.get("/total/profit", checkuser, getAllProfitEarned);
+soldTickerRouter.get("/total/profit", checkuser, checkKyc, getAllProfitEarned);
