@@ -31,8 +31,8 @@ const UserSchema = new Schema(
         type: String,
       },
       address: {
-        type: String
-      }
+        type: String,
+      },
     },
     bank: {
       accountNumber: {
@@ -42,6 +42,9 @@ const UserSchema = new Schema(
         type: String,
       },
       ifsc: {
+        type: String,
+      },
+      country: {
         type: String,
       },
     },

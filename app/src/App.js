@@ -17,7 +17,7 @@ function App() {
           <Route path='/user/info' element={<UserInfo />} />
           <Route path='/user/nominate' element={<UserNominate />} />
           <Route element={<Layout />}>
-            <Route path="/dashboard/home" element={<>Hello</>} />
+            <Route path='/dashboard/home' element={<>Hello</>} />
           </Route>
         </Routes>
       </BrowserRouter>

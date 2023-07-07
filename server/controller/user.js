@@ -67,6 +67,7 @@ export const userInfo = async (req, res) => {
       accountType,
       ifsc,
       address,
+      country
     } = req.body;
 
     if (!id) {
@@ -90,6 +91,7 @@ export const userInfo = async (req, res) => {
             accountNumber,
             accountType,
             ifsc,
+            country
           },
         },
       }
@@ -464,10 +466,13 @@ export const getSingleUserNominate = async (req, res) => {
   let success = false;
 
   try {
-    const userNominate = await UserNominate.findOne({
-      user_id: req.user.id,
-      "nominates._id": req.params.id,
-    }, {"nominates.$": 1});
+    const userNominate = await UserNominate.findOne(
+      {
+        user_id: req.user.id,
+        "nominates._id": req.params.id,
+      },
+      { "nominates.$": 1 }
+    );
 
     if (!userNominate) {
       return res.status(404).send({
