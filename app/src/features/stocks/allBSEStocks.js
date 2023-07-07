@@ -5,17 +5,8 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   isError: false,
-  nseData: {},
   bseData: {},
 };
-
-const allNSEStocksThunk = createAsyncThunk(
-  "allStocks/nse",
-  async (skip, limit) => {
-    const res = await getAllStocks("NSE", skip, limit);
-    return res;
-  }
-);
 
 const allBSEStocksThunk = createAsyncThunk(
   "allStocks/bse",
@@ -25,15 +16,10 @@ const allBSEStocksThunk = createAsyncThunk(
   }
 );
 
-const allStocksSlice = createSlice({
+const allBSEStocksSlice = createSlice({
   name: "allStocks",
   initialState,
   reducers: {
-    clearNSEStocksState: () => {
-      return {
-        nseData: {},
-      };
-    },
     clearBSEStocksState: () => {
       return {
         bseData: {},
@@ -42,18 +28,6 @@ const allStocksSlice = createSlice({
   },
   extraReducers: (build) => {
     build
-      .addCase(allNSEStocksThunk.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(allBSEStocksThunk.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.nseData = payload;
-      })
-      .addCase(allNSEStocksThunk.rejected, (state) => {
-        state.isLoading = false;
-        state.isError = true;
-      })
       .addCase(allBSEStocksThunk.pending, (state) => {
         state.isLoading = true;
       })
@@ -69,7 +43,7 @@ const allStocksSlice = createSlice({
   },
 });
 
-export const { clearBSEStocksState, clearNSEStocksState } =
+export const { clearBSEStocksState } =
   allStocksSlice.actions;
 
 export default allStocksSlice.reducer;
