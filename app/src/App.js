@@ -18,6 +18,14 @@ function App() {
           <Route path='/user/nominate' element={<UserNominate />} />
           <Route element={<Layout />}>
             <Route path='/dashboard/home' element={<>Hello</>} />
+            <Route path='/dashboard/deposit' element={<>Hello</>} />
+            <Route path='/dashboard/withdraw' element={<>Hello</>} />
+            <Route path='/dashboard/stocks' element={<>Hello</>} />
+            <Route path='/dashboard/mutual-funds' element={<>Hello</>} />
+            <Route path='/dashboard/etfs' element={<>Hello</>} />
+            <Route path='/dashboard/watchlist' element={<>Hello</>} />
+            <Route path='/dashboard/profile' element={<>Hello</>} />
+            <Route path='/dashboard/portfolio' element={<>Hello</>} />
           </Route>
         </Routes>
       </BrowserRouter>
