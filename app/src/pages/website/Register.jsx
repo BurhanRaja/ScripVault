@@ -75,12 +75,9 @@ const Register = ({ setAlert }) => {
     }
   }, [password, confirmPassword]);
 
-  const {
-    isLoading,
-    isError,
-    isSuccess,
-    id,
-  } = useSelector((state) => state.authReducer);
+  const { isLoading, isError, isSuccess, id } = useSelector(
+    (state) => state.authReducer
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -110,7 +107,7 @@ const Register = ({ setAlert }) => {
           show: true,
           type: "warning",
           message: `${data.payload?.message}`,
-        })
+        });
       }
     });
   };
@@ -120,7 +117,7 @@ const Register = ({ setAlert }) => {
       setAlert({
         show: true,
         type: "info",
-        message: "Great! Let's go to next step.",
+        message: "Great! Please fill your required information.",
       });
       localStorage.setItem("userId", id);
       navigate("/user/info");

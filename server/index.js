@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
   return res.send("Welcome to the Investment Advisor API");
 });
 
-app.use(express.static('uploads'));
+app.use(express.static('public'));
 
 app.use("/api/user", userRouter);
 app.use("/api/portfolio", portfolioRouter);
@@ -29,6 +29,7 @@ app.use("/api/watchlist", watchlistRouter);
 app.use("/api/deposit", depositRouter);
 app.use("/api/withdraw", withdrawRouter);
 app.use("/api/soldticker", soldTickerRouter);
+app.use("/api/email");
 
 app.listen(port, () => {
   console.log(`App started at http://localhost:${port}`);

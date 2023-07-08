@@ -71,6 +71,17 @@ export const userInfo = async (req, res) => {
       country,
     } = req.body.data;
 
+    let user = await User.findOne({
+      accountNumber,
+    });
+
+    if (user) {
+      return res.status(400).send({
+        success,
+        message: "Account No. Already Exists.",
+      });
+    }
+
     if (!id) {
       return res.status(400).send({
         success,
@@ -391,33 +402,22 @@ export const addUserNomination = async (req, res) => {
 
     let userNominate = await UserNominate.findOne({ user_id: id });
 
-    if (!userNominate) {
-      userNominate = await UserNominate.create({
-        user_id: id,
-        nominates: [
-          {
-            relationship,
-            name,
-            dob,
-            address,
-          },
-        ],
+    if (userNominate) {
+      return res.status(400).send({
+        success,
+        message: "Nominate Already exists.",
       });
-    } else {
-      userNominate = await UserNominate.findOneAndUpdate(
-        { user_id: id },
-        {
-          $push: {
-            nominates: {
-              relationship,
-              name,
-              dob,
-              address,
-            },
-          },
-        }
-      );
     }
+
+    userNominate = await UserNominate.create({
+      user_id: id,
+      nominate: {
+        relationship,
+        name,
+        dob,
+        address,
+      },
+    });
 
     success = true;
 
@@ -434,46 +434,15 @@ export const addUserNomination = async (req, res) => {
   }
 };
 
-// Get All User Nominate
-export const getAllUserNominate = async (req, res) => {
-  let success = false;
-
-  try {
-    const userNominate = await UserNominate.findOne({ user_id: req.user.id });
-
-    if (!userNominate) {
-      return res.status(404).send({
-        success,
-        message: "User Nominate Not Found",
-      });
-    }
-
-    success = true;
-
-    return res.status(200).send({
-      success,
-      userNominate,
-    });
-  } catch (err) {
-    return res.status(500).send({
-      success,
-      message: "Internal Server Error.",
-    });
-  }
-};
-
-// Single User Nominate
+// User Nominate
 export const getSingleUserNominate = async (req, res) => {
   let success = false;
 
   try {
-    const userNominate = await UserNominate.findOne(
-      {
-        user_id: req.user.id,
-        "nominates._id": req.params.id,
-      },
-      { "nominates.$": 1 }
-    );
+    const userNominate = await UserNominate.findOne({
+      user_id: req.user.id,
+      _id: req.params.id,
+    });
 
     if (!userNominate) {
       return res.status(404).send({
@@ -505,30 +474,30 @@ export const updateUserNominate = async (req, res) => {
 
     let userNominate = await UserNominate.findOne({
       user_id: req.user.id,
-      "nominates._id": req.params.id,
     });
 
-    if (userNominate.nominates.length > 0) {
-      userNominate = await UserNominate.findOneAndUpdate(
-        {
-          user_id: req.user.id,
-          "nominates._id": req.params.id,
-        },
-        {
-          $set: {
-            "nominates.$.relationship": relationship,
-            "nominates.$.name": name,
-            "nominates.$.dob": dob,
-            "nominates.$.address": address,
-          },
-        }
-      );
-    } else {
-      return res.status(400).send({
+    if (!userNominate) {
+      return res.status(404).send({
         success,
-        message: "User Nominate not found",
+        message: "User Nominate Not Found.",
       });
     }
+
+    userNominate = await UserNominate.findOneAndUpdate(
+      {
+        user_id: req.user.id,
+      },
+      {
+        $set: {
+          nominate: {
+            relationship,
+            name,
+            dob,
+            address,
+          },
+        },
+      }
+    );
 
     success = true;
 
@@ -537,7 +506,6 @@ export const updateUserNominate = async (req, res) => {
       message: "User Nominate updated.",
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -552,27 +520,19 @@ export const deleteUserNominate = async (req, res) => {
   try {
     let userNominate = await UserNominate.findOne({
       user_id: req.user.id,
-      "nominates._id": req.params.id,
     });
 
-    if (userNominate.nominates.length > 0) {
-      userNominate = await UserNominate.findOneAndUpdate(
-        {
-          user_id: req.user.id,
-          "nominates._id": req.params.id,
-        },
-        {
-          $pull: {
-            nominates: { _id: req.params.id },
-          },
-        }
-      );
-    } else {
+    if (!userNominate) {
       return res.status(400).send({
         success,
-        message: "User Nominate not found",
+        message: "User Nominate Not Found.",
       });
     }
+
+    userNominate = await UserNominate.findOneAndUpdate({
+      user_id: req.user.id,
+      _id: req.params.id,
+    });
 
     success = true;
 

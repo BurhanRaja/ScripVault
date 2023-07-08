@@ -3,7 +3,6 @@ import {
   addUserNomination,
   changePassword,
   deleteUserNominate,
-  getAllUserNominate,
   getSingleUserNominate,
   getUser,
   updateBankDetails,
@@ -35,8 +34,6 @@ userRouter.put("/update/user", checkuser, updateUser); //
 userRouter.put("/update/userBank", checkuser, updateBankDetails); //
 
 userRouter.put("/changepassword", checkuser, changePassword); //
-
-userRouter.get("/all/nominate", checkuser, getAllUserNominate); //
 
 userRouter.get("/nominate/:id", checkuser, getSingleUserNominate); //
 
