@@ -9,8 +9,12 @@ const initialState = {
 };
 
 export const addUserInfoThunk = createAsyncThunk("info/add", async (data) => {
-  let res = await addUserInfo(data);
-  return res;
+  try {
+    let res = await addUserInfo(data);
+    return res;
+  } catch (err) {
+    return err.response.data;
+  }
 });
 
 export const updateUserInfoThunk = createAsyncThunk(

@@ -12,7 +12,7 @@ const NAME_REGEX = /^[A-Za-z]+[\sA-Za-z]{5,20}$/;
 const PASSWORD_REGEX = /^[A-Za-z0-9!@#$%^&*]{2,20}$/;
 const PHONE_REGEX = /^[0-9]{10,11}$/;
 
-const Register = () => {
+const Register = ({ setAlert }) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -75,9 +75,12 @@ const Register = () => {
     }
   }, [password, confirmPassword]);
 
-  const { isLoading, isError, isSuccess, id } = useSelector(
-    (state) => state.authReducer
-  );
+  const {
+    isLoading,
+    isError,
+    isSuccess,
+    id,
+  } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -101,160 +104,173 @@ const Register = () => {
       password,
     };
 
-    dispatch(userRegisterThunk(data));
-    navigate("/user/info");
+    dispatch(userRegisterThunk(data)).then((data) => {
+      if (!data.payload.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: `${data.payload?.message}`,
+        })
+      }
+    });
   };
 
   useEffect(() => {
     if (id) {
+      setAlert({
+        show: true,
+        type: "info",
+        message: "Great! Let's go to next step.",
+      });
       localStorage.setItem("userId", id);
+      navigate("/user/info");
     }
   }, [id]);
 
   return (
     <>
-      <div className='flex justify-end items-center'>
-        <button className='p-2 me-10 absolute top-3'>
-          <Link to='/'>
-            <RxCross2 className='text-3xl' />
+      <div className="flex justify-end items-center">
+        <button className="p-2 me-10 absolute top-3">
+          <Link to="/">
+            <RxCross2 className="text-3xl" />
           </Link>
         </button>
       </div>
-      <section className='bg-gray-200 flex justify-center items-center'>
-        <div class='max-w-4xl w-1/2 p-6 my-10 mx-auto rounded-md shadow-md bg-white'>
-          <h2 class='text-3xl text-center font-bold text-gray-900 capitalize mb-6'>
+      <section className="bg-gray-200 flex justify-center items-center">
+        <div class="max-w-4xl w-1/2 p-6 my-10 mx-auto rounded-md shadow-md bg-white">
+          <h2 class="text-3xl text-center font-bold text-gray-900 capitalize mb-6">
             Register
           </h2>
           <form onSubmit={handleSubmit}>
-            <div className='mb-4'>
+            <div className="mb-4">
               <Input
-                type='text'
-                placeholder='Full Name'
-                labelName='Full Name'
+                type="text"
+                placeholder="Full Name"
+                labelName="Full Name"
                 value={fullName}
                 handleValue={(val) => setFullName(val)}
                 handleFocus={(val) => setNameFocus(val)}
               />
               {nameFocus &&
                 (fullName === "" || !checkName ? (
-                  <small className='text-red-500 flex justify-start items-center'>
-                    <AiOutlineInfoCircle className='me-2' />{" "}
+                  <small className="text-red-500 flex justify-start items-center">
+                    <AiOutlineInfoCircle className="me-2" />{" "}
                     <span>At least 5 characters for Name.</span>
                   </small>
                 ) : (
-                  <small className='text-green-500 flex justify-start items-center'>
-                    <BsCheckLg className='me-2' /> <span>Full Name.</span>
+                  <small className="text-green-500 flex justify-start items-center">
+                    <BsCheckLg className="me-2" /> <span>Full Name.</span>
                   </small>
                 ))}
               {(fullName === "" || !checkName) && error !== "" && (
-                <small className='text-red-500'>{error}</small>
+                <small className="text-red-500">{error}</small>
               )}
             </div>
-            <div className='mb-4'>
+            <div className="mb-4">
               <Input
-                type='email'
-                placeholder='Email'
-                labelName='Email'
+                type="email"
+                placeholder="Email"
+                labelName="Email"
                 value={email}
                 handleValue={(val) => setEmail(val)}
                 handleFocus={(val) => setEmailFocus(val)}
               />
               {emailFocus &&
                 (email === "" || !checkEmail ? (
-                  <small className='text-red-500 flex justify-start items-center'>
-                    <AiOutlineInfoCircle className='me-2' />{" "}
+                  <small className="text-red-500 flex justify-start items-center">
+                    <AiOutlineInfoCircle className="me-2" />{" "}
                     <span>Email is invalid.</span>
                   </small>
                 ) : (
-                  <small className='text-green-500 flex justify-start items-center'>
-                    <BsCheckLg className='me-2' /> <span>Email.</span>
+                  <small className="text-green-500 flex justify-start items-center">
+                    <BsCheckLg className="me-2" /> <span>Email.</span>
                   </small>
                 ))}
               {(email === "" || !checkEmail) && error !== "" && (
-                <small className='text-red-500'>{error}</small>
+                <small className="text-red-500">{error}</small>
               )}
             </div>
-            <div className='mb-4'>
+            <div className="mb-4">
               <Input
-                type='number'
-                placeholder='Phone No.'
-                labelName='Phone No.'
+                type="number"
+                placeholder="Phone No."
+                labelName="Phone No."
                 value={phone}
                 handleValue={(val) => setPhone(val)}
                 handleFocus={(val) => setPhoneFocus(val)}
               />
               {phoneFocus &&
                 (phone === "" || !checkPhone ? (
-                  <small className='text-red-500 flex justify-start items-center'>
-                    <AiOutlineInfoCircle className='me-2' />{" "}
+                  <small className="text-red-500 flex justify-start items-center">
+                    <AiOutlineInfoCircle className="me-2" />{" "}
                     <span>Only 10 digit phone number.</span>
                   </small>
                 ) : (
-                  <small className='text-green-500 flex justify-start items-center'>
-                    <BsCheckLg className='me-2' /> <span>Phone number.</span>
+                  <small className="text-green-500 flex justify-start items-center">
+                    <BsCheckLg className="me-2" /> <span>Phone number.</span>
                   </small>
                 ))}
               {(phone === "" || !checkPhone) && error !== "" && (
-                <small className='text-red-500'>{error}</small>
+                <small className="text-red-500">{error}</small>
               )}
             </div>
-            <div className='mb-4'>
+            <div className="mb-4">
               <Input
-                type='password'
-                placeholder='Password'
-                labelName='Password'
+                type="password"
+                placeholder="Password"
+                labelName="Password"
                 value={password}
                 handleValue={(val) => setPassword(val)}
                 handleFocus={(val) => setPasswordFocus(val)}
               />
               {passwordFocus &&
                 (password === "" || !checkPassword ? (
-                  <small className='text-red-500 flex justify-start items-center'>
-                    <AiOutlineInfoCircle className='me-2' />{" "}
+                  <small className="text-red-500 flex justify-start items-center">
+                    <AiOutlineInfoCircle className="me-2" />{" "}
                     <span>At least 5 characters for Password.</span>
                   </small>
                 ) : (
-                  <small className='text-green-500 flex justify-start items-center'>
-                    <BsCheckLg className='me-2' /> <span>Password.</span>
+                  <small className="text-green-500 flex justify-start items-center">
+                    <BsCheckLg className="me-2" /> <span>Password.</span>
                   </small>
                 ))}
               {(password === "" || !checkPassword) && error !== "" && (
-                <small className='text-red-500'>{error}</small>
+                <small className="text-red-500">{error}</small>
               )}
             </div>
-            <div className='mb-4'>
+            <div className="mb-4">
               <Input
-                type='password'
-                placeholder='Confirm Password'
-                labelName='Confirm Password'
+                type="password"
+                placeholder="Confirm Password"
+                labelName="Confirm Password"
                 value={confirmPassword}
                 handleValue={(val) => setConfirmPassword(val)}
                 handleFocus={(val) => setConfirmPasswordFocus(val)}
               />
               {confirmPasswordFocus &&
                 (confirmPassword === "" || !matchPassword ? (
-                  <small className='text-red-500 flex justify-start items-center'>
-                    <AiOutlineInfoCircle className='me-2' />{" "}
+                  <small className="text-red-500 flex justify-start items-center">
+                    <AiOutlineInfoCircle className="me-2" />{" "}
                     <span>Password doesn't match.</span>
                   </small>
                 ) : (
-                  <small className='text-green-500 flex justify-start items-center'>
-                    <BsCheckLg className='me-2' />{" "}
+                  <small className="text-green-500 flex justify-start items-center">
+                    <BsCheckLg className="me-2" />{" "}
                     <span>Confirm Password.</span>
                   </small>
                 ))}
               {(confirmPassword === "" || !matchPassword) && error !== "" && (
-                <small className='text-red-500'>{error}</small>
+                <small className="text-red-500">{error}</small>
               )}
             </div>
-            <div class='flex justify-center mt-6'>
-              <button class='py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-1/2'>
+            <div class="flex justify-center mt-6">
+              <button class="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-1/2">
                 Register
               </button>
             </div>
-            <p className='text-center text-gray-800 mt-4'>
+            <p className="text-center text-gray-800 mt-4">
               Already have an Account?{" "}
-              <Link className='text-blue-600 underline' to='/login'>
+              <Link className="text-blue-600 underline" to="/login">
                 Login
               </Link>
             </p>

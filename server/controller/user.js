@@ -9,7 +9,7 @@ import BankBalance from "../model/BankBalance.js";
 export const userRegister = async (req, res) => {
   let success = false;
   try {
-    const { full_name, email, phone, password } = req.body;
+    const { full_name, email, phone, password } = req.body.data;
     let user = await User.findOne({ "basic.email": email });
 
     if (user) {
@@ -46,6 +46,7 @@ export const userRegister = async (req, res) => {
       user_id: user._id,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -67,8 +68,8 @@ export const userInfo = async (req, res) => {
       accountType,
       ifsc,
       address,
-      country
-    } = req.body;
+      country,
+    } = req.body.data;
 
     if (!id) {
       return res.status(400).send({
@@ -91,7 +92,7 @@ export const userInfo = async (req, res) => {
             accountNumber,
             accountType,
             ifsc,
-            country
+            country,
           },
         },
       }

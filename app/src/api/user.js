@@ -110,11 +110,14 @@ export const getUserNominate = async () => {
 
 // Get Single User Nominate
 export const getSingleUserNominate = async (id) => {
-  const response = await axios.get(config.node_url + `/api/user/nominate/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await axios.get(
+    config.node_url + `/api/user/nominate/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };
 

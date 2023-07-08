@@ -12,14 +12,22 @@ const initialState = {
 export const userRegisterThunk = createAsyncThunk(
   "auth/register",
   async (data) => {
-    let res = await userRegister(data);
-    return res;
+    try {
+      let res = await userRegister(data);
+      return res;
+    } catch (err) {
+      return err.response.data;
+    }
   }
 );
 
 export const userLoginThunk = createAsyncThunk("auth/login", async (data) => {
-  let res = await userLogin(data);
-  return res;
+  try {
+    let res = await userLogin(data);
+    return res;
+  } catch (err) {
+    return err.response.data;
+  }
 });
 
 export const authSlice = createSlice({
