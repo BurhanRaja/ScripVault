@@ -114,3 +114,35 @@ export const approveKyc = async (req, res) => {
     });
   }
 };
+
+export const checkKYC = async (req, res) => {
+  let success = false;
+
+  try {
+    const { id } = req.params;
+
+    let kyc = await Kyc.findOne({
+      _id: id,
+      userId: req.user._id,
+    });
+
+    if (!kyc) {
+      return res.status(404).send({
+        success,
+        message: "KYC Not Found.",
+      });
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      kyc,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status: 500,
+      message: "Internal Server Error.",
+    });
+  }
+};

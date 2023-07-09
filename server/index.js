@@ -10,6 +10,7 @@ import config from "./config.js";
 import connectToMongoDB from "./db.js";
 import { emailRouter } from "./routes/email.js";
 import { verifyRouter } from "./routes/verify.js";
+import { kycRouter } from "./routes/kyc.js";
 
 const app = express();
 const port = config.port;
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use(express.static("public"));
 
 app.use("/api/user", userRouter);
+app.use("/api/kyc", kycRouter);
 app.use("/api/portfolio", portfolioRouter);
 app.use("/api/watchlist", watchlistRouter);
 app.use("/api/deposit", depositRouter);

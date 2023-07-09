@@ -4,10 +4,12 @@ import Login from "./pages/website/Login";
 import Register from "./pages/website/Register";
 import UserInfo from "./pages/website/UserInfo";
 import UserNominate from "./pages/website/UserNominate";
-import Layout from "./components/dashboard/Layout";
+import Layout from "./components/dashboard/default/Layout";
 import Alert from "./components/Alert";
 import { useState, useEffect } from "react";
 import VerifyLogin from "./pages/website/VerifyLogin";
+
+import DashHome from "./pages/dashboard/Home";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -50,7 +52,7 @@ function App() {
             element={<UserNominate setAlert={setAlert} />}
           />
           <Route element={<Layout />}>
-            <Route path="/dashboard/home" element={<>Hello</>} />
+            <Route path="/dashboard/home" element={<DashHome />} />
             <Route path="/dashboard/deposit" element={<>Hello</>} />
             <Route path="/dashboard/withdraw" element={<>Hello</>} />
             <Route path="/dashboard/stocks" element={<>Hello</>} />
