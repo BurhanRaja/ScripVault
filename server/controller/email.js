@@ -1,7 +1,7 @@
-import User from "../model/User";
-import transporter from "../utils/emailSend";
-import template from "../utils/emailTemplate";
-import { encodeCipher } from "../utils/encryptDescypt";
+import User from "../model/User.js";
+import transporter from "../utils/emailSend.js";
+import template from "../utils/emailTemplate.js";
+
 
 export const sendEmailLogin = async (req, res) => {
   let success = false;
@@ -11,15 +11,15 @@ export const sendEmailLogin = async (req, res) => {
 
     let user = await User.findOne({ _id: id });
 
-    let token = encodeCipher(user._id);
+    let token = btoa(user._id.toString());
 
     await transporter.sendMail({
       from: "burhanraja02@yahoo.com",
       to: user.basic.email,
       subject: "Verify your account with ScripVault",
       html: template(
-        "Thank you for choosing <b>ScripVault</b> as your Investment Partner. Please Veridy the account to login and start investing today.",
-        `http://localhost:3001/api/verify/login/${token}`
+        "Thank you for choosing <b>ScripVault</b> as your Investment Partner. Please Verify the email to login and start investing today.",
+        `http://localhost:3000/verify/${token}`
       ),
     });
 
@@ -30,6 +30,7 @@ export const sendEmailLogin = async (req, res) => {
       message: "Email Successfully Sent.",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",

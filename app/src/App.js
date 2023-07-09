@@ -7,6 +7,7 @@ import UserNominate from "./pages/website/UserNominate";
 import Layout from "./components/dashboard/Layout";
 import Alert from "./components/Alert";
 import { useState, useEffect } from "react";
+import VerifyLogin from "./pages/website/VerifyLogin";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -40,6 +41,10 @@ function App() {
           <Route path="/login" element={<Login setAlert={setAlert} />} />
           <Route path="/register" element={<Register setAlert={setAlert} />} />
           <Route path="/user/info" element={<UserInfo setAlert={setAlert} />} />
+          <Route
+            path="/verify/:token"
+            element={<VerifyLogin setAlert={setAlert} />}
+          />
           <Route
             path="/user/nominate"
             element={<UserNominate setAlert={setAlert} />}

@@ -4,6 +4,8 @@ import TextArea from "../../components/TextArea";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addNominateThunk } from "../../features/user/nominate";
+import { sendEmailLoginThunk } from "../../features/email/sendLoginEmail";
+import Loading from "../../components/Loading";
 
 const UserNominate = ({ setAlert }) => {
   const [relationship, setRelationship] = useState("");
@@ -11,15 +13,37 @@ const UserNominate = ({ setAlert }) => {
   const [dob, setDOB] = useState("");
   const [address, setAddress] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
 
-  const { isSuccess, isLoading, isError, nominate } = useSelector(
-    (state) => state.nominateReducer
-  );
-
-  const dipatch = useDispatch();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const handleSkip = () => {
+    dispatch(sendEmailLoginThunk(localStorage.getItem("userId"))).then(
+      (data) => {
+        setLoading(true);
+        if (!data.payload.success) {
+          setAlert({
+            show: true,
+            type: "warning",
+            message: `${data.payload?.message}`,
+          });
+          return;
+        } else {
+          setAlert({
+            show: true,
+            type: "success",
+            message: "You will recieve an email. Please Verify to login.",
+          });
+          navigate("/login");
+          return;
+        }
+      }
+    );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,11 +57,12 @@ const UserNominate = ({ setAlert }) => {
       relationship,
       dob,
       name,
-      id: localStorage.getItem("id"),
+      id: localStorage.getItem("userId"),
       address,
     };
 
-    dipatch(addNominateThunk(data)).then((data) => {
+    dispatch(addNominateThunk(data)).then((data) => {
+      setLoading(true);
       if (!data.payload.success) {
         setAlert({
           show: true,
@@ -46,12 +71,26 @@ const UserNominate = ({ setAlert }) => {
         });
         return;
       } else {
-        setAlert({
-          show: true,
-          type: "success",
-          message: "You will recieve an email. Please Verify to login.",
-        });
-        navigate("/login");
+        dispatch(sendEmailLoginThunk(localStorage.getItem("userId"))).then(
+          (data) => {
+            if (!data.payload.success) {
+              setAlert({
+                show: true,
+                type: "warning",
+                message: `${data.payload?.message}`,
+              });
+              return;
+            } else {
+              setAlert({
+                show: true,
+                type: "success",
+                message: "You will recieve an email. Please Verify to login.",
+              });
+              navigate("/login");
+              return;
+            }
+          }
+        );
       }
     });
   };
@@ -109,7 +148,7 @@ const UserNominate = ({ setAlert }) => {
                   label="Address"
                   placeholderText="Address"
                   value={address}
-                  handleValue={(val) => setAddress(val)}
+                  handleChange={(val) => setAddress(val)}
                   handleFocus={() => {}}
                 />
                 {address === "" && error && (
@@ -118,11 +157,15 @@ const UserNominate = ({ setAlert }) => {
               </div>
             </div>
             <div class="flex justify-evenly mt-6">
-              <Link to="/login" className="w-1/3">
-                <button class="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-[100%]">
-                  Submit
-                </button>
-              </Link>
+              <button class="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 w-1/3">
+                {loading ? <Loading size={"text-lg"} /> : "Submit"}
+              </button>
+              <button
+                onClick={handleSkip}
+                class="py-2.5 leading-5 text-black transition-colors duration-300 transform bg-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-600 w-1/3"
+              >
+                {loading ? <Loading size={"text-lg"} /> : "Skip"}
+              </button>
             </div>
           </form>
         </div>

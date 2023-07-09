@@ -9,4 +9,5 @@ export default {
   smtp_port: process.env.SMTP_PORT,
   smtp_username: process.env.SMTP_USERNAME,
   smtp_password: process.env.SMTP_PASSWORD,
+  crypto_secret: process.env.CRYPTO_SECRET,
 };

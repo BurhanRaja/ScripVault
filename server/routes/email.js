@@ -1,6 +1,6 @@
 import express from "express";
-import { sendEmailLogin } from "../controller/email";
+import { sendEmailLogin } from "../controller/email.js";
 
 export const emailRouter = express.Router();
 
-verifyRouter.post("/verifylogin/:id", sendEmailLogin);
+emailRouter.post("/verifylogin/:id", sendEmailLogin);

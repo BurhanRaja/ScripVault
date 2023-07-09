@@ -85,7 +85,7 @@ export const userInfo = async (req, res) => {
     if (!id) {
       return res.status(400).send({
         success,
-        message: "Id Not Found",
+        message: "Some Error Occurred.",
       });
     }
 
@@ -132,14 +132,21 @@ export const userLogin = async (req, res) => {
   let success = false;
 
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body.data;
 
     let user = await User.findOne({ "basic.email": email });
+
+    if (!user.verified) {
+      return res.status(400).send({
+        success,
+        message: "Email not verified. Please verify to Login.",
+      });
+    }
 
     if (!user) {
       return res.status(400).send({
         success,
-        message: "Invalid Credentials",
+        message: "User Not Found.",
       });
     }
 
@@ -398,7 +405,7 @@ export const addUserNomination = async (req, res) => {
   let success = false;
 
   try {
-    const { id, relationship, name, dob, address } = req.body;
+    const { id, relationship, name, dob, address } = req.body.data;
 
     let userNominate = await UserNominate.findOne({ user_id: id });
 
@@ -426,7 +433,6 @@ export const addUserNomination = async (req, res) => {
       message: "User Nomination added.",
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
