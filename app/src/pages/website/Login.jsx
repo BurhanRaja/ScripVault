@@ -34,8 +34,7 @@ const Login = ({ setAlert }) => {
     };
 
     dispatch(userLoginThunk(data)).then((data) => {
-      console.log(data);
-      if (data.payload?.success) {
+      if (!data.payload?.success) {
         setAlert({
           show: true,
           type: "warning",

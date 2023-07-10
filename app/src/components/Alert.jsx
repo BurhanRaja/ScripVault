@@ -5,7 +5,7 @@ const Alert = ({ data, closeVisible }) => {
   return (
     <div
       className={`border-l-4 p-4 fixed w-[80vw] left-32 top-10 z-40 ${
-        data?.show ? "opacity-100 h-[12vh]" : "opacity-0 h-0"
+        data?.show ? "opacity-100 h-[8vh]" : "opacity-0 h-0"
       } ${
         data?.type === "warning"
           ? "border-orange-500 text-orange-700 bg-orange-100 "

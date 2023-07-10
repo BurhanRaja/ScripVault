@@ -136,17 +136,17 @@ export const userLogin = async (req, res) => {
 
     let user = await User.findOne({ "basic.email": email });
 
-    if (!user.verified) {
-      return res.status(400).send({
-        success,
-        message: "Email not verified. Please verify to Login.",
-      });
-    }
-
     if (!user) {
       return res.status(400).send({
         success,
         message: "User Not Found.",
+      });
+    }
+
+    if (!user.verified) {
+      return res.status(400).send({
+        success,
+        message: "Email not verified. Please verify to Login.",
       });
     }
 
@@ -174,6 +174,7 @@ export const userLogin = async (req, res) => {
       token,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
