@@ -76,3 +76,11 @@ export const getRevenueStmt = async (symbol, duration) => {
   );
   return response.data;
 };
+
+export const getIndexes = async () => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API +
+      `stock/income/statement/${symbol}?duration=${duration}`
+  );
+  return response.data;
+};

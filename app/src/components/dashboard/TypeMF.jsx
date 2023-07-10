@@ -1,11 +1,12 @@
 import React from "react";
 import { BsChevronRight } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
-const TypeMF = ({ name, logo, recommended }) => {
+const TypeMF = ({ name, logo, recommended, url }) => {
   return (
-    <>
+    <Link to={url} className="">
       <div
-        className={`flex justify-between items-center p-5 rounded-md hover:cursor-pointer ${
+        className={`my-2 mx-1 p-5 rounded-md hover:cursor-pointer text-center hover:bg-gray-100 w-[15rem] ${
           recommended ? " border border-green-600 relative" : "border"
         }`}
       >
@@ -14,13 +15,14 @@ const TypeMF = ({ name, logo, recommended }) => {
             Recommended
           </div>
         )}
-        <div className="flex items-center">
-          <img src={logo} alt="" className="me-7" />
+        <div className="">
+            <div className="flex justify-center items-center">
+          <img src={logo} alt="" className="w-[30%]" />
+            </div>
           <p className="text-xl font-bold">{name}</p>
         </div>
-        <BsChevronRight  />
       </div>
-    </>
+    </Link>
   );
 };
 

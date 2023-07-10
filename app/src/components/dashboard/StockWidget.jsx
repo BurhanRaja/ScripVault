@@ -1,20 +1,22 @@
 import React from "react";
 
-const StockWidget = ({ name, symbol, currPrice, currPer, currGap, size }) => {
+const StockWidget = ({ name, symbol, price, priceChange }) => {
   return (
     <>
-      <div className={`border p-4 ${size} bg-gray-100 rounded-sm`}>
-        <h2 className="text-3xl font-extrabold">{name}</h2>
-        <p className="text-lg mt-2">{symbol}</p>
-        <div className="flex justify-between items-center mt-4">
-          <h1 className="text-2xl font-semibold"><span className="text-lg">₹ </span>{currPrice}</h1>
-          {currGap < 0 ? (
-            <p className="text-red-500 text-lg font-semibold">
-              <span>{currGap}</span> <span>({currPer}%)</span>
+      <div className="flex justify-between items-center p-4 border">
+        <div>
+          <h2 className={`${titleText} font-bold`}>{name.substring(0, 15)}</h2>
+        </div>
+        <div className="flex justify-evenly items-center w-[40%]">
+          <p className={`${valText} me-2`}>{symbol}</p>
+          <p className={`${valText} me-2 font-semibold`}>{price}</p>
+          {priceChange > 0 ? (
+            <p className={`${valText} me-2 text-green-500 font-semibold`}>
+              {priceChange}%
             </p>
           ) : (
-            <p className="text-green-500 text-lg font-semibold">
-              <span>+{currGap}</span> <span>({currPer}%)</span>
+            <p className={`${valText} me-2 text-red-500 font-semibold`}>
+              {priceChange}%
             </p>
           )}
         </div>
