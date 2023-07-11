@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import VerifyLogin from "./pages/website/VerifyLogin";
 
 import DashHome from "./pages/dashboard/Home";
+import Portfolio from "./pages/dashboard/Portfolio";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -35,32 +36,32 @@ function App() {
   }, [alert]);
 
   return (
-    <div className="App">
+    <div className='App'>
       <BrowserRouter>
         <Alert data={alert} closeVisible={(val) => setAlert(val)} />
         <Routes>
-          <Route path="/" element={<Home setAlert={setAlert} />} />
-          <Route path="/login" element={<Login setAlert={setAlert} />} />
-          <Route path="/register" element={<Register setAlert={setAlert} />} />
-          <Route path="/user/info" element={<UserInfo setAlert={setAlert} />} />
+          <Route path='/' element={<Home setAlert={setAlert} />} />
+          <Route path='/login' element={<Login setAlert={setAlert} />} />
+          <Route path='/register' element={<Register setAlert={setAlert} />} />
+          <Route path='/user/info' element={<UserInfo setAlert={setAlert} />} />
           <Route
-            path="/verify/:token"
+            path='/verify/:token'
             element={<VerifyLogin setAlert={setAlert} />}
           />
           <Route
-            path="/user/nominate"
+            path='/user/nominate'
             element={<UserNominate setAlert={setAlert} />}
           />
           <Route element={<Layout />}>
-            <Route path="/dashboard/home" element={<DashHome />} />
-            <Route path="/dashboard/portfolio" element={<>Hello</>} />
-            <Route path="/dashboard/stocks" element={<>Hello</>} />
-            <Route path="/dashboard/mutual-funds" element={<>Hello</>} />
-            <Route path="/dashboard/etfs" element={<>Hello</>} />
-            <Route path="/dashboard/deposit" element={<>Hello</>} />
-            <Route path="/dashboard/withdraw" element={<>Hello</>} />
-            <Route path="/dashboard/watchlist" element={<>Hello</>} />
-            <Route path="/dashboard/profile" element={<>Hello</>} />
+            <Route path='/dashboard/home' element={<DashHome />} />
+            <Route path='/dashboard/portfolio' element={<Portfolio />} />
+            <Route path='/dashboard/stocks' element={<>Hello</>} />
+            <Route path='/dashboard/mutual-funds' element={<>Hello</>} />
+            <Route path='/dashboard/etfs' element={<>Hello</>} />
+            <Route path='/dashboard/deposit' element={<>Hello</>} />
+            <Route path='/dashboard/withdraw' element={<>Hello</>} />
+            <Route path='/dashboard/watchlist' element={<>Hello</>} />
+            <Route path='/dashboard/profile' element={<>Hello</>} />
           </Route>
         </Routes>
       </BrowserRouter>

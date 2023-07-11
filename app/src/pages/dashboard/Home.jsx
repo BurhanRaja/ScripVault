@@ -113,35 +113,35 @@ const Home = () => {
         </div>
       </div> */}
 
-      <div className="bg-gray-100 p-2">
-        <div className="flex">
-          <div className="w-[69%] p-4 me-2 bg-white rounded-md">
-            <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
-            <div className="flex justify-evenly my-10">
-              <div className="w-[30%] border p-4">
-                <h4 className="text-xl font-bold">Total Investment</h4>
-                <p className="text-lg mt-4 text-gray-600 font-semibold">
+      <div className='bg-gray-100 p-2'>
+        <div className='flex'>
+          <div className='w-[69%] p-4 me-2 bg-white rounded-md'>
+            <h1 className='text-3xl font-bold mb-4'>Dashboard</h1>
+            <div className='flex justify-evenly my-10'>
+              <div className='w-[30%] border p-4'>
+                <h4 className='text-xl font-bold'>Total Investment</h4>
+                <p className='text-lg mt-4 text-gray-600 font-semibold'>
                   ₹ 1,00,000
                 </p>
               </div>
-              <div className="w-[30%] border p-4">
-                <h4 className="text-xl font-bold ">Total Profit</h4>
-                <p className="text-lg mt-4 text-green-500 font-semibold">
+              <div className='w-[30%] border p-4'>
+                <h4 className='text-xl font-bold '>Total Profit</h4>
+                <p className='text-lg mt-4 text-green-500 font-semibold'>
                   ₹ 1,00,000
                 </p>
               </div>
-              <div className="w-[30%] border p-4">
-                <h4 className="text-xl font-bold">Total Loss</h4>
-                <p className="text-lg mt-4 text-red-500 font-semibold">
+              <div className='w-[30%] border p-4'>
+                <h4 className='text-xl font-bold'>Total Loss</h4>
+                <p className='text-lg mt-4 text-red-500 font-semibold'>
                   ₹ 1,00,000
                 </p>
               </div>
             </div>
-            <img src="/assets/images/demo-chart.png" width={800} />
-            <h1 className="text-2xl mt-8 font-semibold text-center mb-5">
+            <img src='/assets/images/demo-chart.png' width={800} />
+            <h1 className='text-2xl mt-8 font-semibold text-center mb-5'>
               Discover Mutual Funds
             </h1>
-            <div className="flex justify-center items-center flex-wrap w-[100%]">
+            <div className='flex justify-center items-center flex-wrap w-[100%]'>
               {data?.map((el, index) => {
                 if (randomNumArr.includes(index)) {
                   return (
@@ -167,11 +167,13 @@ const Home = () => {
               })}
             </div>
           </div>
-          <div className="w-[29%]">
-            <div className="bg-white p-3 rounded-md mb-3">
-              <div className="flex justify-between mb-2 items-center">
-                <h1 className="text-lg font-semibold">Portfolio</h1>
-                <button className="text-xs p-1 font-semibold underline text-blue-600">Know More</button>
+          <div className='w-[29%]'>
+            <div className='bg-white p-3 rounded-md mb-3'>
+              <div className='flex justify-between mb-2 items-center'>
+                <h1 className='text-lg font-semibold'>Portfolio</h1>
+                <button className='text-xs p-1 font-semibold underline text-blue-600'>
+                  Know More
+                </button>
               </div>
               <StockWidget
                 name={"Aditya Birla Capital Limited"}
@@ -188,8 +190,8 @@ const Home = () => {
                 valText={"text-sm"}
               />
             </div>
-            <div className="bg-white p-3 rounded-md mb-3">
-              <h1 className="text-lg mb-2 font-semibold">Stock Indexes</h1>
+            <div className='bg-white p-3 rounded-md mb-3'>
+              <h1 className='text-lg mb-2 font-semibold'>Stock Indexes</h1>
               <StockIndexWidget
                 name={"Nifty 50"}
                 symbol={"NFTY50"}
@@ -207,39 +209,39 @@ const Home = () => {
                 size={"w-[100%]"}
               />
             </div>
-            <div className="bg-white p-3 rounded-md">
-              <h1 className="text-lg mb-2 font-semibold">Top Mutual Funds</h1>
+            <div className='bg-white p-3 rounded-md'>
+              <h1 className='text-lg mb-2 font-semibold'>Top Mutual Funds</h1>
               <div>
                 <MutualFundWidget
-                  name="Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout"
+                  name='Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout'
                   oneYear={5.92903}
                   fiveYear={4.045}
                   titleText={"text-sm"}
                   valText={"text-sm"}
                 />
                 <MutualFundWidget
-                  name="Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout"
+                  name='Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout'
                   oneYear={5.92903}
                   fiveYear={4.045}
                   titleText={"text-sm"}
                   valText={"text-sm"}
                 />
                 <MutualFundWidget
-                  name="Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout"
+                  name='Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout'
                   oneYear={5.92903}
                   fiveYear={4.045}
                   titleText={"text-sm"}
                   valText={"text-sm"}
                 />
                 <MutualFundWidget
-                  name="Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout"
+                  name='Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout'
                   oneYear={5.92903}
                   fiveYear={4.045}
                   titleText={"text-sm"}
                   valText={"text-sm"}
                 />
                 <MutualFundWidget
-                  name="Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout"
+                  name='Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout'
                   oneYear={5.92903}
                   fiveYear={4.045}
                   titleText={"text-sm"}

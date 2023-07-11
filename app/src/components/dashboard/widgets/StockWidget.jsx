@@ -8,7 +8,7 @@ const StockWidget = ({ name, symbol, price, priceChange, titleText, valText }) =
           <h2 className={`${titleText} font-bold`}>{name?.substring(0,10)}..</h2>
         </div>
         <div className="flex justify-between items-center w-[65%]">
-          <p className={`${valText} me-2`}>{symbol.substring(0, 10)}..</p>
+          <p className={`${valText} me-2`}>{symbol.substring(0, 7)}..</p>
           <p className={`${valText} me-2 font-semibold`}>{price}</p>
           {priceChange > 0 ? (
             <p className={`${valText} me-2 text-green-500 font-semibold`}>
