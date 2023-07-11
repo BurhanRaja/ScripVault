@@ -116,7 +116,7 @@ const Home = () => {
       <div className='bg-gray-100 p-2'>
         <div className='flex'>
           <div className='w-[69%] p-4 me-2 bg-white rounded-md'>
-            <h1 className='text-3xl font-bold mb-4'>Dashboard</h1>
+            <h1 className='text-3xl font-bold mb-4 p-5'>Dashboard</h1>
             <div className='flex justify-evenly my-10'>
               <div className='w-[30%] border p-4'>
                 <h4 className='text-xl font-bold'>Total Investment</h4>
