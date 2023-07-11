@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import StockIndexWidget from "../../components/dashboard/StockIndexWidget";
-import MutualFundWidget from "../../components/dashboard/MutualFundWidget";
-import TypeMF from "../../components/dashboard/TypeMF";
+import StockIndexWidget from "../../components/dashboard/widgets/StockIndexWidget";
+import MutualFundWidget from "../../components/dashboard/widgets/MutualFundWidget";
+import TypeMF from "../../components/dashboard/widgets/TypeMF";
+import StockWidget from "../../components/dashboard/widgets/StockWidget";
 // name, symbol, currPrice, currPer, currGap, size
 
 // Data
@@ -137,34 +138,56 @@ const Home = () => {
               </div>
             </div>
             <img src="/assets/images/demo-chart.png" width={800} />
-            <h1 className="text-2xl mt-8 font-semibold text-center mb-5">Discover Mutual Funds</h1>
+            <h1 className="text-2xl mt-8 font-semibold text-center mb-5">
+              Discover Mutual Funds
+            </h1>
             <div className="flex justify-center items-center flex-wrap w-[100%]">
-            {data?.map((el, index) => {
-              if (randomNumArr.includes(index)) {
-                return (
-                  <TypeMF
-                    key={el.name}
-                    name={el.name}
-                    logo={el.logo}
-                    recommended={true}
-                    url={el.url}
-                  />
-                );
-              } else {
-                return (
-                  <TypeMF
-                    key={el.name}
-                    name={el.name}
-                    logo={el.logo}
-                    recommended={false}
-                    url={el.url}
-                  />
-                );
-              }
-            })}
-          </div>
+              {data?.map((el, index) => {
+                if (randomNumArr.includes(index)) {
+                  return (
+                    <TypeMF
+                      key={el.name}
+                      name={el.name}
+                      logo={el.logo}
+                      recommended={true}
+                      url={el.url}
+                    />
+                  );
+                } else {
+                  return (
+                    <TypeMF
+                      key={el.name}
+                      name={el.name}
+                      logo={el.logo}
+                      recommended={false}
+                      url={el.url}
+                    />
+                  );
+                }
+              })}
+            </div>
           </div>
           <div className="w-[29%]">
+            <div className="bg-white p-3 rounded-md mb-3">
+              <div className="flex justify-between mb-2 items-center">
+                <h1 className="text-lg font-semibold">Portfolio</h1>
+                <button className="text-xs p-1 font-semibold underline text-blue-600">Know More</button>
+              </div>
+              <StockWidget
+                name={"Aditya Birla Capital Limited"}
+                symbol={"ABCAPITAL.NS"}
+                price={185.0}
+                priceChange={-4.25}
+                valText={"text-sm"}
+              />
+              <StockWidget
+                name={"Bajaj Finserv Ltd."}
+                symbol={"BAJAJFINSV.NS"}
+                price={1597.8}
+                priceChange={-17.1}
+                valText={"text-sm"}
+              />
+            </div>
             <div className="bg-white p-3 rounded-md mb-3">
               <h1 className="text-lg mb-2 font-semibold">Stock Indexes</h1>
               <StockIndexWidget
@@ -185,9 +208,7 @@ const Home = () => {
               />
             </div>
             <div className="bg-white p-3 rounded-md">
-              <h1 className="text-lg mb-2 font-semibold">
-                Top Mutual Funds
-              </h1>
+              <h1 className="text-lg mb-2 font-semibold">Top Mutual Funds</h1>
               <div>
                 <MutualFundWidget
                   name="Nippon India Interval Fund-Quarterly Interval Fund-Series-I- Dividend Payout"
