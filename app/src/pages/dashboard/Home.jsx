@@ -4,7 +4,10 @@ import MutualFundWidget from "../../components/dashboard/widgets/MutualFundWidge
 import TypeMF from "../../components/dashboard/widgets/TypeMF";
 import StockWidget from "../../components/dashboard/widgets/StockWidget";
 import { useDispatch, useSelector } from "react-redux";
-import { clearStockIndexesState, getStockIndexesThunk } from "../../features/stocks/stockIndexes";
+import {
+  clearStockIndexesState,
+  getStockIndexesThunk,
+} from "../../features/stocks/stockIndexes";
 // name, symbol, currPrice, currPer, currGap, size
 
 // Data
@@ -51,9 +54,7 @@ const Home = () => {
     return numArr;
   };
 
-  const { isSuccess, isLoading, isError, indexes } = useSelector(
-    (state) => state.stockIndexesReducer
-  );
+  const { indexes } = useSelector((state) => state.stockIndexesReducer);
 
   const dispatch = useDispatch();
 
@@ -62,12 +63,14 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    let timeOut = setTimeout(() => {
+    let timeOut = setInterval(() => {
       clearStockIndexesState();
       dispatch(getStockIndexesThunk());
-    }, 5000);
+    }, 10000);
 
-    return () => clearTimeout(timeOut);
+    return () => {
+      clearInterval(timeOut);
+    };
   }, []);
 
   console.log(indexes);
