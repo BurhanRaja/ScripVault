@@ -44,17 +44,21 @@ const Sidebar = () => {
               <span className='mx-4 font-medium'>Portfolio</span>
             </Link>
             <Link
-              className='flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700'
+              className={`flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md ${
+                pathname === "/dashboard/stocks" && "bg-gray-800 text-gray-100"
+              } dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
               to='/dashboard/stocks'
             >
               <div className='w-[1.8rem]'>
                 <img src='/assets/images/chart.png' />
               </div>
-
               <span className='mx-4 font-medium'>Stocks</span>
             </Link>
             <Link
-              className='flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700'
+              className={`flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md ${
+                pathname === "/dashboard/mutual-funds" &&
+                "bg-gray-800 text-gray-100"
+              } dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
               to='/dashboard/mutual-funds'
             >
               <div className='w-[1.8rem]'>
@@ -64,7 +68,9 @@ const Sidebar = () => {
               <span className='mx-4 font-medium'>Mutual Funds</span>
             </Link>
             <Link
-              className='flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700'
+              className={`flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md ${
+                pathname === "/dashboard/etfs" && "bg-gray-800 text-gray-100"
+              } dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
               to='/dashboard/etfs'
             >
               <div className='w-[1.8rem]'>
@@ -74,7 +80,9 @@ const Sidebar = () => {
             </Link>
 
             <Link
-              className='flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700'
+              className={`flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md ${
+                pathname === "/dashboard/deposit" && "bg-gray-800 text-gray-100"
+              } dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
               to='/dashboard/deposit'
             >
               <RiLuggageDepositLine className='text-white text-2xl' />
@@ -83,7 +91,10 @@ const Sidebar = () => {
             </Link>
 
             <Link
-              className='flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700'
+              className={`flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md ${
+                pathname === "/dashboard/withdraw" &&
+                "bg-gray-800 text-gray-100"
+              } dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
               to='/dashboard/withdraw'
             >
               <BiMoneyWithdraw className='text-white text-2xl' />

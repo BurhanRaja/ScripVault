@@ -9,7 +9,7 @@ const MutualFundCards = ({ name, symbol, price, oneYear, fiveYear }) => {
         </div>
         <div className='flex justify-between items-center w-[65%]'>
           <p className={``}>{symbol}</p>
-          <p className={` font-semibold`}>{price}</p>
+          <p className={` font-semibold`}>₹{price}</p>
           {oneYear > 0 ? (
             <p className={` text-green-500 font-semibold`}>{oneYear}%</p>
           ) : (

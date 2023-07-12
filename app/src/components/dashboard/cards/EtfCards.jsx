@@ -9,7 +9,7 @@ const EtfCards = ({ name, symbol, price }) => {
         </div>
         <div className='flex justify-between items-center w-[65%]'>
           <p className={``}>{symbol}</p>
-          <p className={` font-semibold`}>{price}</p>
+          <p className={` font-semibold`}>₹{price}</p>
           <button className='p-1 px-3 text-white bg-green-700 text-sm rounded-sm'>
             Buy
           </button>

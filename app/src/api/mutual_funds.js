@@ -196,6 +196,7 @@ export const getAllBestTaxSaverFunds = async (skip, limit) => {
   return response.data;
 };
 
+// ------------------------------------ Mutual Funds ----------------------------------
 export const getHistoryFunds = async (symbol, duration) => {
   const response = await axios.get(
     process.env.REACT_APP_STOCK_API +

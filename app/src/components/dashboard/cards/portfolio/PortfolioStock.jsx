@@ -1,12 +1,12 @@
 import React from "react";
 
-const PortfolioETF = ({ name, symbol, price, profit }) => {
+const PortfolioStock = ({ name, symbol, profit, price }) => {
   return (
     <>
       <div className='flex justify-between items-center p-4 border bg-gray-50 mb-4'>
         <div>
           <h2 className={`text-xl font-bold`}>
-            {name.length > 15 ? name.substring(0, 15) + "..." : name}
+            {name}
           </h2>
         </div>
         <div className='flex justify-between items-center w-[65%]'>
@@ -22,4 +22,4 @@ const PortfolioETF = ({ name, symbol, price, profit }) => {
   );
 };
 
-export default PortfolioETF;
+export default PortfolioStock;

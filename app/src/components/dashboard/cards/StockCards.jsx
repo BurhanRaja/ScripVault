@@ -9,11 +9,11 @@ const StockCards = ({ name, symbol, price, priceChange, perChange }) => {
         </div>
         <div className='flex justify-between items-center w-[65%]'>
           <p className={``}>{symbol}</p>
-          <p className={`  font-semibold`}>{price}</p>
+          <p className={`  font-semibold`}>₹{price}</p>
           {priceChange > 0 ? (
-            <p className={` text-green-500 font-semibold`}>{priceChange}</p>
+            <p className={` text-green-500 font-semibold`}>₹{priceChange}</p>
           ) : (
-            <p className={` text-red-500 font-semibold`}>{priceChange}</p>
+            <p className={` text-red-500 font-semibold`}>₹{priceChange}</p>
           )}
           {perChange > 0 ? (
             <p className={` text-green-500 font-semibold`}>{perChange}%</p>
