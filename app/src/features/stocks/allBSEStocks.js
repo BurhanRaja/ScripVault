@@ -44,6 +44,6 @@ const allBSEStocksSlice = createSlice({
 });
 
 export const { clearBSEStocksState } =
-  allStocksSlice.actions;
+allBSEStocksSlice.actions;
 
-export default allStocksSlice.reducer;
+export default allBSEStocksSlice.reducer;

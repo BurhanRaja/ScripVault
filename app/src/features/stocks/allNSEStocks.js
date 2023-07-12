@@ -31,7 +31,7 @@ const allNSEStocksSlice = createSlice({
       .addCase(allNSEStocksThunk.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(allBSEStocksThunk.fulfilled, (state, { payload }) => {
+      .addCase(allNSEStocksThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.nseData = payload;
@@ -44,6 +44,6 @@ const allNSEStocksSlice = createSlice({
 });
 
 export const { clearBSEStocksState, clearNSEStocksState } =
-  allStocksSlice.actions;
+allNSEStocksSlice.actions;
 
-export default allStocksSlice.reducer;
+export default allNSEStocksSlice.reducer;

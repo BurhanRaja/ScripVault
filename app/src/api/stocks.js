@@ -80,7 +80,7 @@ export const getRevenueStmt = async (symbol, duration) => {
 export const getIndexes = async () => {
   const response = await axios.get(
     process.env.REACT_APP_STOCK_API +
-      `stock/income/statement/${symbol}?duration=${duration}`
+      `stock/index`
   );
   return response.data;
 };
