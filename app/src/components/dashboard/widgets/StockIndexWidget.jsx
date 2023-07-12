@@ -22,12 +22,12 @@ const StockIndexWidget = ({ name, symbol, currPrice, currPer, currGap, size }) =
                 {currPrice}
               </h1>
               {currGap < 0 ? (
-                <p className="text-red-500 text-lg font-semibold">
+                <p className="text-red-500 font-semibold">
                   <span>{currGap}</span>
                   <span>({currPer}%)</span>
                 </p>
               ) : (
-                <p className="text-green-500 text-lg font-semibold">
+                <p className="text-green-500 font-semibold">
                   <span>+{currGap}</span> <span>({currPer}%)</span>
                 </p>
               )}

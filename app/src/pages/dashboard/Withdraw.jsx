@@ -5,11 +5,8 @@ const Withdraw = () => {
     <>
       <div className="bg-gray-100 p-2">
         <div className="bg-white rounded-md p-5">
-          <h1 className="text-3xl font-bold mb-4 p-5">Deposits</h1>
+          <h1 className="text-3xl font-bold mb-4 p-5">Withdraws</h1>
           <div className="container p-2 mx-auto sm:p-4">
-            <h2 className="mb-4 text-2xl font-semibold leading-tight">
-              Invoices
-            </h2>
             <div className="overflow-x-auto">
               <table className="min-w-full text-xs">
                 <colgroup>

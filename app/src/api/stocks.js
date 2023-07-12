@@ -79,8 +79,14 @@ export const getRevenueStmt = async (symbol, duration) => {
 
 export const getIndexes = async () => {
   const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `stock/index`
+    process.env.REACT_APP_STOCK_API + `stock/index`
+  );
+  return response.data;
+};
+
+export const getTopStocks = async () => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + "top/stocks"
   );
   return response.data;
 };

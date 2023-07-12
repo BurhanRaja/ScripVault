@@ -9,14 +9,14 @@ const MutualFundWidget = ({ name, oneYear, fiveYear, titleText, valText }) => {
         </div>
         <div className="flex justify-evenly items-center w-[40%]">
           {oneYear > 0 ? (
-            <p className={`${valText} me-2 text-green-500 font-semibold`}>{oneYear}%</p>
+            <p className={`${valText} me-2 text-green-500 font-semibold text-xs`}>{oneYear}%</p>
           ) : (
-            <p className={`${valText} me-2 text-red-500 font-semibold`}>{oneYear}%</p>
+            <p className={`${valText} me-2 text-red-500 font-semibold text-xs`}>{oneYear}%</p>
           )}
           {fiveYear > 0 ? (
-            <p className={`${valText} me-2 text-green-500 font-semibold`}>{fiveYear}%</p>
+            <p className={`${valText} me-2 text-green-500 font-semibold text-xs`}>{fiveYear}%</p>
           ) : (
-            <p className={`${valText} me-2 text-red-500 font-semibold`}>{fiveYear}%</p>
+            <p className={`${valText} me-2 text-red-500 font-semibold text-xs`}>{fiveYear}%</p>
           )}
         </div>
       </div>

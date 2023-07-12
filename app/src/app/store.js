@@ -7,6 +7,7 @@ import sendLoginEmailReducer from "../features/email/sendLoginEmail";
 import stockBSEReducer from "../features/stocks/allBSEStocks";
 import stockNSEReducer from "../features/stocks/allNSEStocks";
 import stockIndexesReducer from "../features/stocks/stockIndexes";
+import stockTopReducer from "../features/stocks/stocksTop";
 
 const reducers = combineReducers({
   authReducer,
@@ -14,6 +15,7 @@ const reducers = combineReducers({
   infoReducer,
   verifyLoginReducer,
   sendLoginEmailReducer,
+  stockTopReducer,
   stockBSEReducer,
   stockNSEReducer,
   stockIndexesReducer,
