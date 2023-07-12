@@ -8,6 +8,7 @@ import stockBSEReducer from "../features/stocks/allBSEStocks";
 import stockNSEReducer from "../features/stocks/allNSEStocks";
 import stockIndexesReducer from "../features/stocks/stockIndexes";
 import stockTopReducer from "../features/stocks/stocksTop";
+import bestMFReducer from "../features/mutualfunds/bestMF";
 
 const reducers = combineReducers({
   authReducer,
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   stockBSEReducer,
   stockNSEReducer,
   stockIndexesReducer,
+  bestMFReducer,
 });
 
 const store = configureStore({
