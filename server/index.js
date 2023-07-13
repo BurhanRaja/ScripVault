@@ -18,14 +18,13 @@ const port = config.port;
 connectToMongoDB();
 
 app.use(cors());
-app.use(express.static("public"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   return res.send("Welcome to the Investment Advisor API");
 });
 
+app.use(express.static("public"));
 
 app.use("/api/user", userRouter);
 app.use("/api/kyc", kycRouter);

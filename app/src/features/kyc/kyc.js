@@ -12,7 +12,7 @@ export const addKycThunk = createAsyncThunk("kyc/add", async (data) => {
     let res = await addKyc(data);
     return res;
   } catch (err) {
-    return err;
+    return err.response.data;
   }
 });
 

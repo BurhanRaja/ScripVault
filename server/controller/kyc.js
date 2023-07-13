@@ -2,27 +2,28 @@ import Kyc from "../model/Kyc.js";
 import User from "../model/User.js";
 import random from "../utils/randomHash.js";
 import multer from "multer";
+import fs from "fs";
 import path from "path";
 
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
-    let user = await User.findOne({ _id: req.body.id });
-    cb(null, `uploads`);
+    cb(null, `public/uploads/`);
   },
-  filename: (req, file, cb) => {
+  filename: async (req, file, cb) => {
+    // let dir = fs.mkdir(`../uploads/${req.body.id}`, (err) => {
+    //   if (err) {
+    //     console.log(err);
+    //   }
+    // });
     const uniqueName =
-      random(5) +
-      new Date().getTime() +
-      "_" +
-      file.originalname +
-      path.extname(file.originalname);
-    cb(null, uniqueName);
+      random(5) + new Date().getTime() + "_" + file.originalname;
+    cb(null, `${uniqueName}`);
   },
 });
 
 const upload = multer({
   storage,
-  limits: { fieldSize: 10000000 * 10 },
+  limits: { fieldSize: 10000 },
   fileFilter: (req, file, cb) => {
     if (
       file.mimetype == "image/png" ||
@@ -52,13 +53,10 @@ export const addKyc = async (req, res) => {
   let success = false;
 
   try {
-    const { id } = req.body;
-
-    console.log(req.body);
-
     upload(req, res, async (err) => {
+      const { id } = req.body;
 
-      if (!req.file) {
+      if (!req.files) {
         return res.status(400).send({
           success,
           message: "All fields required.",
@@ -73,10 +71,22 @@ export const addKyc = async (req, res) => {
         });
       }
 
-      const kyc = await Kyc.create({
+      let kyc = await Kyc.findOne({ user_id: id });
+
+      if (kyc) {
+        return res.status(400).send({
+          success,
+          message: "KYC already done.",
+        });
+      }
+
+      let poi = req.files["proof-1"][0].path.split("\\");
+      let poa = req.files["proof-2"][0].path.split("\\");
+
+      kyc = await Kyc.create({
         user_id: id,
-        poi: req.file.path,
-        poa: req.file.path,
+        poi: poi[1] + "/" + poi[2],
+        poa: poa[1] + "/" + poa[2],
       });
 
       success = true;

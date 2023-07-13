@@ -2,12 +2,14 @@ import axios from "axios";
 import config from "../config";
 
 export const addKyc = async (data) => {
-  let res = await axios.post(
-    config.node_url + "/api/kyc/add",
-    {
-      data,
-    }
-  );
+  console.log(data.getAll("poi"));
 
-  return res.data;
+  const response = await axios.post(config.node_url + "/api/kyc/add", data, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
 };
