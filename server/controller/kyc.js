@@ -43,6 +43,8 @@ export const addKyc = async (req, res) => {
   let success = false;
 
   try {
+    const { id } = req.body;
+
     upload(req, res, async (err) => {
       if (!req.files) {
         return res.status(400).send({
@@ -59,7 +61,7 @@ export const addKyc = async (req, res) => {
       }
 
       const kyc = await Kyc.create({
-        user_id: req.user.id,
+        user_id: id,
         poa: req.files[0].path,
         poi: req.files[1].path,
       });
@@ -119,10 +121,7 @@ export const checkKYC = async (req, res) => {
   let success = false;
 
   try {
-    const { id } = req.params;
-
     let kyc = await Kyc.findOne({
-      _id: id,
       userId: req.user._id,
     });
 
@@ -130,6 +129,13 @@ export const checkKYC = async (req, res) => {
       return res.status(404).send({
         success,
         message: "KYC Not Found.",
+      });
+    }
+
+    if (kyc?.status === true) {
+      return res.status(400).send({
+        success,
+        message: "KYC Not Approved.",
       });
     }
 
