@@ -6,11 +6,6 @@ export const addKyc = async (data) => {
     config.node_url + "/api/kyc/add",
     {
       data,
-    },
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
     }
   );
 

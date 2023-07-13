@@ -1,10 +1,16 @@
 import jwt from "jsonwebtoken";
 import config from "../config.js";
 
-
 const checkUser = async (req, res, next) => {
   let success = false;
   try {
+    if (!req.headers.authorization) {
+      return res.status(403).send({
+        success,
+        message: "Unauthorized access",
+      });
+    }
+
     const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
@@ -26,4 +32,4 @@ const checkUser = async (req, res, next) => {
   }
 };
 
-export default checkUser
+export default checkUser;

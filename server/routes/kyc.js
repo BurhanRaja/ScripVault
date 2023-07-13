@@ -3,8 +3,8 @@ import checkUser from "../middleware/checkuser.js";
 import { addKyc, approveKyc, checkKYC } from "../controller/kyc.js";
 export const kycRouter = express.Router();
 
-kycRouter.post("/add", checkUser, addKyc);
+kycRouter.post("/add", addKyc);
 
-kycRouter.post("/approve", checkUser, approveKyc);
+kycRouter.post("/approve", approveKyc);
 
-kycRouter.get("/status", checkUser, checkKYC);
+kycRouter.get("/status", checkKYC);

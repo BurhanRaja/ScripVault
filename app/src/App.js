@@ -8,6 +8,7 @@ import Layout from "./components/dashboard/default/Layout";
 import Alert from "./components/Alert";
 import { useState, useEffect } from "react";
 import VerifyLogin from "./pages/website/VerifyLogin";
+import Kyc from "./pages/website/Kyc";
 
 import DashHome from "./pages/dashboard/Home";
 import Portfolio from "./pages/dashboard/Portfolio";
@@ -57,6 +58,7 @@ function App() {
             path='/user/nominate'
             element={<UserNominate setAlert={setAlert} />}
           />
+          <Route path='/user/kyc' element={<Kyc />} />
           <Route element={<Layout />}>
             <Route path='/dashboard/home' element={<DashHome />} />
             <Route path='/dashboard/portfolio' element={<Portfolio />} />

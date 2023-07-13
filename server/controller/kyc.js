@@ -6,8 +6,8 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
-    let user = await User.findOne({ _id: req.user.id });
-    cb(null, `uploads/${req.user.id}_${user.full_name}`);
+    let user = await User.findOne({ _id: req.body.id });
+    cb(null, `uploads`);
   },
   filename: (req, file, cb) => {
     const uniqueName =
@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fieldSize: 1000 * 10 },
+  limits: { fieldSize: 10000000 * 10 },
   fileFilter: (req, file, cb) => {
     if (
       file.mimetype == "image/png" ||
@@ -37,7 +37,16 @@ const upload = multer({
       return cb(err);
     }
   },
-}).array("kycImages", 2);
+}).fields([
+  {
+    name: "proof-1",
+    maxCount: 2,
+  },
+  {
+    name: "proof-2",
+    maxCount: 2,
+  },
+]);
 
 export const addKyc = async (req, res) => {
   let success = false;
@@ -45,8 +54,11 @@ export const addKyc = async (req, res) => {
   try {
     const { id } = req.body;
 
+    console.log(req.body);
+
     upload(req, res, async (err) => {
-      if (!req.files) {
+
+      if (!req.file) {
         return res.status(400).send({
           success,
           message: "All fields required.",
@@ -54,7 +66,8 @@ export const addKyc = async (req, res) => {
       }
 
       if (err) {
-        res.status(500).send({
+        console.log(err);
+        return res.status(500).send({
           success,
           message: err.message,
         });
@@ -62,8 +75,8 @@ export const addKyc = async (req, res) => {
 
       const kyc = await Kyc.create({
         user_id: id,
-        poa: req.files[0].path,
-        poi: req.files[1].path,
+        poi: req.file.path,
+        poa: req.file.path,
       });
 
       success = true;
@@ -75,8 +88,9 @@ export const addKyc = async (req, res) => {
       });
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
-      status: 500,
+      success,
       message: "Internal Server Error.",
     });
   }
