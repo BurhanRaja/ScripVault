@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addKyc } from "../../api/kyc";
+import { addKyc, approveKyc } from "../../api/kyc";
 
 const initialState = {
   isSuccess: false,
@@ -16,10 +16,13 @@ export const addKycThunk = createAsyncThunk("kyc/add", async (data) => {
   }
 });
 
-export const approveKycThunk = createAsyncThunk("", async () => {
+export const approveKycThunk = createAsyncThunk("", async (data) => {
   try {
-    // let res = await
-  } catch (err) {}
+    let res = await approveKyc(data);
+    return res;
+  } catch (err) {
+    return err.response.data;
+  }
 });
 
 const kycSlice = createSlice({
@@ -33,11 +36,22 @@ const kycSlice = createSlice({
       .addCase(addKycThunk.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(addKycThunk.fulfilled, (state, { payload }) => {
+      .addCase(addKycThunk.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
       })
       .addCase(addKycThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(approveKycThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(approveKycThunk.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(approveKycThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

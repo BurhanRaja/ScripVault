@@ -2,32 +2,47 @@ import React from "react";
 import { sendEmailLoginThunk } from "../../features/email/sendLoginEmail";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { approveKycThunk } from "../../features/kyc/kyc";
 
 const ApproveKyc = ({ setAlert }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleEmail = () => {
-    dispatch(sendEmailLoginThunk(localStorage.getItem("userId"))).then(
-      (data) => {
-        if (!data.payload.success) {
-          setAlert({
-            show: true,
-            type: "warning",
-            message: `${data.payload?.message}`,
-          });
-          return;
-        } else {
-          setAlert({
-            show: true,
-            type: "success",
-            message: "You will recieve an email. Please Verify to login.",
-          });
-          navigate("/login");
-          return;
-        }
+    let data = {
+      id: localStorage.getItem("userId"),
+    };
+    dispatch(approveKycThunk(data)).then((data) => {
+      if (!data?.payload?.success) {
+        setAlert({
+          show: true,
+          type: "danger",
+          message: `Error approving KYC.`,
+        });
+      } else {
+        dispatch(sendEmailLoginThunk(localStorage.getItem("userId"))).then(
+          (data) => {
+            if (!data?.payload.success) {
+              setAlert({
+                show: true,
+                type: "warning",
+                message: `${data.payload?.message}`,
+              });
+              return;
+            } else {
+              setAlert({
+                show: true,
+                type: "success",
+                message: "KYC approved successfully. You will recieve an email. Please Verify to login.",
+              });
+              localStorage.clear()
+              navigate("/login");
+              return;
+            }
+          }
+        );
       }
-    );
+    });
   };
 
   return (

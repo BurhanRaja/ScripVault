@@ -10,11 +10,6 @@ const storage = multer.diskStorage({
     cb(null, `public/uploads/`);
   },
   filename: async (req, file, cb) => {
-    // let dir = fs.mkdir(`../uploads/${req.body.id}`, (err) => {
-    //   if (err) {
-    //     console.log(err);
-    //   }
-    // });
     const uniqueName =
       random(5) + new Date().getTime() + "_" + file.originalname;
     cb(null, `${uniqueName}`);
@@ -23,7 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fieldSize: 10000 },
+  limits: { fieldSize: 1048576 * 10 },
   fileFilter: (req, file, cb) => {
     if (
       file.mimetype == "image/png" ||
@@ -109,7 +104,8 @@ export const addKyc = async (req, res) => {
 export const approveKyc = async (req, res) => {
   let success = false;
   try {
-    let kyc = await Kyc.findOne({ user_id: req.user.id });
+    const { id } = req.body;
+    let kyc = await Kyc.findOne({ user_id: id });
 
     if (!kyc) {
       return res.status(400).send({
@@ -119,7 +115,7 @@ export const approveKyc = async (req, res) => {
     }
 
     kyc = await Kyc.findOneAndUpdate(
-      { user_id: req.user.id },
+      { user_id: id },
       {
         $set: {
           status: true,
@@ -145,9 +141,8 @@ export const checkKYC = async (req, res) => {
   let success = false;
 
   try {
-    let kyc = await Kyc.findOne({
-      userId: req.user._id,
-    });
+    const { id } = req.body;
+    let kyc = await Kyc.findOne({ user_id: id });
 
     if (!kyc) {
       return res.status(404).send({
@@ -156,7 +151,7 @@ export const checkKYC = async (req, res) => {
       });
     }
 
-    if (kyc?.status === true) {
+    if (kyc?.status !== true) {
       return res.status(400).send({
         success,
         message: "KYC Not Approved.",

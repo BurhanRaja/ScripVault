@@ -9,15 +9,21 @@ const Kyc = ({ setAlert }) => {
   const [poi, setPoi] = useState({});
   const [poa, setPoa] = useState({});
 
-  const { isSuccess } = useSelector((state) => state.kycReducer);
-  const dispatch = useDispatch();
+  const [error, setError] = useState("");
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (poi === "" || poa === "") {
+      setError("Please enter the above fields correctly.");
+      return;
+    }
+
+    if (poi.size > 1048576 * 10 || poa.size > 1048576 * 10) {
+      setError("The size of the above file is more.")
       return;
     }
 
@@ -29,7 +35,7 @@ const Kyc = ({ setAlert }) => {
 
     dispatch(addKycThunk(formData)).then((data) => {
       if (!data?.payload.success) {
-        console.log(data)
+        console.log(data);
         setAlert({
           show: true,
           type: "warning",
@@ -42,7 +48,7 @@ const Kyc = ({ setAlert }) => {
           type: "success",
           message: "KYC uploaded Successfully.",
         });
-        navigate("/approve/kyc")
+        navigate("/approve/kyc");
         return;
       }
     });
@@ -58,7 +64,7 @@ const Kyc = ({ setAlert }) => {
             </h2>
             <form encType="multipart/form-data" onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label for="poi" className="block text-sm text-gray-500">
+                <label for="poi" className="block text-sm text-gray-600">
                   Proof of Indentity
                 </label>
                 <input
@@ -68,9 +74,17 @@ const Kyc = ({ setAlert }) => {
                   id="poi"
                   onChange={(e) => setPoi(e.target.files[0])}
                 />
+                <small className="text-sm text-gray-400">
+                  File Size upto: 10MB
+                </small><br/>
+                {poi === "" || error ? (
+                  <small className="text-red-500 mt-2">{error}</small>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="mb-4">
-                <label for="poa" className="block text-sm text-gray-500 ">
+                <label for="poa" className="block text-sm text-gray-600 ">
                   Proof of Address
                 </label>
                 <input
@@ -80,6 +94,14 @@ const Kyc = ({ setAlert }) => {
                   id="poa"
                   onChange={(e) => setPoa(e.target.files[0])}
                 />
+                <small className="text-sm text-gray-400">
+                  File Size upto: 10MB
+                </small><br/>
+                {poa === "" || error ? (
+                  <small className="text-red-500 mt-2">{error}</small>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="flex justify-center mt-6">
                 <button className="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-1/2">
