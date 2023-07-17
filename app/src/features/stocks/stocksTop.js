@@ -10,9 +10,9 @@ const initialState = {
 
 export const getStockTopThunk = createAsyncThunk(
   "stocksTop/get",
-  async (skip, limit) => {
+  async ({skip, limit}) => {
     try {
-      let res = await getTopStocks(skip, limit);
+      let res = await getTopStocks(Number(skip), Number(limit));
       return res;
     } catch (err) {
       return err;

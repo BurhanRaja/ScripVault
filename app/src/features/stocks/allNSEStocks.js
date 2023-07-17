@@ -10,8 +10,7 @@ const initialState = {
 
 export const allNSEStocksThunk = createAsyncThunk(
   "allStocks/nse",
-  async ({skip, limit}) => {
-    console.log(limit)
+  async ({ skip, limit }) => {
     try {
       const res = await getAllStocks("NSE", Number(skip), Number(limit));
       return res;

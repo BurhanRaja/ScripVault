@@ -11,6 +11,7 @@ import stockTopReducer from "../features/stocks/stocksTop";
 import bestMFReducer from "../features/mutualfunds/bestMF";
 import kycReducer from "../features/kyc/kyc";
 import allMutualFundsReducer from "../features/mutualfunds/allMutualFunds";
+import allEtfsReducer from "../features/etfs/allEtfs";
 
 const reducers = combineReducers({
   authReducer,
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   bestMFReducer,
   kycReducer,
   allMutualFundsReducer,
+  allEtfsReducer,
 });
 
 const store = configureStore({

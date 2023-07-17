@@ -50,7 +50,7 @@ const ApproveKyc = ({ setAlert }) => {
       <div className="text-center h-[100vh] flex justify-center items-center">
         <div>
           <h1 className="text-xl mb-5">
-            Please Approve your KYC, to proceed further.
+            As, it is a demo app. Please Approve your KYC, to proceed further.
           </h1>
           <button
             onClick={handleEmail}

@@ -1,14 +1,14 @@
 import React from "react";
 
-const TopStocks = ({ symbol, ltp, priceChange, volume }) => {
+const TopStocks = ({ name, ltp, priceChange, volume }) => {
   return (
     <>
       <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
         <div>
           <h2 className={`text-sm font-bold me-3`}>
-            {symbol.length > 8
-              ? symbol.substring(0, 8) + "..."
-              : symbol }
+            {name?.length > 14
+              ? name?.substring(0, 14) + "..."
+              : name }
           </h2>
         </div>
         <div className='flex justify-around items-center w-[58%]'>

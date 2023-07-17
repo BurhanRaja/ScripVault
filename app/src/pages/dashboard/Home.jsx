@@ -87,6 +87,9 @@ let etfData = [
 ];
 
 const Home = () => {
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(50);
+
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { stocks } = useSelector((state) => state.stockTopReducer);
 
@@ -94,7 +97,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getStockIndexesThunk());
-    dispatch(getStockTopThunk());
+    dispatch(getStockTopThunk({skip, limit}));
   }, []);
 
   useEffect(() => {
@@ -112,6 +115,8 @@ const Home = () => {
       clearInterval(timeOut);
     };
   }, []);
+
+  console.log(stocks);
 
   return (
     <>
@@ -275,7 +280,7 @@ const Home = () => {
                     return (
                       <TopStocks
                         key={el?.name}
-                        symbol={el?.symbol}
+                        name={el?.company}
                         ltp={el?.price}
                         priceChange={el?.change}
                       />
@@ -310,7 +315,7 @@ const Home = () => {
                     return (
                       <TopStocks
                         key={el?.name}
-                        symbol={el?.symbol}
+                        name={el?.company}
                         ltp={el?.price}
                         priceChange={el?.change}
                       />

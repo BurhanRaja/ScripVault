@@ -29,9 +29,7 @@ const Stocks = () => {
       let hour = new Date().getHours();
       if (hour < 16 && hour > 9) {
         clearStockIndexesState();
-        clearNSEStocksState();
         dispatch(getStockIndexesThunk());
-        dispatch(allNSEStocksThunk(skip, limit));
       }
     }, 10000);
 
@@ -39,6 +37,8 @@ const Stocks = () => {
       clearInterval(timeOut);
     };
   }, []);
+
+  console.log(nseData);
 
   return (
     <>

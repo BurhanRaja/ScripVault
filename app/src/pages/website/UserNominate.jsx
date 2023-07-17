@@ -49,7 +49,7 @@ const UserNominate = ({ setAlert }) => {
       } else {
         setAlert({
           show: true,
-          type: "success",
+          type: "info",
           message: "Great! Please do your KYC.",
         });
         navigate("/user/kyc");

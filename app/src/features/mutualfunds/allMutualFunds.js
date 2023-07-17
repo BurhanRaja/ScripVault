@@ -5,7 +5,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   isError: false,
-  allMF: [],
+  allMF: {},
 };
 
 export const getAllMFThunk = createAsyncThunk(
@@ -24,7 +24,9 @@ const allMutualFundsSlice = createSlice({
   name: "allMutualFunds",
   initialState,
   reducers: {
-    clearAllMFState: () => initialState,
+    clearAllMFState: (state) => {
+      state.allMF = {};
+    },
   },
   extraReducers: (build) => {
     build
