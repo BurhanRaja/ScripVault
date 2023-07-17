@@ -19,7 +19,7 @@ import ETFs from "./pages/dashboard/ETFs";
 import Deposit from "./pages/dashboard/Deposit";
 import Withdraw from "./pages/dashboard/Withdraw";
 import ApproveKyc from "./pages/website/ApproveKyc";
-import TopStocks from "./pages/dashboard/TopStocks";
+import TopStocksPage from "./pages/dashboard/TopStocksPage";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -74,7 +74,7 @@ function App() {
             <Route path='/dashboard/home' element={<DashHome />} />
             <Route path='/dashboard/portfolio' element={<Portfolio />} />
 
-            <Route path='/dashboard/topstock/:name' element={<TopStocks />} />
+            <Route path='/dashboard/topstock' element={<TopStocksPage />} />
 
             <Route path='/dashboard/stocks' element={<Stocks />} />
             <Route path='/dashboard/stocks/:id' element={<></>} />
