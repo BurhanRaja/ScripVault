@@ -5,14 +5,19 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   isError: false,
-  nseData: {},
+  nseData: [],
 };
 
-const allNSEStocksThunk = createAsyncThunk(
+export const allNSEStocksThunk = createAsyncThunk(
   "allStocks/nse",
-  async (skip, limit) => {
-    const res = await getAllStocks("NSE", skip, limit);
-    return res;
+  async ({skip, limit}) => {
+    console.log(limit)
+    try {
+      const res = await getAllStocks("NSE", Number(skip), Number(limit));
+      return res;
+    } catch (err) {
+      return err.response.data;
+    }
   }
 );
 
@@ -43,7 +48,6 @@ const allNSEStocksSlice = createSlice({
   },
 });
 
-export const { clearBSEStocksState, clearNSEStocksState } =
-allNSEStocksSlice.actions;
+export const { clearNSEStocksState } = allNSEStocksSlice.actions;
 
 export default allNSEStocksSlice.reducer;

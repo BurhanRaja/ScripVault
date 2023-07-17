@@ -8,10 +8,10 @@ const TopStocks = ({ symbol, ltp, priceChange, volume }) => {
           <h2 className={`text-sm font-bold me-3`}>
             {symbol.length > 8
               ? symbol.substring(0, 8) + "..."
-              : symbol + ".NS"}
+              : symbol }
           </h2>
         </div>
-        <div className='flex justify-between items-center w-[58%]'>
+        <div className='flex justify-around items-center w-[58%]'>
           <p className={` text-xs font-semibold`}>₹{ltp}</p>
           {priceChange > 0 ? (
             <p className={` text-green-500 font-semibold text-xs `}>
@@ -22,7 +22,6 @@ const TopStocks = ({ symbol, ltp, priceChange, volume }) => {
               {priceChange}%
             </p>
           )}
-          <p className={`font-semibold text-xs `}>{volume}</p>
         </div>
       </div>
     </>

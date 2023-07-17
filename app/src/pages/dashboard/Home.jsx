@@ -52,7 +52,7 @@ let etfData = [
     name: "Best Sector ETFs",
     logo: (
       <>
-        <IoPieChartSharp className='text-3xl text-gray-500' />
+        <IoPieChartSharp className="text-3xl text-gray-500" />
       </>
     ),
     url: "",
@@ -61,7 +61,7 @@ let etfData = [
     name: "Best Gold ETFs",
     logo: (
       <>
-        <AiFillGolden className='text-3xl text-gray-500' />
+        <AiFillGolden className="text-3xl text-gray-500" />
       </>
     ),
     url: "",
@@ -70,7 +70,7 @@ let etfData = [
     name: "Best Index ETFs",
     logo: (
       <>
-        <HiChartSquareBar className='text-3xl text-gray-500' />
+        <HiChartSquareBar className="text-3xl text-gray-500" />
       </>
     ),
     url: "",
@@ -79,7 +79,7 @@ let etfData = [
     name: "Best Bond ETFs",
     logo: (
       <>
-        <GiTiedScroll className='text-3xl text-gray-500' />
+        <GiTiedScroll className="text-3xl text-gray-500" />
       </>
     ),
     url: "",
@@ -173,30 +173,30 @@ const Home = () => {
         </div>
       </div> */}
 
-      <div className='bg-gray-100 p-2'>
-        <div className='flex'>
-          <div className='w-[69%] p-4 me-2 bg-white rounded-md'>
-            <h1 className='text-3xl font-bold p-5'>Dashboard</h1>
-            <div className='flex justify-evenly mb-10 mt-3'>
-              <div className='w-[45%] border p-4'>
-                <h4 className='text-xl font-bold'>Total Investment</h4>
-                <p className='text-lg mt-4 text-gray-600 font-semibold'>
+      <div className="bg-gray-100 p-2">
+        <div className="flex">
+          <div className="w-[69%] p-4 me-2 bg-white rounded-md">
+            <h1 className="text-3xl font-bold p-5">Dashboard</h1>
+            <div className="flex justify-evenly mb-10 mt-3">
+              <div className="w-[45%] border p-4">
+                <h4 className="text-xl font-bold">Total Investment</h4>
+                <p className="text-lg mt-4 text-gray-600 font-semibold">
                   ₹ 1,00,000
                 </p>
               </div>
-              <div className='w-[45%] border p-4'>
-                <h4 className='text-xl font-bold '>Total Profit</h4>
-                <p className='text-lg mt-4 text-green-500 font-semibold'>
+              <div className="w-[45%] border p-4">
+                <h4 className="text-xl font-bold ">Total Profit</h4>
+                <p className="text-lg mt-4 text-green-500 font-semibold">
                   ₹ 1,00,000
                 </p>
               </div>
             </div>
-            <img src='/assets/images/demo-chart.png' width={800} />
-            <div className='mt-8'>
-              <h1 className='text-2xl font-semibold text-start p-5 pt-0'>
+            <img src="/assets/images/demo-chart.png" width={800} />
+            <div className="mt-8">
+              <h1 className="text-2xl font-semibold text-start p-5 pt-0">
                 Discover Mutual Funds
               </h1>
-              <div className='flex justify-center items-center flex-wrap w-[100%]'>
+              <div className="flex justify-center items-center flex-wrap w-[100%]">
                 {dataMF?.map((el) => {
                   return (
                     <TypeMF
@@ -209,11 +209,11 @@ const Home = () => {
                 })}
               </div>
             </div>
-            <div className='mt-8'>
-              <h1 className='text-2xl font-semibold text-start p-5 pt-0'>
+            <div className="mt-8">
+              <h1 className="text-2xl font-semibold text-start p-5 pt-0">
                 Discover ETFs
               </h1>
-              <div className='flex justify-center items-center flex-wrap w-[100%]'>
+              <div className="flex justify-center items-center flex-wrap w-[100%]">
                 {etfData?.map((el) => {
                   return (
                     <TypeETF
@@ -227,48 +227,47 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className='w-[29%]'>
-            <div className='bg-white p-3 rounded-md mb-3'>
-              <h1 className='text-lg mb-2 font-semibold'>Stock Indexes</h1>
+          <div className="w-[29%]">
+            <div className="bg-white p-3 rounded-md mb-3">
+              <h1 className="text-lg mb-2 font-semibold">Stock Indexes</h1>
               <StockIndexWidget
                 name={indexes?.nse?.name}
                 symbol={indexes?.nse?.symbol}
-                currPrice={parseFloat(indexes?.nse?.current_price).toFixed(2)}
-                currPer={parseFloat(indexes?.nse?.curr_per).toFixed(3)}
-                currGap={parseFloat(indexes?.nse?.curr_gap).toFixed(3)}
+                currPrice={parseFloat(indexes?.nse?.curr_price).toFixed(2)}
+                currPer={parseFloat(indexes?.nse?.curr_per_change).toFixed(3)}
+                currGap={parseFloat(indexes?.nse?.curr_change).toFixed(3)}
                 size={"w-[100%] mb-4"}
               />
               <StockIndexWidget
                 name={indexes?.bse?.name}
                 symbol={indexes?.bse?.symbol}
-                currPrice={parseFloat(indexes?.bse?.current_price).toFixed(2)}
-                currPer={parseFloat(indexes?.bse?.curr_per).toFixed(3)}
-                currGap={parseFloat(indexes?.bse?.curr_gap).toFixed(3)}
+                currPrice={parseFloat(indexes?.bse?.curr_price).toFixed(2)}
+                currPer={parseFloat(indexes?.bse?.curr_per_change).toFixed(3)}
+                currGap={parseFloat(indexes?.bse?.curr_change).toFixed(3)}
                 size={"w-[100%]"}
               />
             </div>
-            <div className='bg-white p-3 rounded-md mb-3'>
-              <div className='flex justify-between mb-2 items-center'>
-                <h1 className='text-lg font-semibold'>Top Gainers</h1>
-                <button className='text-sm text-blue-600 underline'>
+            <div className="bg-white p-3 rounded-md mb-3">
+              <div className="flex justify-between mb-2 items-center">
+                <h1 className="text-lg font-semibold">Top Gainers</h1>
+                <button className="text-sm text-blue-600 underline">
                   Know More
                 </button>
               </div>
-              <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
+              <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
                 <div>
                   <h2 className={`text-sm font-bold me-3`}>Symbol</h2>
                 </div>
-                <div className='flex justify-between items-center w-[58%]'>
+                <div className="flex justify-around items-center w-[58%]">
                   <p className={`text-xs font-semibold`}>LTP</p>
                   <p className={`font-semibold text-xs `}>%Chng</p>
-                  <p className={`font-semibold text-xs `}>Vol.</p>
                 </div>
               </div>
               {!stocks ? (
                 <>
-                  <span className='w-5/6 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-5/6 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-5/6 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className="w-5/6 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-5/6 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-5/6 h-5 block rounded bg-gray-200 animate-pulse"></span>
                 </>
               ) : (
                 stocks?.gainers?.map((el, index) => {
@@ -277,37 +276,33 @@ const Home = () => {
                       <TopStocks
                         key={el?.name}
                         symbol={el?.symbol}
-                        ltp={el?.lastPrice}
-                        priceChange={el?.pChange}
-                        volume={
-                          String(el?.totalTradedValue).substring(0, 5) + "..."
-                        }
+                        ltp={el?.price}
+                        priceChange={el?.change}
                       />
                     );
                   }
                 })
               )}
-              <div className='flex justify-between mb-2 items-center mt-3'>
-                <h1 className='text-lg font-semibold'>Top Losers</h1>
-                <button className='text-sm text-blue-600 underline'>
+              <div className="flex justify-between mb-2 items-center mt-3">
+                <h1 className="text-lg font-semibold">Top Losers</h1>
+                <button className="text-sm text-blue-600 underline">
                   Know More
                 </button>
               </div>
-              <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
+              <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
                 <div>
                   <h2 className={`text-sm font-bold me-3`}>Symbol</h2>
                 </div>
-                <div className='flex justify-between items-center w-[50%]'>
+                <div className="flex justify-around items-center w-[58%]">
                   <p className={`text-xs font-semibold`}>LTP</p>
                   <p className={`font-semibold text-xs `}>%Chng</p>
-                  <p className={`font-semibold text-xs `}>Vol.</p>
                 </div>
               </div>
               {!stocks ? (
                 <>
-                  <span className='w-5/6 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-5/6 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-5/6 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className="w-5/6 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-5/6 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-5/6 h-5 block rounded bg-gray-200 animate-pulse"></span>
                 </>
               ) : (
                 stocks?.losers?.map((el, index) => {
@@ -316,11 +311,8 @@ const Home = () => {
                       <TopStocks
                         key={el?.name}
                         symbol={el?.symbol}
-                        ltp={el?.lastPrice}
-                        priceChange={el?.pChange}
-                        volume={
-                          String(el?.totalTradedValue).substring(0, 5) + "..."
-                        }
+                        ltp={el?.price}
+                        priceChange={el?.change}
                       />
                     );
                   }

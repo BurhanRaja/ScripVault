@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getAllStocks = async (symbol, skip, limit) => {
+export const getAllStocks = async (symbol, skip=0, limit=10) => {
   const response = await axios.get(
     process.env.REACT_APP_STOCK_API +
       `all/stocks/${symbol}?skip=${skip}&limit=${limit}`
@@ -22,29 +22,6 @@ export const getFinancialRatios = async (symbol) => {
   return response.data;
 };
 
-export const getRevenueGraph = async (symbol, duration = "yearly") => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `revenue/statement/graph/${symbol}?duration=${duration}`
-  );
-  return response.data;
-};
-
-export const getBalanceSheetGraph = async (symbol, duration = "yearly") => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `balance/sheet/graph/${symbol}?duration=${duration}`
-  );
-  return response.data;
-};
-
-export const getCashFlowGraph = async (symbol, duration = "yearly") => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `cash/flow/graph/${symbol}?duration=${duration}`
-  );
-  return response.data;
-};
 
 export const getStockInfo = async (symbol) => {
   const response = await axios.get(
@@ -84,9 +61,9 @@ export const getIndexes = async () => {
   return response.data;
 };
 
-export const getTopStocks = async () => {
+export const getTopStocks = async (skip=0, limit=4) => {
   const response = await axios.get(
-    process.env.REACT_APP_STOCK_API + "top/stocks"
+    process.env.REACT_APP_STOCK_API + `top/stocks?skip=${skip}&limit=${limit}`
   );
   return response.data;
 };

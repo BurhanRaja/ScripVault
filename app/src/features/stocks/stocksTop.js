@@ -5,17 +5,20 @@ const initialState = {
   isSuccess: false,
   isError: false,
   isLoading: false,
-  stocks: {}
+  stocks: {},
 };
 
-export const getStockTopThunk = createAsyncThunk("stocksTop/get", async () => {
-  try {
-    let res = await getTopStocks();
-    return res;
-  } catch (err) {
-    return err;
+export const getStockTopThunk = createAsyncThunk(
+  "stocksTop/get",
+  async (skip, limit) => {
+    try {
+      let res = await getTopStocks(skip, limit);
+      return res;
+    } catch (err) {
+      return err;
+    }
   }
-});
+);
 
 const stockTopSlice = createSlice({
   name: "stocksTop",

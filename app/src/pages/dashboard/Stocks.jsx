@@ -1,8 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StockCards from "../../components/dashboard/cards/StockCards";
 import StockIndexWidget from "../../components/dashboard/widgets/StockIndexWidget";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  allNSEStocksThunk,
+  clearNSEStocksState,
+} from "../../features/stocks/allNSEStocks";
+import {
+  clearStockIndexesState,
+  getStockIndexesThunk,
+} from "../../features/stocks/stockIndexes";
 
 const Stocks = () => {
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(50);
+
+  const { indexes } = useSelector((state) => state.stockIndexesReducer);
+  const { isLoading, nseData } = useSelector((state) => state.stockNSEReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(allNSEStocksThunk({ skip, limit }));
+    dispatch(getStockIndexesThunk());
+  }, []);
+
+  useEffect(() => {
+    let timeOut = setInterval(() => {
+      let hour = new Date().getHours();
+      if (hour < 16 && hour > 9) {
+        clearStockIndexesState();
+        clearNSEStocksState();
+        dispatch(getStockIndexesThunk());
+        dispatch(allNSEStocksThunk(skip, limit));
+      }
+    }, 10000);
+
+    return () => {
+      clearInterval(timeOut);
+    };
+  }, []);
+
   return (
     <>
       <div className="bg-gray-100 p-2">
@@ -10,55 +47,45 @@ const Stocks = () => {
           <h1 className="text-3xl font-bold mb-8 p-5">Stocks</h1>
           <div className="flex justify-evenly items-center mb-5">
             <StockIndexWidget
-              name={"Nifty 50"}
-              symbol={"NFTY50"}
-              currPrice={23591.78}
-              currPer={0.48}
-              currGap={1.72}
+              name={indexes?.nse?.name}
+              symbol={indexes?.nse?.symbol}
+              currPrice={parseFloat(indexes?.nse?.curr_price).toFixed(2)}
+              currPer={parseFloat(indexes?.nse?.curr_per_change).toFixed(3)}
+              currGap={parseFloat(indexes?.nse?.curr_change).toFixed(3)}
               size={"w-[40%]"}
             />
             <StockIndexWidget
-              name={"Sensex"}
-              symbol={"SENSEX"}
-              currPrice={23591.78}
-              currPer={0.48}
-              currGap={1.72}
+              name={indexes?.bse?.name}
+              symbol={indexes?.bse?.symbol}
+              currPrice={parseFloat(indexes?.bse?.curr_price).toFixed(2)}
+              currPer={parseFloat(indexes?.bse?.curr_per_change).toFixed(3)}
+              currGap={parseFloat(indexes?.bse?.curr_change).toFixed(3)}
               size={"w-[40%]"}
             />
           </div>
           <div className="p-5">
-            <h1 className="text-2xl font-bold mb-5">NSE Stocks</h1>
-            <StockCards
-              name={"Bajaj Finserv Ltd."}
-              symbol={"BAJAJFINSV.NS"}
-              price={1597.8}
-              priceChange={-17.1}
-              perChange={-1.4}
-            />
-            <StockCards
-              name={"Bajaj Finserv Ltd."}
-              symbol={"BAJAJFINSV.NS"}
-              price={1597.8}
-              priceChange={-17.1}
-              perChange={-1.4}
-            />
-          </div>
-          <div className="p-5">
-            <h1 className="text-2xl font-bold mb-5">BSE Stocks</h1>
-            <StockCards
-              name={"Bajaj Finserv Ltd."}
-              symbol={"BAJAJFINSV.NS"}
-              price={1597.8}
-              priceChange={-17.1}
-              perChange={-1.4}
-            />
-            <StockCards
-              name={"Bajaj Finserv Ltd."}
-              symbol={"BAJAJFINSV.NS"}
-              price={1597.8}
-              priceChange={-17.1}
-              perChange={-1.4}
-            />
+            {nseData?.length === 0 && isLoading ? (
+              <>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+              </>
+            ) : (
+              nseData?.map((el) => {
+                return (
+                  <StockCards
+                    key={el?.symbol}
+                    name={el?.name}
+                    symbol={el?.symbol}
+                    price={el?.curr_price}
+                    priceChange={el?.curr_change}
+                    perChange={el?.curr_per_change}
+                  />
+                );
+              })
+            )}
           </div>
         </div>
       </div>

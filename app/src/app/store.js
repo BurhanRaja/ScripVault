@@ -10,6 +10,7 @@ import stockIndexesReducer from "../features/stocks/stockIndexes";
 import stockTopReducer from "../features/stocks/stocksTop";
 import bestMFReducer from "../features/mutualfunds/bestMF";
 import kycReducer from "../features/kyc/kyc";
+import allMutualFundsReducer from "../features/mutualfunds/allMutualFunds";
 
 const reducers = combineReducers({
   authReducer,
@@ -23,6 +24,7 @@ const reducers = combineReducers({
   stockIndexesReducer,
   bestMFReducer,
   kycReducer,
+  allMutualFundsReducer,
 });
 
 const store = configureStore({
