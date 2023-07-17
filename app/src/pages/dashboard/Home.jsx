@@ -91,7 +91,7 @@ const Home = () => {
   const [limit, setLimit] = useState(50);
 
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
-  const { stocks } = useSelector((state) => state.stockTopReducer);
+  const { stocks, isLoading } = useSelector((state) => state.stockTopReducer);
 
   const dispatch = useDispatch();
 
@@ -115,8 +115,6 @@ const Home = () => {
       clearInterval(timeOut);
     };
   }, []);
-
-  console.log(stocks);
 
   return (
     <>
@@ -303,7 +301,7 @@ const Home = () => {
                   <p className={`font-semibold text-xs `}>%Chng</p>
                 </div>
               </div>
-              {!stocks ? (
+              {isLoading ? (
                 <>
                   <span className="w-5/6 h-5 block rounded bg-gray-200 animate-pulse"></span>
                   <span className="w-5/6 h-5 block rounded bg-gray-200 animate-pulse"></span>
