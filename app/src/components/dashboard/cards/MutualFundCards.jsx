@@ -8,7 +8,7 @@ const MutualFundCards = ({ name, symbol, price, oneYear, fiveYear }) => {
           <h2 className={`text-xl font-bold`}>{name?.substring(0, 35)}..</h2>
         </div>
         <div className="flex justify-between items-center w-[25%]">
-          <p className={` font-semibold`}>₹{price}</p>
+          <p className={` font-semibold`}>{price}</p>
           {oneYear > 0 ? (
             <p className={` text-green-500 font-semibold`}>{oneYear}%</p>
           ) : oneYear < 0 ? (
@@ -18,8 +18,10 @@ const MutualFundCards = ({ name, symbol, price, oneYear, fiveYear }) => {
           )}
           {fiveYear > 0 ? (
             <p className={` text-green-500 font-semibold`}>{fiveYear}%</p>
-          ) : (
+          ) : fiveYear < 0 ? (
             <p className={` text-red-500 font-semibold`}>{fiveYear}%</p>
+          ) : (
+            <p className="font-semibold">{fiveYear}%</p>
           )}
         </div>
         <div className="w-[20%] flex justify-between">

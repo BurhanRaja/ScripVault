@@ -15,7 +15,7 @@ export const getStockTopThunk = createAsyncThunk(
       let res = await getTopStocks(Number(skip), Number(limit));
       return res;
     } catch (err) {
-      return err.response.data;
+      return err?.response.data;
     }
   }
 );

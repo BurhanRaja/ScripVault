@@ -16,6 +16,7 @@ import { AiFillGolden } from "react-icons/ai";
 import { HiChartSquareBar } from "react-icons/hi";
 import { GiTiedScroll } from "react-icons/gi";
 import TypeETF from "../../components/dashboard/widgets/TypeETF";
+import { Link } from "react-router-dom";
 // name, symbol, currPrice, currPer, currGap, size
 
 // Data
@@ -23,27 +24,27 @@ let dataMF = [
   {
     name: "Best Long Term Mutual Funds",
     logo: "/assets/svgs/best-long-term.svg",
-    url: "/mutual-funds/best/long-term",
+    url: "/dashboard/mutual-funds/best/long-term",
   },
   {
     name: "Best Returns Mutual Funds",
     logo: "/assets/svgs/best-returns.svg",
-    url: "/mutual-funds/best/returns",
+    url: "/dashboard/mutual-funds/best/returns",
   },
   {
     name: "Best Tax Saver Mutual Funds",
     logo: "/assets/svgs/best-tax-saver.svg",
-    url: "/mutual-funds/best/tax-saver",
+    url: "/dashboard/mutual-funds/best/tax-saver",
   },
   {
     name: "Best Equity Mutual Funds",
     logo: "/assets/svgs/best-equity.svg",
-    url: "/mutual-funds/best/equity",
+    url: "/dashboard/mutual-funds/best/equity",
   },
   {
     name: "Best Debt Mutual Funds",
     logo: "/assets/svgs/best-debt.svg",
-    url: "/mutual-funds/best/debt",
+    url: "/dashboard/mutual-funds/best/debt",
   },
 ];
 
@@ -97,15 +98,15 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getStockIndexesThunk());
-    dispatch(getStockTopThunk({skip, limit}));
+    dispatch(getStockTopThunk({ skip, limit }));
   }, []);
 
   useEffect(() => {
     let timeOut = setInterval(() => {
       let hour = new Date().getHours();
       if (hour < 16 && hour > 9) {
-        clearStockIndexesState();
-        clearStockTopState();
+        dispatch(clearStockIndexesState());
+        dispatch(clearStockTopState());
         dispatch(getStockIndexesThunk());
         dispatch(getStockTopThunk());
       }
@@ -253,9 +254,11 @@ const Home = () => {
             <div className="bg-white p-3 rounded-md mb-3">
               <div className="flex justify-between mb-2 items-center">
                 <h1 className="text-lg font-semibold">Top Gainers</h1>
-                <button className="text-sm text-blue-600 underline">
-                  Know More
-                </button>
+                <Link to={"/dashboard/topstock"}>
+                  <button className="text-sm text-blue-600 underline">
+                    Know More
+                  </button>
+                </Link>
               </div>
               <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
                 <div>
@@ -278,7 +281,11 @@ const Home = () => {
                     return (
                       <TopStocks
                         key={el?.name}
-                        name={el?.company}
+                        name={
+                          el?.company?.length > 14
+                            ? el?.company?.substring(0, 14) + "..."
+                            : el?.company
+                        }
                         ltp={el?.price}
                         priceChange={el?.change}
                       />
@@ -288,9 +295,11 @@ const Home = () => {
               )}
               <div className="flex justify-between mb-2 items-center mt-3">
                 <h1 className="text-lg font-semibold">Top Losers</h1>
-                <button className="text-sm text-blue-600 underline">
-                  Know More
-                </button>
+                <Link to={"/dashboard/topstock"}>
+                  <button className="text-sm text-blue-600 underline">
+                    Know More
+                  </button>
+                </Link>
               </div>
               <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
                 <div>
@@ -313,7 +322,11 @@ const Home = () => {
                     return (
                       <TopStocks
                         key={el?.name}
-                        name={el?.company}
+                        name={
+                          el?.company?.length > 14
+                            ? el?.company?.substring(0, 14) + "..."
+                            : el?.company
+                        }
                         ltp={el?.price}
                         priceChange={el?.change}
                       />

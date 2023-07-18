@@ -6,9 +6,7 @@ const TopStocks = ({ name, ltp, priceChange, volume }) => {
       <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
         <div>
           <h2 className={`text-sm font-bold me-3`}>
-            {name?.length > 14
-              ? name?.substring(0, 14) + "..."
-              : name }
+            {name}
           </h2>
         </div>
         <div className='flex justify-around items-center w-[58%]'>

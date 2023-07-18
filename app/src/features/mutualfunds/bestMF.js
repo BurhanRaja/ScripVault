@@ -20,9 +20,9 @@ const initialState = {
 
 export const getBestDebtFundsThunk = createAsyncThunk(
   "mfBest/debt",
-  async () => {
+  async ({ skip, limit }) => {
     try {
-      let res = await getAllBestDebtFunds();
+      let res = await getAllBestDebtFunds(Number(skip), Number(limit));
       return res;
     } catch (err) {
       return err;
@@ -32,9 +32,9 @@ export const getBestDebtFundsThunk = createAsyncThunk(
 
 export const getBestLongTermFundsThunk = createAsyncThunk(
   "mfBest/longTerm",
-  async () => {
+  async ({ skip, limit }) => {
     try {
-      let res = await getAllBestLongTermFunds();
+      let res = await getAllBestLongTermFunds(Number(skip), Number(limit));
       return res;
     } catch (err) {
       return err;
@@ -44,9 +44,9 @@ export const getBestLongTermFundsThunk = createAsyncThunk(
 
 export const getBestReturnsFundsThunk = createAsyncThunk(
   "mfBest/returns",
-  async () => {
+  async ({ skip, limit }) => {
     try {
-      let res = await getAllBestReturnsFunds();
+      let res = await getAllBestReturnsFunds(Number(skip), Number(limit));
       return res;
     } catch (err) {
       return err;
@@ -56,9 +56,9 @@ export const getBestReturnsFundsThunk = createAsyncThunk(
 
 export const getBestEquityFundsThunk = createAsyncThunk(
   "mfBest/equity",
-  async () => {
+  async ({ skip, limit }) => {
     try {
-      let res = await getAllBestEquityFunds();
+      let res = await getAllBestEquityFunds(Number(skip), Number(limit));
       return res;
     } catch (err) {
       return err;
@@ -68,9 +68,9 @@ export const getBestEquityFundsThunk = createAsyncThunk(
 
 export const getBestTaxSaverFundsThunk = createAsyncThunk(
   "mfBest/taxSaver",
-  async () => {
+  async ({ skip, limit }) => {
     try {
-      let res = await getAllBestTaxSaverFunds();
+      let res = await getAllBestTaxSaverFunds(Number(skip), Number(limit));
       return res;
     } catch (err) {
       return err;
@@ -82,11 +82,7 @@ const bestMFSlice = createSlice({
   name: "mfBest",
   initialState,
   reducers: {
-    clearBestDebtState: () => initialState,
-    clearBestLongTermState: () => initialState,
-    clearBestTaxSaverState: () => initialState,
-    clearBestEquityState: () => initialState,
-    clearBestReturnsState: () => initialState,
+    clearBestMFState: () => initialState,
   },
   extraReducers: (build) => {
     build
@@ -153,12 +149,6 @@ const bestMFSlice = createSlice({
   },
 });
 
-export const {
-  clearBestDebtState,
-  clearBestEquityState,
-  clearBestLongTermState,
-  clearBestReturnsState,
-  clearBestTaxSaverState,
-} = bestMFSlice.actions;
+export const { clearBestMFState } = bestMFSlice.actions;
 
 export default bestMFSlice.reducer;
