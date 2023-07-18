@@ -24,27 +24,27 @@ let dataMF = [
   {
     name: "Best Long Term Mutual Funds",
     logo: "/assets/svgs/best-long-term.svg",
-    url: "/mutual-funds/best/long-term",
+    url: "/dashboard/mutual-funds/best/long-term",
   },
   {
     name: "Best Returns Mutual Funds",
     logo: "/assets/svgs/best-returns.svg",
-    url: "/mutual-funds/best/returns",
+    url: "/dashboard/mutual-funds/best/returns",
   },
   {
     name: "Best Tax Saver Mutual Funds",
     logo: "/assets/svgs/best-tax-saver.svg",
-    url: "/mutual-funds/best/tax-saver",
+    url: "/dashboard/mutual-funds/best/tax-saver",
   },
   {
     name: "Best Equity Mutual Funds",
     logo: "/assets/svgs/best-equity.svg",
-    url: "/mutual-funds/best/equity",
+    url: "/dashboard/mutual-funds/best/equity",
   },
   {
     name: "Best Debt Mutual Funds",
     logo: "/assets/svgs/best-debt.svg",
-    url: "/mutual-funds/best/debt",
+    url: "/dashboard/mutual-funds/best/debt",
   },
 ];
 
@@ -296,9 +296,9 @@ const Home = () => {
               <div className="flex justify-between mb-2 items-center mt-3">
                 <h1 className="text-lg font-semibold">Top Losers</h1>
                 <Link to={"/dashboard/topstock"}>
-                <button className="text-sm text-blue-600 underline">
-                  Know More
-                </button>
+                  <button className="text-sm text-blue-600 underline">
+                    Know More
+                  </button>
                 </Link>
               </div>
               <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
