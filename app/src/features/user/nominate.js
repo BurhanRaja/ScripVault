@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addUserNominate,
-  getSingleUserNominate,
   getUserNominate,
   updateUserNominate,
 } from "../../api/user";
@@ -29,18 +28,10 @@ export const updateNominateThunk = createAsyncThunk(
   }
 );
 
-export const getNominatesThunk = createAsyncThunk(
+export const getNominateThunk = createAsyncThunk(
   "nominate/allNominates",
   async () => {
     let res = await getUserNominate();
-    return res;
-  }
-);
-
-export const getSingleNominateThunk = createAsyncThunk(
-  "nominate/singleNominate",
-  async (id) => {
-    let res = await getSingleUserNominate(id);
     return res;
   }
 );

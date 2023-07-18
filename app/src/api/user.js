@@ -39,7 +39,7 @@ export const addUserNominate = async (data) => {
 
 // Get User
 export const getUser = async () => {
-  const response = await axios.get(config.node_url + "/api/user/", {
+  const response = await axios.get(config.node_url + "/api/user", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -99,17 +99,7 @@ export const updateBankDetails = async (data) => {
 };
 
 // Get User Nominate
-export const getUserNominate = async () => {
-  const response = await axios.get(config.node_url + "/api/user/all/nominate", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return response.data;
-};
-
-// Get Single User Nominate
-export const getSingleUserNominate = async (id) => {
+export const getUserNominate = async (id) => {
   const response = await axios.get(
     config.node_url + `/api/user/nominate/${id}`,
     {
@@ -152,13 +142,5 @@ export const changeUserPassword = async (data) => {
     }
   );
 
-  return response.data;
-};
-
-// Delete User Nominate
-export const deleteUserNominate = async (id) => {
-  const response = await axios.delete(
-    config.node_url + `/api/user/delete/nominate/${id}`
-  );
   return response.data;
 };
