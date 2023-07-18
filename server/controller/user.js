@@ -229,11 +229,9 @@ export const updateBankDetails = async (req, res) => {
       { _id: req.user.id },
       {
         $set: {
-          bank: {
-            accountNumber,
-            accountType,
-            ifsc,
-          },
+          "bank.accountNumber": accountNumber,
+          "bank.accountType": accountType,
+          "bank.ifsc": ifsc,
         },
       }
     );
@@ -272,12 +270,10 @@ export const updateUserInfo = async (req, res) => {
       { _id: req.user.id },
       {
         $set: {
-          info: {
-            dob,
-            pan,
-            sourceWealth,
-            address,
-          },
+          "info.dob": dob,
+          "info.pan": pan,
+          "info.sourceWealth": sourceWealth,
+          "info.address": address,
         },
       }
     );
@@ -316,11 +312,9 @@ export const updateUser = async (req, res) => {
       { _id: req.user.id },
       {
         $set: {
-          basic: {
-            full_name,
-            email,
-            phone,
-          },
+          "basic.full_name": full_name,
+          "basic.email": email,
+          "basic.phone": phone,
         },
       }
     );
@@ -448,7 +442,6 @@ export const getSingleUserNominate = async (req, res) => {
   try {
     const userNominate = await UserNominate.findOne({
       user_id: req.user.id,
-      _id: req.params.id,
     });
 
     if (!userNominate) {
@@ -496,12 +489,10 @@ export const updateUserNominate = async (req, res) => {
       },
       {
         $set: {
-          nominate: {
-            relationship,
-            name,
-            dob,
-            address,
-          },
+          "nominate.relationship": relationship,
+          "nominate.name": name,
+          "nominate.dob": dob,
+          "nominate.address": address,
         },
       }
     );

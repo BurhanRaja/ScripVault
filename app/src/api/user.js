@@ -51,9 +51,7 @@ export const getUser = async () => {
 export const updateUser = async (data) => {
   const response = await axios.put(
     config.node_url + "/api/user/update/user",
-    {
-      data,
-    },
+    data,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -68,9 +66,7 @@ export const updateUser = async (data) => {
 export const updateUserInfo = async (data) => {
   const response = await axios.put(
     config.node_url + "/api/user/update/userInfo",
-    {
-      data,
-    },
+    data,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -85,9 +81,7 @@ export const updateUserInfo = async (data) => {
 export const updateBankDetails = async (data) => {
   const response = await axios.put(
     config.node_url + "/api/user/update/userBank",
-    {
-      data,
-    },
+    data,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -99,15 +93,12 @@ export const updateBankDetails = async (data) => {
 };
 
 // Get User Nominate
-export const getUserNominate = async (id) => {
-  const response = await axios.get(
-    config.node_url + `/api/user/nominate/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+export const getUserNominate = async () => {
+  const response = await axios.get(config.node_url + `/api/user/nominate`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
@@ -115,9 +106,7 @@ export const getUserNominate = async (id) => {
 export const updateUserNominate = async (id, data) => {
   const response = await axios.put(
     config.node_url + `/api/user/update/nominate/${id}`,
-    {
-      data,
-    },
+    data,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -132,9 +121,7 @@ export const updateUserNominate = async (id, data) => {
 export const changeUserPassword = async (data) => {
   const response = await axios.put(
     config.node_url + "/api/user/changepassword",
-    {
-      data,
-    },
+    data,
     {
       headers: {
         Authorization: `Bearer ${token}`,

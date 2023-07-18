@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addUserInfo, getUser, updateUserInfo } from "../../api/user";
+import { addUserInfo, getUser } from "../../api/user";
 
 const initialState = {
   isSuccess: false,
@@ -17,13 +17,6 @@ export const addUserInfoThunk = createAsyncThunk("info/add", async (data) => {
   }
 });
 
-export const updateUserInfoThunk = createAsyncThunk(
-  "info/update",
-  async (data) => {
-    let res = await updateUserInfo(data);
-    return res;
-  }
-);
 
 export const getUserThunk = createAsyncThunk("info/user", async () => {
   let res = await getUser();
@@ -49,24 +42,13 @@ const userInfoSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
       })
-      .addCase(updateUserInfoThunk.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateUserInfoThunk.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-      })
-      .addCase(updateUserInfoThunk.rejected, (state) => {
-        state.isLoading = false;
-        state.isError = true;
-      })
       .addCase(getUserThunk.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getUserThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = payload;
+        state.user = payload?.user;
       })
       .addCase(getUserThunk.rejected, (state) => {
         state.isLoading = false;

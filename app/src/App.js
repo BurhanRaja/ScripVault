@@ -19,7 +19,9 @@ import ETFs from "./pages/dashboard/ETFs";
 import Deposit from "./pages/dashboard/Deposit";
 import Withdraw from "./pages/dashboard/Withdraw";
 import ApproveKyc from "./pages/website/ApproveKyc";
-import TopStocks from "./pages/dashboard/TopStocks";
+import TopStocksPage from "./pages/dashboard/TopStocksPage";
+import UserAccount from "./pages/dashboard/UserAccount";
+import BestMF from "./pages/dashboard/BestMF";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -90,10 +92,13 @@ function App() {
             <Route path="/dashboard/etfs/:id" element={<></>} />
             <Route path="/dashboard/etfs/best/:name" element={<></>} />
 
-            <Route path='/dashboard/deposit' element={<Deposit />} />
-            <Route path='/dashboard/withdraw' element={<Withdraw />} />
-            <Route path='/dashboard/watchlist' element={<>Hello</>} />
-            <Route path='/dashboard/profile' element={<>Hello</>} />
+            <Route path="/dashboard/deposit" element={<Deposit />} />
+            <Route path="/dashboard/withdraw" element={<Withdraw />} />
+            <Route path="/dashboard/watchlist" element={<>Hello</>} />
+            <Route
+              path="/dashboard/profile"
+              element={<UserAccount setAlert={setAlert} />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
