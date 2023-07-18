@@ -9,6 +9,7 @@ import stockNSEReducer from "../features/stocks/allNSEStocks";
 import stockIndexesReducer from "../features/stocks/stockIndexes";
 import stockTopReducer from "../features/stocks/stocksTop";
 import bestMFReducer from "../features/mutualfunds/bestMF";
+import bestETFReducer from "../features/etfs/bestETF";
 import kycReducer from "../features/kyc/kyc";
 import allMutualFundsReducer from "../features/mutualfunds/allMutualFunds";
 import allEtfsReducer from "../features/etfs/allEtfs";
@@ -24,6 +25,7 @@ const reducers = combineReducers({
   stockNSEReducer,
   stockIndexesReducer,
   bestMFReducer,
+  bestETFReducer,
   kycReducer,
   allMutualFundsReducer,
   allEtfsReducer,

@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
-
 import {
-  clearBestMFState,
-  getBestDebtFundsThunk,
-  getBestEquityFundsThunk,
-  getBestLongTermFundsThunk,
-  getBestReturnsFundsThunk,
-  getBestTaxSaverFundsThunk,
-} from "../../features/mutualfunds/bestMF";
-import BestMutualFunds from "../../components/dashboard/BestMutualFunds";
+  clearBestETFState,
+  getBestBondETFThunk,
+  getBestGoldETFThunk,
+  getBestIndexETFThunk,
+  getBestSectorETFThunk,
+} from "../../features/etfs/bestETF";
+import BestETFMap from "../../components/dashboard/BestETFMap";
 
-const BestMF = () => {
+const BestETF = () => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
   const [data, setData] = useState({});
@@ -24,58 +20,49 @@ const BestMF = () => {
     isSuccess,
     isLoading,
     isError,
-    bestDebt,
-    bestLongTerm,
-    bestReturns,
-    bestEquity,
-    bestTaxSaver,
-  } = useSelector((state) => state.bestMFReducer);
+    bestBondETF,
+    bestIndexETF,
+    bestGoldETF,
+    bestSectorETF,
+  } = useSelector((state) => state.bestETFReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (name === "long-term") {
-      dispatch(clearBestMFState());
-      dispatch(getBestLongTermFundsThunk({ skip, limit }));
+    if (name === "sector") {
+      dispatch(clearBestETFState());
+      dispatch(getBestSectorETFThunk({ skip, limit }));
     }
-    if (name === "returns") {
-      dispatch(clearBestMFState());
-      dispatch(getBestReturnsFundsThunk({ skip, limit }));
+    if (name === "bond") {
+      dispatch(clearBestETFState());
+      dispatch(getBestBondETFThunk({ skip, limit }));
     }
-    if (name === "tax-saver") {
-      dispatch(clearBestMFState());
-      dispatch(getBestTaxSaverFundsThunk({ skip, limit }));
+    if (name === "gold") {
+      dispatch(clearBestETFState());
+      dispatch(getBestGoldETFThunk({ skip, limit }));
     }
-    if (name === "equity") {
-      dispatch(clearBestMFState());
-      dispatch(getBestEquityFundsThunk({ skip, limit }));
-    }
-    if (name === "debt") {
-      dispatch(clearBestMFState());
-      dispatch(getBestDebtFundsThunk({ skip, limit }));
+    if (name === "index") {
+      dispatch(clearBestETFState());
+      dispatch(getBestIndexETFThunk({ skip, limit }));
     }
   }, [skip, limit]);
 
   useEffect(() => {
-    if (bestDebt?.data?.length > 0) {
-      setData(bestDebt);
+    if (bestBondETF?.data?.length > 0) {
+      setData(bestBondETF);
     }
 
-    if (bestEquity?.data?.length > 0) {
-      setData(bestEquity);
+    if (bestIndexETF?.data?.length > 0) {
+      setData(bestIndexETF);
     }
 
-    if (bestLongTerm?.data?.length > 0) {
-      setData(bestLongTerm);
+    if (bestGoldETF?.data?.length > 0) {
+      setData(bestGoldETF);
     }
 
-    if (bestReturns?.data?.length > 0) {
-      setData(bestReturns);
+    if (bestSectorETF?.data?.length > 0) {
+      setData(bestSectorETF);
     }
-
-    if (bestTaxSaver?.data?.length > 0) {
-      setData(bestTaxSaver);
-    }
-  }, [bestDebt, bestEquity, bestLongTerm, bestReturns, bestTaxSaver]);
+  }, [bestBondETF, bestIndexETF, bestGoldETF, bestSectorETF]);
 
   return (
     <>
@@ -83,15 +70,13 @@ const BestMF = () => {
         <div className="bg-white rounded-md p-5">
           <div className="p-5">
             <h1 className="text-2xl font-bold mb-5">
-              {name === "long-term"
-                ? "Best Long Term Mutual Funds"
-                : name === "returns"
-                ? "Best Returns Mutual Funds"
-                : name === "tax-saver"
-                ? "Best Tax Saver Mutual Funds"
-                : name === "equity"
-                ? "Best Equity Mutual Funds"
-                : "Best Debt Mutual Funds"}
+              {name === "sector"
+                ? "Best Sector ETFs"
+                : name === "bond"
+                ? "Best Bond ETFs"
+                : name === "gold"
+                ? "Best Gold ETFs"
+                : "Best Index ETFs"}
             </h1>
             {isLoading && !isSuccess && !isError && (
               <>
@@ -104,7 +89,7 @@ const BestMF = () => {
               </>
             )}
 
-            <BestMutualFunds data={data?.data} />
+            <BestETFMap data={data?.data} />
 
             {isError && (
               <p className="text-red-500 text-3xl">Some Error Occurred.</p>
@@ -144,4 +129,4 @@ const BestMF = () => {
   );
 };
 
-export default BestMF;
+export default BestETF;
