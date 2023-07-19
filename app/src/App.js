@@ -24,6 +24,7 @@ import UserAccount from "./pages/dashboard/UserAccount";
 import BestMF from "./pages/dashboard/BestMF";
 import StockModal from "./components/dashboard/modals/StockModal";
 import StockDetails from "./pages/dashboard/StockDetails";
+import MutualFundDetails from "./pages/dashboard/MutualFundDetails";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -84,7 +85,10 @@ function App() {
             <Route path='/dashboard/stocks/:id' element={<StockDetails />} />
 
             <Route path='/dashboard/mutual-funds' element={<MutualFunds />} />
-            <Route path='/dashboard/mutual-funds/:id' element={<></>} />
+            <Route
+              path='/dashboard/mutual-funds/:id'
+              element={<MutualFundDetails />}
+            />
             <Route
               path='/dashboard/mutual-funds/best/:name'
               element={<BestMF />}

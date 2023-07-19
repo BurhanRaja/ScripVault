@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getBalanceSheet, getCashFlow, getRevenueStmt } from "../../api/stocks";
+import {
+  getBalanceSheet,
+  getCashFlow,
+  getRevenueStmt,
+  getStockHistoricalData,
+  getStockSuggestion,
+} from "../../api/stocks";
 
 const initialState = {
   isSuccess: false,
@@ -8,29 +14,67 @@ const initialState = {
   cashFlow: {},
   balanceSheet: {},
   revenueStmt: {},
+  suggestion: {},
+  historicalData: [],
 };
 
 export const getCashFlowThunk = createAsyncThunk(
   "stockDetails/cashflow",
-  async (sybmol, duration) => {
-    const res = await getCashFlow(sybmol, duration);
-    return res;
+  async (sybmol) => {
+    try {
+      const res = await getCashFlow(sybmol);
+      return res;
+    } catch (err) {
+      return err?.response.data;
+    }
   }
 );
 
 export const getRevenueStmtThunk = createAsyncThunk(
   "stockDetails/revenueStmt",
-  async (sybmol, duration) => {
-    const res = await getRevenueStmt(sybmol, duration);
-    return res;
+  async (sybmol) => {
+    try {
+      const res = await getRevenueStmt(sybmol);
+      return res;
+    } catch (err) {
+      return err?.response.data;
+    }
   }
 );
 
 export const getBalanceSheetThunk = createAsyncThunk(
   "stockDetails/balanceSheet",
-  async (sybmol, duration) => {
-    const res = await getBalanceSheet(sybmol, duration);
-    return res;
+  async (sybmol) => {
+    try {
+      const res = await getBalanceSheet(sybmol);
+      return res;
+    } catch (err) {
+      return err?.response.data;
+    }
+  }
+);
+
+export const getStockSuggestionThunk = createAsyncThunk(
+  "stockDetails/suggestion",
+  async (symbol) => {
+    try {
+      let res = await getStockSuggestion(symbol);
+      return res;
+    } catch (err) {
+      return err?.response.data;
+    }
+  }
+);
+
+export const getStockHistoricalDataThunk = createAsyncThunk(
+  "stockDetails/historicalData",
+  async (symbol) => {
+    try {
+      let res = await getStockHistoricalData(symbol);
+      return res;
+    } catch (err) {
+      return err?.response.data;
+    }
   }
 );
 
@@ -75,6 +119,30 @@ const stockDetailsSlice = createSlice({
         state.revenueStmt = payload;
       })
       .addCase(getRevenueStmtThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getStockSuggestionThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getStockSuggestionThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.suggestion = payload;
+      })
+      .addCase(getStockSuggestionThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getStockHistoricalDataThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getStockHistoricalDataThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.historicalData = payload;
+      })
+      .addCase(getStockHistoricalDataThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

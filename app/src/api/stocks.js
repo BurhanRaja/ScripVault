@@ -1,55 +1,9 @@
 import axios from "axios";
 
-export const getAllStocks = async (symbol, skip=0, limit=10) => {
+export const getAllStocks = async (symbol, skip = 0, limit = 10) => {
   const response = await axios.get(
     process.env.REACT_APP_STOCK_API +
       `all/stocks/${symbol}?skip=${skip}&limit=${limit}`
-  );
-  return response.data;
-};
-
-export const getCurrentPriceStocks = async (symbol) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API + `stock/currentprice/${symbol}`
-  );
-  return response.data;
-};
-
-export const getFinancialRatios = async (symbol) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API + `stock/financial/ratios/${symbol}`
-  );
-  return response.data;
-};
-
-
-export const getStockInfo = async (symbol) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API + `stock/info/${symbol}`
-  );
-  return response.data;
-};
-
-export const getBalanceSheet = async (symbol, duration) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `stock/stock/balancesheet/${symbol}?duration=${duration}`
-  );
-  return response.data;
-};
-
-export const getCashFlow = async (symbol, duration) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `stock/cash/flow/${symbol}?duration=${duration}`
-  );
-  return response.data;
-};
-
-export const getRevenueStmt = async (symbol, duration) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `stock/income/statement/${symbol}?duration=${duration}`
   );
   return response.data;
 };
@@ -61,9 +15,66 @@ export const getIndexes = async () => {
   return response.data;
 };
 
-export const getTopStocks = async (skip=0, limit=4) => {
+export const getTopStocks = async (skip = 0, limit = 4) => {
   const response = await axios.get(
     process.env.REACT_APP_STOCK_API + `top/stocks?skip=${skip}&limit=${limit}`
+  );
+  return response.data;
+};
+
+export const getCurrentPriceStocks = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stock/currentprice/${symbol}`
+  );
+  return response.data;
+};
+
+// Details
+export const getFinancialRatios = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stock/financial/ratios/${symbol}`
+  );
+  return response.data;
+};
+
+export const getStockInfo = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stock/info/${symbol}`
+  );
+  return response.data;
+};
+
+export const getBalanceSheet = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stock/stock/balancesheet/${symbol}`
+  );
+  return response.data;
+};
+
+export const getCashFlow = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stock/cash/flow/${symbol}`
+  );
+  return response.data;
+};
+
+export const getRevenueStmt = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stock/income/statement/${symbol}`
+  );
+  return response.data;
+};
+
+export const getStockSuggestion = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stocks/suggestion/${symbol}`
+  );
+  return response.data;
+};
+
+export const getStockHistoricalData = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stock/historical/data/${symbol}`
   );
   return response.data;
 };

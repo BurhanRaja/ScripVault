@@ -197,18 +197,17 @@ export const getAllBestTaxSaverFunds = async (skip, limit) => {
 };
 
 // ------------------------------------ Mutual Funds ----------------------------------
-export const getHistoryFunds = async (symbol, duration) => {
+export const getHistoryFunds = async (symbol, start, end, interval) => {
   const response = await axios.get(
     process.env.REACT_APP_STOCK_API +
-      `mutualfund/history/${symbol}?duration=${duration}`
+      `mutualfund/history/${symbol}?start=${start}&end=${end}&interval=${interval}`
   );
   return response.data;
 };
 
-export const getDetailsFunds = async (symbol, duration) => {
+export const getDetailsFunds = async (symbol) => {
   const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `mutualfund/details/${symbol}?duration=${duration}`
+    process.env.REACT_APP_STOCK_API + `mutualfund/details/${symbol}`
   );
   return response.data;
 };
