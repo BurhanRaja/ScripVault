@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { initTE, Tab } from "tw-elements";
+import { initTE, Tab, Modal, Ripple } from "tw-elements";
 import Home from "./pages/website/Home";
 import Login from "./pages/website/Login";
 import Register from "./pages/website/Register";
@@ -22,6 +22,7 @@ import ApproveKyc from "./pages/website/ApproveKyc";
 import TopStocksPage from "./pages/dashboard/TopStocksPage";
 import UserAccount from "./pages/dashboard/UserAccount";
 import BestMF from "./pages/dashboard/BestMF";
+import StockModal from "./components/dashboard/modals/StockModal";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -31,7 +32,7 @@ function App() {
   });
 
   useEffect(() => {
-    initTE({ Tab });
+    initTE({ Tab, Modal, Ripple });
   }, []);
 
   useEffect(() => {

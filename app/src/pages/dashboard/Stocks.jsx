@@ -10,10 +10,14 @@ import {
   clearStockIndexesState,
   getStockIndexesThunk,
 } from "../../features/stocks/stockIndexes";
+import StockModal from "../../components/dashboard/modals/StockModal";
 
 const Stocks = () => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(50);
+
+  const [stockName, setStockName] = useState("");
+  const [stockSymbol, setStockSymbol] = useState("");
 
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { isLoading, nseData } = useSelector((state) => state.stockNSEReducer);
@@ -38,10 +42,9 @@ const Stocks = () => {
     };
   }, []);
 
-  console.log(nseData);
-
   return (
     <>
+      <StockModal name={stockName} symbol={stockSymbol} />
       <div className="bg-gray-100 p-2">
         <div className="bg-white rounded-md p-5">
           <h1 className="text-3xl font-bold mb-8 p-5">Stocks</h1>
@@ -82,6 +85,8 @@ const Stocks = () => {
                     price={el?.curr_price}
                     priceChange={el?.curr_change}
                     perChange={el?.curr_per_change}
+                    setName={(val) => setStockName(val)}
+                    setSymbol={(val) => setStockSymbol(val)}
                   />
                 );
               })

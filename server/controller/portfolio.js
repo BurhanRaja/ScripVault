@@ -542,6 +542,9 @@ export const getPortfolio = async (req, res) => {
 // Get Total Investment
 export const getTotalInvestment = () => {};
 
+// Get Total Profit
+
+
 // Update and get Total Portfolio Amount ---------------------------------------------------------------------------
 export const getProfit = async (req, res) => {
   let success = false;
