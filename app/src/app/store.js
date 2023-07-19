@@ -14,6 +14,7 @@ import kycReducer from "../features/kyc/kyc";
 import allMutualFundsReducer from "../features/mutualfunds/allMutualFunds";
 import allEtfsReducer from "../features/etfs/allEtfs";
 import updateDataReducer from "../features/user/updateData";
+import currentPriceSlice from "../features/stocks/currentPrice";
 
 const reducers = combineReducers({
   authReducer,
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   stockBSEReducer,
   stockNSEReducer,
   stockIndexesReducer,
+  currentPriceSlice,
   bestMFReducer,
   bestETFReducer,
   kycReducer,

@@ -18,6 +18,7 @@ const Stocks = () => {
 
   const [stockName, setStockName] = useState("");
   const [stockSymbol, setStockSymbol] = useState("");
+  const [isModal, setIsModal] = useState(false);
 
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { isLoading, nseData } = useSelector((state) => state.stockNSEReducer);
@@ -42,13 +43,24 @@ const Stocks = () => {
     };
   }, []);
 
+  const handleBuy = () => {};
+
+  console.log(nseData)
+
   return (
     <>
-      <StockModal name={stockName} symbol={stockSymbol} />
-      <div className="bg-gray-100 p-2">
-        <div className="bg-white rounded-md p-5">
-          <h1 className="text-3xl font-bold mb-8 p-5">Stocks</h1>
-          <div className="flex justify-evenly items-center mb-5">
+      {isModal && (
+        <StockModal
+          name={stockName}
+          symbol={stockSymbol}
+          setModal={(val) => setIsModal(val)}
+          handleBuy={() => handleBuy()}
+        />
+      )}
+      <div className='bg-gray-100 p-2'>
+        <div className='bg-white rounded-md p-5'>
+          <h1 className='text-3xl font-bold mb-8 p-5'>Stocks</h1>
+          <div className='flex justify-evenly items-center mb-5'>
             <StockIndexWidget
               name={indexes?.nse?.name}
               symbol={indexes?.nse?.symbol}
@@ -66,14 +78,14 @@ const Stocks = () => {
               size={"w-[40%]"}
             />
           </div>
-          <div className="p-5">
+          <div className='p-5'>
             {nseData?.length === 0 && isLoading ? (
               <>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
               </>
             ) : (
               nseData?.map((el) => {
@@ -87,6 +99,7 @@ const Stocks = () => {
                     perChange={el?.curr_per_change}
                     setName={(val) => setStockName(val)}
                     setSymbol={(val) => setStockSymbol(val)}
+                    setModal={(val) => setIsModal(val)}
                   />
                 );
               })
