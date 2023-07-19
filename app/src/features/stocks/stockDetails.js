@@ -2,8 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getBalanceSheet,
   getCashFlow,
+  getFinancialRatios,
   getRevenueStmt,
   getStockHistoricalData,
+  getStockInfo,
   getStockSuggestion,
 } from "../../api/stocks";
 
@@ -16,6 +18,8 @@ const initialState = {
   revenueStmt: {},
   suggestion: {},
   historicalData: [],
+  info: {},
+  financial: {},
 };
 
 export const getCashFlowThunk = createAsyncThunk(
@@ -74,6 +78,30 @@ export const getStockHistoricalDataThunk = createAsyncThunk(
       return res;
     } catch (err) {
       return err?.response.data;
+    }
+  }
+);
+
+export const getStockInfoThunk = createAsyncThunk(
+  "stockDetails/info",
+  async (symbol) => {
+    try {
+      let res = await getStockInfo(symbol);
+      return res;
+    } catch (err) {
+      return err?.response?.data;
+    }
+  }
+);
+
+export const getFinancialRatiosThunk = createAsyncThunk(
+  "stockDetails/financial",
+  async (symbol) => {
+    try {
+      let res = await getFinancialRatios(symbol);
+      return res;
+    } catch (err) {
+      return err?.response?.data;
     }
   }
 );
@@ -143,6 +171,30 @@ const stockDetailsSlice = createSlice({
         state.historicalData = payload;
       })
       .addCase(getStockHistoricalDataThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getStockInfoThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getStockInfoThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.info = payload;
+      })
+      .addCase(getStockInfoThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getFinancialRatiosThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getFinancialRatiosThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.financial = payload;
+      })
+      .addCase(getFinancialRatiosThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

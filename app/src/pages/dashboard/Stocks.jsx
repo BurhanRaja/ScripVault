@@ -11,6 +11,7 @@ import {
   getStockIndexesThunk,
 } from "../../features/stocks/stockIndexes";
 import StockModal from "../../components/dashboard/modals/StockModal";
+import { Link } from "react-router-dom";
 
 const Stocks = () => {
   const [skip, setSkip] = useState(0);
@@ -19,6 +20,7 @@ const Stocks = () => {
   const [stockName, setStockName] = useState("");
   const [stockSymbol, setStockSymbol] = useState("");
   const [isModal, setIsModal] = useState(false);
+  const [quantity, setQuantity] = useState(0);
 
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { isLoading, nseData } = useSelector((state) => state.stockNSEReducer);
@@ -45,22 +47,21 @@ const Stocks = () => {
 
   const handleBuy = () => {};
 
-  console.log(nseData)
-
   return (
     <>
       {isModal && (
         <StockModal
           name={stockName}
-          symbol={stockSymbol}
           setModal={(val) => setIsModal(val)}
           handleBuy={() => handleBuy()}
+          quantity={quantity}
+          setQuantity={(val) => setQuantity(val)}
         />
       )}
-      <div className='bg-gray-100 p-2'>
-        <div className='bg-white rounded-md p-5'>
-          <h1 className='text-3xl font-bold mb-8 p-5'>Stocks</h1>
-          <div className='flex justify-evenly items-center mb-5'>
+      <div className="bg-gray-100 p-2">
+        <div className="bg-white rounded-md p-5">
+          <h1 className="text-3xl font-bold mb-8 p-5">Stocks</h1>
+          <div className="flex justify-evenly items-center mb-5">
             <StockIndexWidget
               name={indexes?.nse?.name}
               symbol={indexes?.nse?.symbol}
@@ -78,19 +79,20 @@ const Stocks = () => {
               size={"w-[40%]"}
             />
           </div>
-          <div className='p-5'>
-            {nseData?.length === 0 && isLoading ? (
+          <div className="p-5">
+            {nseData && nseData?.length === 0 && isLoading ? (
               <>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
               </>
             ) : (
               nseData?.map((el) => {
                 return (
                   <StockCards
+                    link={`/dashboard/stocks/${el?.symbol}`}
                     key={el?.symbol}
                     name={el?.name}
                     symbol={el?.symbol}

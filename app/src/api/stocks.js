@@ -46,7 +46,7 @@ export const getStockInfo = async (symbol) => {
 
 export const getBalanceSheet = async (symbol) => {
   const response = await axios.get(
-    process.env.REACT_APP_STOCK_API + `stock/stock/balancesheet/${symbol}`
+    process.env.REACT_APP_STOCK_API + `stock/balancesheet/${symbol}`
   );
   return response.data;
 };

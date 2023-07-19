@@ -4,6 +4,7 @@ import {
   clearStockCurrentPrice,
   getStocksCurrentPriceThunk,
 } from "../../../features/stocks/currentPrice";
+import { Link } from "react-router-dom";
 
 const StockCards = ({
   name,
@@ -14,6 +15,7 @@ const StockCards = ({
   setName,
   setSymbol,
   setModal,
+  link,
 }) => {
   const [stockPrice, setStockPrice] = useState("");
   const [stockPriceChange, setStockPriceChange] = useState("");
@@ -21,7 +23,7 @@ const StockCards = ({
 
   const dispatch = useDispatch();
   const { stock_price, isLoading } = useSelector(
-    (state) => state.currentPriceSlice
+    (state) => state.stockCurrentPriceReducer
   );
 
   useEffect(() => {
@@ -75,13 +77,13 @@ const StockCards = ({
 
   return (
     <>
-      <div className='flex justify-between items-center p-4 border bg-gray-50 mb-4'>
+      <div className="flex justify-between items-center p-4 border bg-gray-50 mb-4">
         <div>
           <h2 className={`text-xl font-bold`}>
             {name?.length > 35 ? name.substring(0, 35) + "..." : name}
           </h2>
         </div>
-        <div className='flex justify-between items-center w-[40%]'>
+        <div className="flex justify-between items-center w-[40%]">
           <p className={``}>{symbol}</p>
           <p className={`  font-semibold`}>₹{stockPrice}</p>
           {stockPriceChange > 0 ? (
@@ -91,24 +93,24 @@ const StockCards = ({
           ) : stockPriceChange < 0 ? (
             <p className={` text-red-500 font-semibold`}>{stockPriceChange}</p>
           ) : (
-            <p className='font-semibold'>{stockPriceChange}</p>
+            <p className="font-semibold">{stockPriceChange}</p>
           )}
           {stockPerChange > 0 ? (
             <p className={` text-green-500 font-semibold`}>{stockPerChange}%</p>
           ) : stockPerChange < 0 ? (
             <p className={` text-red-500 font-semibold`}>{stockPerChange}%</p>
           ) : (
-            <p className='font-semibold'>{stockPerChange}</p>
+            <p className="font-semibold">{stockPerChange}</p>
           )}
         </div>
-        <div className='w-[15%] flex justify-between'>
+        <div className="w-[15%] flex justify-between">
           <button
-            type='button'
-            className='p-1 px-3 text-white bg-green-700 text-sm rounded-sm'
-            data-te-toggle='modal'
-            data-te-target='#exampleModal'
+            type="button"
+            className="p-1 px-3 text-white bg-green-700 text-sm rounded-sm"
+            data-te-toggle="modal"
+            data-te-target="#exampleModal"
             data-te-ripple-init
-            data-te-ripple-color='light'
+            data-te-ripple-color="light"
             onClick={() => {
               setSymbol(symbol);
               setName(name);
@@ -117,9 +119,11 @@ const StockCards = ({
           >
             Buy
           </button>
-          <button className='p-1 px-3 text-white bg-gray-700 text-sm rounded-sm'>
-            Details
-          </button>
+          <Link to={link}>
+            <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
+              Details
+            </button>
+          </Link>
         </div>
       </div>
     </>
