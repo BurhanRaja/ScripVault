@@ -11,6 +11,9 @@ const TopStocksPage = () => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(50);
 
+  const [openGainers, setOpenGainers] = useState(true);
+  const [openLosers, setOpenLosers] = useState(false);
+
   const { stocks, isLoading } = useSelector((state) => state.stockTopReducer);
 
   const dispatch = useDispatch();
@@ -19,8 +22,6 @@ const TopStocksPage = () => {
     // dispatch(clearStockTopState());
     dispatch(getStockTopThunk({ skip, limit }));
   }, []);
-
-  let { name } = useParams();
 
   return (
     <>
@@ -34,26 +35,27 @@ const TopStocksPage = () => {
             <li role='presentation' className='flex-auto text-center'>
               <Link
                 to='#tabs-home01'
-                className='my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-lg font-bold uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400'
-                data-te-toggle='pill'
-                data-te-target='#tabs-home01'
-                role='tab'
-                aria-controls='tabs-home01'
-                aria-selected='true'
-                data-te-nav-active
+                className={`my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-lg font-bold uppercase leading-tight hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent ${
+                  openGainers ? "text-blue-600" : "text-neutral-500"
+                }`}
+                onClick={() => {
+                  setOpenLosers(false);
+                  setOpenGainers(true);
+                }}
               >
                 Top Gainers
               </Link>
             </li>
             <li role='presentation' class='flex-auto text-center'>
               <Link
-                to='#tabs-messages01'
-                class='my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-lg font-bold uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400'
-                data-te-toggle='pill'
-                data-te-target='#tabs-messages01'
-                role='tab'
-                aria-controls='tabs-messages01'
-                aria-selected='false'
+                to='#tabs-message01'
+                class={`my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-lg font-bold uppercase leading-tight hover:isolate hover:border-transparent  focus:isolate hover:bg-neutral-100 focus:border-transparent ${
+                  openLosers ? "text-blue-600" : "text-neutral-500"
+                }`}
+                onClick={() => {
+                  setOpenLosers(true);
+                  setOpenGainers(false);
+                }}
               >
                 Top Losers
               </Link>
@@ -62,11 +64,10 @@ const TopStocksPage = () => {
 
           <div className='mb-6'>
             <div
-              className={`hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block`}
+              className={`${
+                openGainers ? "opacity-100" : "hidden opacity-0"
+              } transition-opacity duration-150 ease-linear data-[te-tab-active]:block`}
               id='tabs-home01'
-              role='tabpanel'
-              aria-labelledby='tabs-home-tab01'
-              data-te-tab-active
             >
               <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
                 <div>
@@ -101,10 +102,10 @@ const TopStocksPage = () => {
             </div>
 
             <div
-              class={`hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block`}
-              id='tabs-messages01'
-              role='tabpanel'
-              aria-labelledby='tabs-messages-tab01'
+              class={`${
+                openLosers ? "opacity-100" : "hidden opacity-0"
+              } transition-opacity duration-150 ease-linear data-[te-tab-active]:block`}
+              id='tabs-message01'
             >
               <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
                 <div>

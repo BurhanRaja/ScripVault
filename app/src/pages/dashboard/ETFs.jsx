@@ -21,7 +21,27 @@ const ETFs = () => {
   useEffect(() => {
     dispatch(clearAllETFsState());
     dispatch(getAllETFThunk({ skip, limit }));
-  }, [skip, limit]);
+  }, []);
+
+  const handleNext = () => {
+    if (limit < 50) {
+      dispatch(clearAllETFsState());
+      dispatch(getAllETFThunk({ skip: skip + 10, limit: limit + 10 }));
+
+      setSkip(skip + 10);
+      setLimit(limit + 10);
+    }
+  };
+
+  const handlePrev = () => {
+    if (skip > 0) {
+      dispatch(clearAllETFsState());
+      dispatch(getAllETFThunk({ skip: skip - 10, limit: limit - 10 }));
+
+      setSkip(skip - 10);
+      setLimit(limit - 10);
+    }
+  };
 
   // Data
   let etfData = [
@@ -113,25 +133,15 @@ const ETFs = () => {
           </div>
           <div className='flex items-center justify-evenly'>
             <button
-              className='px-4 py-2 bg-gray-200 text-black font-semibold flex items-center'
-              onClick={() => {
-                if (skip > 0) {
-                  setSkip(skip - 10);
-                  setLimit(limit - 10);
-                }
-              }}
+              className='px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center'
+              onClick={() => handlePrev()}
             >
               <BsChevronLeft className='me-3' />
               Prev
             </button>
             <button
-              className='px-4 py-2 bg-gray-200 text-black font-semibold flex items-center'
-              onClick={() => {
-                if (limit < allETF?.total) {
-                  setSkip(skip + 10);
-                  setLimit(limit + 10);
-                }
-              }}
+              className='px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center'
+              onClick={() => handleNext()}
             >
               Next
               <BsChevronRight className='ms-3' />

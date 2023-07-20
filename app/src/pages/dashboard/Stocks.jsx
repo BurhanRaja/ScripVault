@@ -6,16 +6,17 @@ import {
   allNSEStocksThunk,
   clearNSEStocksState,
 } from "../../features/stocks/allNSEStocks";
+import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import {
   clearStockIndexesState,
   getStockIndexesThunk,
 } from "../../features/stocks/stockIndexes";
 import StockModal from "../../components/dashboard/modals/StockModal";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const Stocks = () => {
   const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(50);
+  const [limit, setLimit] = useState(10);
 
   const [stockName, setStockName] = useState("");
   const [stockSymbol, setStockSymbol] = useState("");
@@ -23,11 +24,17 @@ const Stocks = () => {
   const [quantity, setQuantity] = useState(0);
 
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
-  const { isLoading, nseData } = useSelector((state) => state.stockNSEReducer);
+  const { isSuccess, isLoading, nseData } = useSelector(
+    (state) => state.stockNSEReducer
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(clearNSEStocksState());
     dispatch(allNSEStocksThunk({ skip, limit }));
+  }, []);
+
+  useEffect(() => {
     dispatch(getStockIndexesThunk());
   }, []);
 
@@ -35,10 +42,10 @@ const Stocks = () => {
     let timeOut = setInterval(() => {
       let hour = new Date().getHours();
       if (hour < 16 && hour > 9) {
-        clearStockIndexesState();
+        dispatch(clearStockIndexesState());
         dispatch(getStockIndexesThunk());
       }
-    }, 10000);
+    }, 15000);
 
     return () => {
       clearInterval(timeOut);
@@ -46,6 +53,26 @@ const Stocks = () => {
   }, []);
 
   const handleBuy = () => {};
+
+  const handleNext = () => {
+    if (limit < 50) {
+      dispatch(clearNSEStocksState());
+      dispatch(allNSEStocksThunk({ skip: skip + 10, limit: limit + 10 }));
+
+      setSkip(skip + 10);
+      setLimit(limit + 10);
+    }
+  };
+
+  const handlePrev = () => {
+    if (skip > 0) {
+      dispatch(clearNSEStocksState());
+      dispatch(allNSEStocksThunk({ skip: skip - 10, limit: limit - 10 }));
+
+      setSkip(skip - 10);
+      setLimit(limit - 10);
+    }
+  };
 
   return (
     <>
@@ -58,10 +85,10 @@ const Stocks = () => {
           setQuantity={(val) => setQuantity(val)}
         />
       )}
-      <div className="bg-gray-100 p-2">
-        <div className="bg-white rounded-md p-5">
-          <h1 className="text-3xl font-bold mb-8 p-5">Stocks</h1>
-          <div className="flex justify-evenly items-center mb-5">
+      <div className='bg-gray-100 p-2'>
+        <div className='bg-white rounded-md p-5'>
+          <h1 className='text-3xl font-bold mb-8 p-5'>Stocks</h1>
+          <div className='flex justify-evenly items-center mb-5'>
             <StockIndexWidget
               name={indexes?.nse?.name}
               symbol={indexes?.nse?.symbol}
@@ -79,14 +106,14 @@ const Stocks = () => {
               size={"w-[40%]"}
             />
           </div>
-          <div className="p-5">
-            {nseData && nseData?.length === 0 && isLoading ? (
+          <div className='p-5'>
+            {isLoading && !isSuccess ? (
               <>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
               </>
             ) : (
               nseData?.map((el) => {
@@ -106,6 +133,22 @@ const Stocks = () => {
                 );
               })
             )}
+          </div>
+          <div className='flex items-center justify-evenly'>
+            <button
+              className='px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center'
+              onClick={() => handlePrev()}
+            >
+              <BsChevronLeft className='me-3' />
+              Prev
+            </button>
+            <button
+              className='px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center'
+              onClick={() => handleNext()}
+            >
+              Next
+              <BsChevronRight className='ms-3' />
+            </button>
           </div>
         </div>
       </div>
