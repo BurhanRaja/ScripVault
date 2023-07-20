@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const TopStocks = ({ name, ltp, priceChange, volume }) => {
+const TopStocks = ({ name, ltp, priceChange, link }) => {
   return (
     <>
       <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
         <div>
-          <h2 className={`text-sm font-bold me-3`}>
-            {name}
-          </h2>
+          <Link to={link}>
+            <h2 className={`text-sm font-bold me-3`}>{name}</h2>
+          </Link>
         </div>
         <div className='flex justify-around items-center w-[58%]'>
           <p className={` text-xs font-semibold`}>₹{ltp}</p>

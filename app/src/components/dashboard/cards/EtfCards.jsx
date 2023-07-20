@@ -27,12 +27,9 @@ const EtfCards = ({ name, symbol, priceChange, perChange, price }) => {
             <p className={` text-gray-800 font-semibold`}>{perChange}</p>
           )}
         </div>
-        <div className='w-[25%] flex justify-between'>
+        <div className='w-[20%] flex justify-between'>
           <button className='p-1 px-3 text-white bg-green-700 text-sm rounded-sm'>
             Buy
-          </button>
-          <button className='p-1 px-3 text-white bg-red-700 text-sm rounded-sm'>
-            Sell
           </button>
           <button className='p-1 px-3 text-white bg-gray-700 text-sm rounded-sm'>
             Details
