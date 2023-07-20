@@ -8,10 +8,16 @@ import { HiChartSquareBar } from "react-icons/hi";
 import { GiTiedScroll } from "react-icons/gi";
 import TypeETF from "../../components/dashboard/widgets/TypeETF";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
+import ETFModal from "../../components/dashboard/modals/ETFModal";
 
 const ETFs = () => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
+
+  const [etfName, setETFName] = useState("");
+  const [etfSymbol, setETFSymbol] = useState("");
+  const [isModal, setIsModal] = useState(false);
+  const [quantity, setQuantity] = useState(0);
 
   const { isLoading, isSuccess, allETF, isError } = useSelector(
     (state) => state.allEtfsReducer
@@ -52,7 +58,7 @@ const ETFs = () => {
           <IoPieChartSharp className='text-3xl text-gray-500' />
         </>
       ),
-      url: "",
+      url: "/dashboard/etfs/best/sector",
     },
     {
       name: "Best Gold ETFs",
@@ -61,7 +67,7 @@ const ETFs = () => {
           <AiFillGolden className='text-3xl text-gray-500' />
         </>
       ),
-      url: "",
+      url: "/dashboard/etfs/best/gold",
     },
     {
       name: "Best Index ETFs",
@@ -70,7 +76,7 @@ const ETFs = () => {
           <HiChartSquareBar className='text-3xl text-gray-500' />
         </>
       ),
-      url: "",
+      url: "/dashboard/etfs/best/index",
     },
     {
       name: "Best Bond ETFs",
@@ -79,12 +85,23 @@ const ETFs = () => {
           <GiTiedScroll className='text-3xl text-gray-500' />
         </>
       ),
-      url: "",
+      url: "/dashboard/etfs/best/bond",
     },
   ];
 
+  const handleBuy = () => {};
+
   return (
     <>
+      {isModal && (
+        <ETFModal
+          name={etfName}
+          setModal={(val) => setIsModal(val)}
+          handleBuy={() => handleBuy()}
+          quantity={quantity}
+          setQuantity={(val) => setQuantity(val)}
+        />
+      )}
       <div className='bg-gray-100 p-2'>
         <div className='bg-white rounded-md p-5'>
           <div className='p-5'>
@@ -123,6 +140,10 @@ const ETFs = () => {
                     price={el?.curr_price}
                     priceChange={el?.curr_price_change}
                     perChange={el?.curr_per_change}
+                    setModal={(val) => setIsModal(val)}
+                    symbol={el?.symbol}
+                    setSymbol={(val) => setETFSymbol(val)}
+                    setName={(val) => setETFName(val)}
                   />
                 );
               })

@@ -56,7 +56,7 @@ let etfData = [
         <IoPieChartSharp className='text-3xl text-gray-500' />
       </>
     ),
-    url: "",
+    url: "/dashboard/etfs/best/sector",
   },
   {
     name: "Best Gold ETFs",
@@ -65,7 +65,7 @@ let etfData = [
         <AiFillGolden className='text-3xl text-gray-500' />
       </>
     ),
-    url: "",
+    url: "/dashboard/etfs/best/gold",
   },
   {
     name: "Best Index ETFs",
@@ -74,7 +74,7 @@ let etfData = [
         <HiChartSquareBar className='text-3xl text-gray-500' />
       </>
     ),
-    url: "",
+    url: "/dashboard/etfs/best/index",
   },
   {
     name: "Best Bond ETFs",
@@ -83,7 +83,7 @@ let etfData = [
         <GiTiedScroll className='text-3xl text-gray-500' />
       </>
     ),
-    url: "",
+    url: "/dashboard/etfs/best/bond",
   },
 ];
 

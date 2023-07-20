@@ -8,37 +8,10 @@ export const getAllEtfs = async (skip, limit) => {
   return response.data;
 };
 
-export const getBestBondEtf = async (skip, limit) => {
+export const getBestEtf = async (type) => {
   const response = await axios.get(
     process.env.REACT_APP_STOCK_API +
-      `etf/best-bond-etf?skip=${skip}&limit=${limit}`
-  );
-
-  return response.data;
-};
-
-export const getBestIndexEtf = async (skip, limit) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `etf/best-index-etf?skip=${skip}&limit=${limit}`
-  );
-
-  return response.data;
-};
-
-export const getBestGoldEtf = async (skip, limit) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `etf/best-gold-etf?skip=${skip}&limit=${limit}`
-  );
-
-  return response.data;
-};
-
-export const getBestSectorEtf = async (skip, limit) => {
-  const response = await axios.get(
-    process.env.REACT_APP_STOCK_API +
-      `etf/best-sector-etf?skip=${skip}&limit=${limit}`
+      `etf/best-${type}-etf`
   );
 
   return response.data;
