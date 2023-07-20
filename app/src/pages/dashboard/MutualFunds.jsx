@@ -7,6 +7,7 @@ import {
 } from "../../features/mutualfunds/allMutualFunds";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import TypeMF from "../../components/dashboard/widgets/TypeMF";
+import { Link } from "react-router-dom";
 
 // Data
 let dataMF = [
@@ -37,6 +38,28 @@ let dataMF = [
   },
 ];
 
+const allCompanies = [
+  "UTI",
+  "Tata",
+  "Union",
+  "Reliance",
+  "SBI",
+  "Nippon",
+  "Navi",
+  "Motilal",
+  "Mahindra-Manulife",
+  "LIC",
+  "Kotak",
+  "IDFC",
+  "IDBI",
+  "ICICI",
+  "HDFC",
+  "HSBC",
+  "Franklin",
+  "Axis",
+  "Aditya-Birla",
+];
+
 const MutualFunds = () => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
@@ -49,7 +72,27 @@ const MutualFunds = () => {
   useEffect(() => {
     dispatch(clearAllMFState());
     dispatch(getAllMFThunk({ skip, limit }));
-  }, [skip, limit]);
+  }, []);
+
+  const handleNext = () => {
+    if (limit < allMF?.total) {
+      dispatch(clearAllMFState());
+      dispatch(getAllMFThunk({ skip: skip + 10, limit: limit + 10 }));
+
+      setSkip(skip + 10);
+      setLimit(limit + 10);
+    }
+  };
+
+  const handlePrev = () => {
+    if (skip > 0) {
+      dispatch(clearAllMFState());
+      dispatch(getAllMFThunk({ skip: skip - 10, limit: limit - 10 }));
+
+      setSkip(skip - 10);
+      setLimit(limit - 10);
+    }
+  };
 
   return (
     <>
@@ -74,7 +117,7 @@ const MutualFunds = () => {
                 })}
               </div>
             </div>
-            {isLoading && !isSuccess && !isError ? (
+            {isLoading ? (
               <>
                 {" "}
                 <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
@@ -92,6 +135,7 @@ const MutualFunds = () => {
                     price={"₹" + el?.nav}
                     oneYear={el?.return_one_year}
                     fiveYear={el?.return_five_year}
+                    link={`/dashboard/mutual-funds/${el?.symbol}`}
                   />
                 );
               })
@@ -103,28 +147,44 @@ const MutualFunds = () => {
           <div className="flex items-center justify-evenly">
             <button
               className="px-4 py-2 bg-gray-200 text-black font-semibold flex items-center"
-              onClick={() => {
-                if (skip > 0) {
-                  setSkip(skip - 10);
-                  setLimit(limit - 10);
-                }
-              }}
+              onClick={() => handlePrev()}
             >
               <BsChevronLeft className="me-3" />
               Prev
             </button>
             <button
               className="px-4 py-2 bg-gray-200 text-black font-semibold flex items-center"
-              onClick={() => {
-                if (limit < allMF?.total) {
-                  setSkip(skip + 10);
-                  setLimit(limit + 10);
-                }
-              }}
+              onClick={() => handleNext()}
             >
               Next
               <BsChevronRight className="ms-3" />
             </button>
+          </div>
+
+          <div className="mt-10">
+            <h2 className="text-2xl font-semibold">
+              All Mutual Fund Companies
+            </h2>
+            <div className="flex justify-between items-center flex-wrap mt-10">
+              {allCompanies?.map((el) => {
+                return (
+                  <Link
+                    key={el}
+                    to={`/dashboard/mutual-funds/company/${el?.toLowerCase()}`}
+                    className="w-[28%] group mb-6"
+                  >
+                    <div className="bg-gray-100 p-4 rounded-md">
+                      <div className="flex items-center justify-between">
+                        <p className="text-lg font-semibold text-gray-700">
+                          {el}
+                        </p>
+                        <BsChevronRight className="me-4 text-gray-700 font-bold transition-all duration-100 group-hover:me-0" />
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

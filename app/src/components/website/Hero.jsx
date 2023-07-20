@@ -34,7 +34,7 @@ const Hero = () => {
             <img
               class='object-cover object-center rounded'
               alt='hero'
-              src='https://jamaappprod.s3.ap-south-1.amazonaws.com/Website/new/static/img/home-banner-7.svg'
+              src='/assets/svgs/hero.svg'
             />
           </div>
         </div>

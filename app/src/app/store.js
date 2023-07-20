@@ -16,6 +16,8 @@ import allEtfsReducer from "../features/etfs/allEtfs";
 import updateDataReducer from "../features/user/updateData";
 import stockCurrentPriceReducer from "../features/stocks/currentPrice";
 import stockDetailsReducer from "../features/stocks/stockDetails";
+import companyMFReducer from "../features/mutualfunds/companyMF";
+import mfDetailsReducer from "../features/mutualfunds/mfDetails";
 
 const reducers = combineReducers({
   authReducer,
@@ -35,6 +37,8 @@ const reducers = combineReducers({
   updateDataReducer,
   stockCurrentPriceReducer,
   stockDetailsReducer,
+  companyMFReducer,
+  mfDetailsReducer,
 });
 
 const store = configureStore({

@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const MutualFundCards = ({ name, symbol, price, oneYear, fiveYear }) => {
+const MutualFundCards = ({ name, price, oneYear, fiveYear, link }) => {
   return (
     <>
       <div className="flex justify-between items-center p-4 border bg-gray-50 mb-4">
@@ -10,30 +11,37 @@ const MutualFundCards = ({ name, symbol, price, oneYear, fiveYear }) => {
         <div className="flex justify-between items-center w-[25%]">
           <p className={` font-semibold`}>{price}</p>
           {oneYear > 0 ? (
-            <p className={` text-green-500 font-semibold`}>{oneYear}%</p>
+            <p className={` text-green-500 font-semibold`}>
+              {parseFloat(oneYear).toFixed(2)}%
+            </p>
           ) : oneYear < 0 ? (
-            <p className={` text-red-500 font-semibold`}>{oneYear}%</p>
+            <p className={` text-red-500 font-semibold`}>
+              {parseFloat(oneYear).toFixed(2)}%
+            </p>
           ) : (
             <p>{oneYear}%</p>
           )}
           {fiveYear > 0 ? (
-            <p className={` text-green-500 font-semibold`}>{fiveYear}%</p>
+            <p className={` text-green-500 font-semibold`}>
+              {parseFloat(fiveYear).toFixed(2)}%
+            </p>
           ) : fiveYear < 0 ? (
-            <p className={` text-red-500 font-semibold`}>{fiveYear}%</p>
+            <p className={` text-red-500 font-semibold`}>
+              {parseFloat(fiveYear).toFixed(2)}%
+            </p>
           ) : (
             <p className="font-semibold">{fiveYear}%</p>
           )}
         </div>
-        <div className="w-[20%] flex justify-between">
+        <div className="w-[15%] flex justify-between">
           <button className="p-1 px-3 text-white bg-green-700 text-sm rounded-sm">
             Buy
           </button>
-          <button className="p-1 px-3 text-white bg-red-700 text-sm rounded-sm">
-            Sell
-          </button>
-          <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
-            Details
-          </button>
+          <Link to={link}>
+            <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
+              Details
+            </button>
+          </Link>
         </div>
       </div>
     </>
