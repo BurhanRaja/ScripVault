@@ -15,6 +15,7 @@ const BestMutualFunds = ({ data, setName, setModal, setSymbol }) => {
             setName={(val) => setName(val)}
             setModal={(val) => setModal(val)}
             setSymbol={(val) => setSymbol(val)}
+            link={`/dashboard/mutual-funds/${el?.symbol}`}
           />
         );
       })}
