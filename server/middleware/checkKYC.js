@@ -1,6 +1,6 @@
 import Kyc from "../model/Kyc.js";
 
-const checkKyc = async (req, res) => {
+const checkKyc = async (req, res, next) => {
   let success = false;
 
   try {
