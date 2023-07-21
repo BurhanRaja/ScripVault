@@ -7,6 +7,7 @@ import {
   getStockHistoricalData,
   getStockInfo,
   getStockSuggestion,
+  getCurrentPriceStocks,
 } from "../../api/stocks";
 
 const initialState = {
@@ -20,7 +21,16 @@ const initialState = {
   historicalData: [],
   info: {},
   financial: {},
+  priceData: {},
 };
+
+export const getStocksDetailsCurrentPriceThunk = createAsyncThunk(
+  "stock_curr_price/get",
+  async (symbol) => {
+    const res = await getCurrentPriceStocks(symbol);
+    return res;
+  }
+);
 
 export const getCashFlowThunk = createAsyncThunk(
   "stockDetails/cashflow",
@@ -114,6 +124,21 @@ const stockDetailsSlice = createSlice({
   },
   extraReducers: (build) => {
     build
+      .addCase(getStocksDetailsCurrentPriceThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        getStocksDetailsCurrentPriceThunk.fulfilled,
+        (state, { payload }) => {
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.priceData = payload;
+        }
+      )
+      .addCase(getStocksDetailsCurrentPriceThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
       .addCase(getCashFlowThunk.pending, (state) => {
         state.isLoading = true;
       })

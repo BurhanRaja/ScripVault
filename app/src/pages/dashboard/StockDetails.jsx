@@ -10,14 +10,10 @@ import {
   getCashFlowThunk,
   getFinancialRatiosThunk,
   getRevenueStmtThunk,
-  getStockHistoricalDataThunk,
   getStockInfoThunk,
   getStockSuggestionThunk,
+  getStocksDetailsCurrentPriceThunk,
 } from "../../features/stocks/stockDetails";
-import {
-  clearStockCurrentPrice,
-  getStocksCurrentPriceThunk,
-} from "../../features/stocks/currentPrice";
 
 const StockDetails = () => {
   const { id } = useParams();
@@ -28,13 +24,11 @@ const StockDetails = () => {
 
   const handleBuy = () => {};
 
-  const { stock_price, isLoading: stockLoading } = useSelector(
-    (state) => state.stockCurrentPriceReducer
-  );
   const {
     isSuccess,
     isError,
     isLoading: detailsLoading,
+    priceData,
     cashFlow,
     balanceSheet,
     revenueStmt,
@@ -48,6 +42,7 @@ const StockDetails = () => {
   useEffect(() => {
     if (id) {
       dispatch(clearStockDetails());
+      dispatch(getStocksDetailsCurrentPriceThunk(id));
       dispatch(getCashFlowThunk(id));
       dispatch(getBalanceSheetThunk(id));
       dispatch(getRevenueStmtThunk(id));
@@ -57,19 +52,14 @@ const StockDetails = () => {
     }
   }, [id]);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(clearStockCurrentPrice());
-      dispatch(getStocksCurrentPriceThunk(id));
-    }
-  }, [id]);
+  console.log(financial);
 
   return (
     <>
       {isModal && (
         <StockModal
           quantity={quantity}
-          setQuantity={(val) => setQuantity}
+          setQuantity={(val) => setQuantity(val)}
           name={stockName}
           handleBuy={() => handleBuy()}
           setModal={(val) => setIsModal(val)}
@@ -79,43 +69,43 @@ const StockDetails = () => {
         <div className='flex justify-between my-5 px-5'>
           <div className='w-[48%]'>
             <h1 className='text-5xl mb-4 font-bold'>
-              {stockLoading ? (
+              {detailsLoading ? (
                 <span className='w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse'></span>
               ) : (
-                stock_price?.name
+                priceData?.name
               )}
             </h1>
-            {stockLoading ? (
+            {detailsLoading ? (
               <span className='w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse'></span>
             ) : (
               <button className='bg-black text-white px-2 py-1 text-sm rounded-md'>
-                {stock_price?.symbol}
+                {priceData?.symbol}
               </button>
             )}
           </div>
           <div className='w-[48%] text-end'>
             <div className='flex justify-end items-center'>
-              {stockLoading ? (
+              {detailsLoading ? (
                 <span className='w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse'></span>
               ) : (
                 <h2 className='text-3xl font-bold mb-2 me-5'>
-                  ₹ {stock_price?.curr_price}
+                  ₹ {priceData?.curr_price}
                 </h2>
               )}
-              {stockLoading ? (
+              {detailsLoading ? (
                 <span className='w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              ) : stock_price?.curr_change > 0 ? (
+              ) : priceData?.curr_change > 0 ? (
                 <p className={"text-green-500 font-semibold text-lg"}>
-                  +{stock_price?.curr_change} ( +{stock_price?.curr_per_change}%
+                  +{priceData?.curr_change} ( +{priceData?.curr_per_change}%
                   )
                 </p>
-              ) : stock_price?.curr_change < 0 ? (
+              ) : priceData?.curr_change < 0 ? (
                 <p className={"text-red-500 font-semibold text-lg"}>
-                  {stock_price?.curr_change} ( {stock_price?.curr_per_change}% )
+                  {priceData?.curr_change} ( {priceData?.curr_per_change}% )
                 </p>
               ) : (
                 <p className={"text-gray-800 font-semibold text-lg"}>
-                  {stock_price?.curr_change} ( {stock_price?.curr_per_change}% )
+                  {priceData?.curr_change} ( {priceData?.curr_per_change}% )
                 </p>
               )}
             </div>
@@ -174,20 +164,24 @@ const StockDetails = () => {
               <h3 className='text-2xl font-semibold mb-4'>
                 Company Essentials
               </h3>
-              {detailsLoading && info ? <>
-              <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              </> : <div className='flex justify-between items-center flex-wrap'>
-                {info?.essentialInfo?.companyEssentials?.map((el) => {
-                  return (
-                    <div className='mb-5 w-[10rem]' key={el?.name}>
-                      <h5 className='text-sm mb-1'>{el?.name}</h5>
-                      <p className='font-bold'>{el?.value}</p>
-                    </div>
-                  );
-                })}
-              </div>}
+              {detailsLoading && info ? (
+                <>
+                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                </>
+              ) : (
+                <div className='flex justify-between items-center flex-wrap'>
+                  {info?.essentialInfo?.companyEssentials?.map((el) => {
+                    return (
+                      <div className='mb-5 w-[10rem]' key={el?.name}>
+                        <h5 className='text-sm mb-1'>{el?.name}</h5>
+                        <p className='font-bold'>{el?.value}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
             <div className='bg-white p-5 my-3'>
               <div className='flex items-center mb-4'>
@@ -195,55 +189,63 @@ const StockDetails = () => {
                 <FaRegThumbsUp className='text-green-500 text-xl' />
               </div>
               <div className='flex justify-between items-center flex-wrap'>
-                {detailsLoading && suggestion ? <>
-                <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              </> : (<ul className='p-4'>
-                  {suggestion?.strengths?.map((el) => {
-                    return (
-                      <li className='mb-3 list-disc' key={el}>
-                        <p className='font-medium'>{el}</p>
-                      </li>
-                    );
-                  })}
-                </ul>)}
+                {detailsLoading && suggestion ? (
+                  <>
+                    <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                    <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  </>
+                ) : (
+                  <ul className='p-4'>
+                    {suggestion?.strengths?.map((el) => {
+                      return (
+                        <li className='mb-3 list-disc' key={el}>
+                          <p className='font-medium'>{el}</p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
           <div className='w-[49%]'>
             <div className='bg-white p-5 my-3 h-[32rem]'>
               <h3 className='text-2xl font-semibold mb-4'>Financial Ratios</h3>
-              {detailsLoading && financial ? <>
-                <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              </> : (<div className='flex justify-between items-center flex-wrap'>
-                {financial?.ratios?.map((el, index) => {
-                  if (index <= 3) {
-                    return (
-                      <div className='mb-5 w-[8rem]' key={el?.name}>
-                        <h5 className='text-sm mb-1'>{el?.name}</h5>
-                        {Object.keys(el?.data)?.map((key) => {
-                          return (
-                            <p className='font-bold'>
-                              <span className='font-semibold'>{key}</span>:{" "}
-                              {el?.data[key]}
-                            </p>
-                          );
-                        })}
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div className='mb-5 w-[8rem]' key={el?.name}>
-                        <h5 className='text-sm mb-1'>{el?.name}</h5>
-                        <p className='font-bold'>
-                          {parseFloat(el?.data)?.toFixed(2)}
-                        </p>
-                      </div>
-                    );
-                  }
-                })}
-              </div>)}
+              {detailsLoading && financial ? (
+                <>
+                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                </>
+              ) : (
+                <div className='flex justify-between items-center flex-wrap'>
+                  {financial?.ratios?.map((el, index) => {
+                    if (index <= 3) {
+                      return (
+                        <div className='mb-5 w-[8rem]' key={el?.name}>
+                          <h5 className='text-sm mb-1'>{el?.name}</h5>
+                          {Object.keys(el?.data)?.map((key) => {
+                            return (
+                              <p className='font-bold'>
+                                <span className='font-semibold'>{key}</span>:{" "}
+                                {el?.data[key]}
+                              </p>
+                            );
+                          })}
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className='mb-5 w-[8rem]' key={el?.name}>
+                          <h5 className='text-sm mb-1'>{el?.name}</h5>
+                          <p className='font-bold'>
+                            {parseFloat(el?.data)?.toFixed(2)}
+                          </p>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              )}
             </div>
             <div className='bg-white p-5 my-3'>
               <div className='flex items-center mb-4'>
@@ -251,18 +253,22 @@ const StockDetails = () => {
                 <FaRegThumbsDown className='text-red-500 text-xl' />
               </div>
               <div className='flex justify-between items-center flex-wrap'>
-                {detailsLoading && suggestion ? <>
-                <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-              </> : (<ul className='p-4'>
-                  {suggestion?.limitations?.map((el) => {
-                    return (
-                      <li className='mb-3 list-disc' key={el}>
-                        <p className='font-medium'>{el}</p>
-                      </li>
-                    );
-                  })}
-                </ul>)}
+                {detailsLoading && suggestion ? (
+                  <>
+                    <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                    <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  </>
+                ) : (
+                  <ul className='p-4'>
+                    {suggestion?.limitations?.map((el) => {
+                      return (
+                        <li className='mb-3 list-disc' key={el}>
+                          <p className='font-medium'>{el}</p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
@@ -315,7 +321,7 @@ const StockDetails = () => {
                     className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500'
                   >
                     <div className='flex items-center gap-x-3 font-bold'>
-                    {el?.toUpperCase()}
+                      {el?.toUpperCase()}
                     </div>
                   </th>
                 );
@@ -351,7 +357,7 @@ const StockDetails = () => {
                     className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500'
                   >
                     <div className='flex items-center gap-x-3 font-bold'>
-                    {el?.toUpperCase()}
+                      {el?.toUpperCase()}
                     </div>
                   </th>
                 );

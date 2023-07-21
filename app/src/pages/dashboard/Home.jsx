@@ -17,6 +17,7 @@ import { HiChartSquareBar } from "react-icons/hi";
 import { GiTiedScroll } from "react-icons/gi";
 import TypeETF from "../../components/dashboard/widgets/TypeETF";
 import { Link } from "react-router-dom";
+import { clearWalletState, getWalletThunk } from "../../features/transaction/wallet";
 // name, symbol, currPrice, currPer, currGap, size
 
 // Data
@@ -93,10 +94,13 @@ const Home = () => {
 
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { stocks, isLoading } = useSelector((state) => state.stockTopReducer);
+  const { wallet } = useSelector((state) => state.walletReducer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(clearWalletState());
+    dispatch(getWalletThunk());
     dispatch(getStockIndexesThunk());
     dispatch(getStockTopThunk({ skip, limit }));
   }, []);
@@ -110,7 +114,7 @@ const Home = () => {
         dispatch(getStockIndexesThunk());
         dispatch(getStockTopThunk({ skip, limit }));
       }
-    }, 20000);
+    }, 30000);
 
     return () => {
       clearInterval(timeOut);
@@ -182,13 +186,19 @@ const Home = () => {
           <div className='w-[69%] p-4 me-2 bg-white rounded-md'>
             <h1 className='text-3xl font-bold p-5'>Dashboard</h1>
             <div className='flex justify-evenly mb-10 mt-3'>
-              <div className='w-[45%] border p-4'>
+              <div className='w-[32%] border p-4'>
+                <h4 className='text-xl font-bold'>Wallet Balance</h4>
+                <p className='text-lg mt-4 text-gray-600 font-semibold'>
+                  ₹ {wallet?.balance}
+                </p>
+              </div>
+              <div className='w-[32%] border p-4'>
                 <h4 className='text-xl font-bold'>Total Investment</h4>
                 <p className='text-lg mt-4 text-gray-600 font-semibold'>
                   ₹ 1,00,000
                 </p>
               </div>
-              <div className='w-[45%] border p-4'>
+              <div className='w-[32%] border p-4'>
                 <h4 className='text-xl font-bold '>Total Profit</h4>
                 <p className='text-lg mt-4 text-green-500 font-semibold'>
                   ₹ 1,00,000

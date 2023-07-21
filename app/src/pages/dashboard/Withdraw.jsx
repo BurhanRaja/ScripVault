@@ -70,7 +70,7 @@ const Withdraw = ({ setAlert }) => {
           <h1 className='text-3xl font-bold mb-4 p-5'>Withdraws</h1>
           <div className='flex justify-between items-start mb-10'>
             <div className='w-[30%] bg-gray-100 p-6 rounded-md'>
-              <h2 className='text-2xl font-medium'>Current Wallet Amount</h2>
+              <h2 className='text-2xl font-medium'>Wallet Balance</h2>
               <p className='text-2xl font-semibold mt-4'>₹ {wallet?.balance}</p>
             </div>
             <div className='w-[68%] bg-gray-100 p-6 rounded-md'>

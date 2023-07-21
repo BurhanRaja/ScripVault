@@ -2,8 +2,10 @@ import { Router } from "express";
 import checkuser from "../middleware/checkuser.js";
 import {
   etfBuyTicker,
-  getPortfolio,
+  getETFPortfolio,
+  getMFPortfolio,
   getProfit,
+  getStockPortfolio,
   mutualFundBuyTicker,
   sellEtfTicker,
   sellMutualFundsTicker,
@@ -36,6 +38,20 @@ portfolioRouter.post(
 
 portfolioRouter.post("/etf/sell", checkuser, checkKyc, sellEtfTicker);
 
-portfolioRouter.get("/all/portfolio", checkuser, checkKyc, getPortfolio);
+portfolioRouter.get(
+  "/all/stocks/portfolio",
+  checkuser,
+  checkKyc,
+  getStockPortfolio
+);
+
+portfolioRouter.get("/all/mfs/portfolio", checkuser, checkKyc, getMFPortfolio);
+
+portfolioRouter.get(
+  "/all/etfs/portfolio",
+  checkuser,
+  checkKyc,
+  getETFPortfolio
+);
 
 portfolioRouter.get("/total/profit", checkuser, checkKyc, getProfit);

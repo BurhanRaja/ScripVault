@@ -518,18 +518,133 @@ export const sellEtfTicker = async (req, res) => {
   }
 };
 
-// Get Portfolio
-export const getPortfolio = async (req, res) => {
+// Get Stock Portfolio
+export const getStockPortfolio = async (req, res) => {
   let success = false;
 
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
+    let stocksData = [];
+
+    for (const stock of portfolio?.stocks) {
+      let currStock = await axios.get(
+        config.stock_api + "/stock/currentprice" + p.symbol
+      );
+
+      stocksData.push({
+        name: stock.name,
+        symbol: stock.symbol,
+        buy_price: stock.buy_price,
+        profit: (currStock?.curr_price - stock.buy_price) * stock.no_of_shares,
+        quantity: stock.no_of_shares,
+        date_of_buy: stock.date_of_buy,
+      });
+    }
+
     success = true;
 
     return res.status(200).send({
       success,
-      portfolio,
+      stocksPortfolio: stocksData,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Get Mutual Fund Portfolio
+export const getMFPortfolio = async (req, res) => {
+  let success = false;
+
+  try {
+    let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    let mfData = [];
+
+    for (const mf of portfolio?.mutual_funds) {
+      let currMF = await axios.get(
+        config.stock_api + "/mutualfund/current/price/" + stock.symbol
+      );
+
+      let cagr =
+        (Math.pow(currMF?.curr_price - mf.buy_price, 1 / mf.total_years) - 1) *
+        100;
+
+      if (mf.type_mf === 0) {
+        mfData.push({
+          name: mf.name,
+          symbol: mf.symbol,
+          total_price: mf.total_price,
+          buy_price: mf.buy_price,
+          profit: mf.buy_price * Math.pow(1 + cagr, mf.total_years),
+          year_sell: mf.year_sell,
+          date_of_buy: mf.date_of_buy,
+        });
+      } else {
+        mfData.push({
+          name: mf.name,
+          symbol: mf.symbol,
+          buy_price: mf.buy_price,
+          total_price: mf.total_price,
+          profit:
+            mf.buy_price *
+            12 *
+            mf.total_years *
+            Math.pow(1 + cagr, mf.total_years - 1) *
+            ((1 + cagr) / cagr),
+          year_sell: mf.year_sell,
+          date_of_buy: mf.date_of_buy,
+        });
+      }
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      mfPortfolio: mfData,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Get ETF Portfolio
+export const getETFPortfolio = async (req, res) => {
+  let success = false;
+
+  try {
+    let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    let etfData = [];
+
+    for (const etf of portfolio?.etfs) {
+      let currEtf = await axios.get(
+        config.stock_api + "/etf/current/price/" + p.symbol
+      );
+
+      etfData.push({
+        name: etf.name,
+        symbol: etf.symbol,
+        buy_price: etf.buy_price,
+        profit: (currEtf?.curr_price - stock.buy_price) * etf.no_of_shares,
+        quantity: etf.no_of_shares,
+        date_of_buy: etf.date_of_buy,
+      });
+    }
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      etfPortfolio: etfData,
     });
   } catch (err) {
     return res.status(500).send({
@@ -543,7 +658,6 @@ export const getPortfolio = async (req, res) => {
 export const getTotalInvestment = () => {};
 
 // Get Total Profit
-
 
 // Update and get Total Portfolio Amount ---------------------------------------------------------------------------
 export const getProfit = async (req, res) => {
@@ -572,7 +686,7 @@ export const getProfit = async (req, res) => {
         }
         if (p.type === "Mutual Fund") {
           currPrice = await axios.get(
-            config.stock_api + "/mutualfund/current/price" + p.symbol
+            config.stock_api + "/mutualfund/current/price/" + p.symbol
           );
         }
         if (p.type === "ETF") {

@@ -36,6 +36,9 @@ const PortfolioSchema = new Schema(
         buy_price: {
           type: Number,
         },
+        total_price: {
+          type: Number,
+        },
         no_of_units: {
           type: Number,
         },
