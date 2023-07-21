@@ -103,8 +103,14 @@ function App() {
             <Route path='/dashboard/etfs/:id' element={<></>} />
             <Route path='/dashboard/etfs/best/:name' element={<BestETF />} />
 
-            <Route path='/dashboard/deposit' element={<Deposit />} />
-            <Route path='/dashboard/withdraw' element={<Withdraw />} />
+            <Route
+              path='/dashboard/deposit'
+              element={<Deposit setAlert={setAlert} />}
+            />
+            <Route
+              path='/dashboard/withdraw'
+              element={<Withdraw setAlert={setAlert} />}
+            />
             <Route path='/dashboard/watchlist' element={<>Hello</>} />
             <Route
               path='/dashboard/profile'

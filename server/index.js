@@ -11,6 +11,7 @@ import connectToMongoDB from "./db.js";
 import { emailRouter } from "./routes/email.js";
 import { verifyRouter } from "./routes/verify.js";
 import { kycRouter } from "./routes/kyc.js";
+import { walletRouter } from "./routes/wallet.js";
 
 const app = express();
 const port = config.port;
@@ -32,6 +33,7 @@ app.use("/api/portfolio", portfolioRouter);
 app.use("/api/watchlist", watchlistRouter);
 app.use("/api/deposit", depositRouter);
 app.use("/api/withdraw", withdrawRouter);
+app.use("/api/wallet", walletRouter)
 app.use("/api/soldticker", soldTickerRouter);
 app.use("/api/email", emailRouter);
 app.use("/api/verify", verifyRouter);

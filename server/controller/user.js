@@ -46,7 +46,6 @@ export const userRegister = async (req, res) => {
       user_id: user._id,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",

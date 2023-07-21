@@ -12,20 +12,20 @@ export const addWithdraw = async (req, res) => {
 
     let transaction_id = randomHash(14);
 
-    let withdraw = await Withdraw.create({
-      amount,
-      transaction_id,
-      user_id: req.user.id,
-    });
-
     let wallet = await Wallet.findOne({ user_id: req.user.id });
 
     if (wallet.balance < amount) {
       return res.status(400).send({
         success,
-        message: "Not Enough funds.",
+        message: "Not Enough funds in Wallet.",
       });
     }
+
+    let withdraw = await Withdraw.create({
+      amount,
+      transaction_id,
+      user_id: req.user.id,
+    });
 
     await Wallet.findOneAndUpdate(
       { user_id: req.user.id },

@@ -28,10 +28,19 @@ export const getAllWithdraws = async () => {
     },
   });
   return response?.data;
-}
+};
 
 export const addWithdraw = async (data) => {
   let response = await axios.post(config.node_url + "/api/withdraw/add", data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response?.data;
+};
+
+export const getWallet = async () => {
+  let response = await axios.get(config.node_url + "/api/wallet", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -1,5 +1,6 @@
 import BankBalance from "../model/BankBalance.js";
 import Deposit from "../model/Deposit.js";
+import User from "../model/User.js";
 import Wallet from "../model/Wallet.js";
 import randomHash from "../utils/randomHash.js";
 
@@ -8,13 +9,15 @@ export const addDeposit = async (req, res) => {
   let success = false;
 
   try {
-    const { amount, bank_account_number } = req.body;
+    const { amount } = req.body;
 
     let transaction_id = randomHash(14);
 
     let bankBalance = await BankBalance.findOne({
       user_id: req.user.id,
     });
+
+    let user = await User.findOne({ _id: req.user.id });
 
     if (bankBalance.balance < amount) {
       return res.status(400).send({
@@ -25,7 +28,7 @@ export const addDeposit = async (req, res) => {
 
     let deposit = await Deposit.create({
       amount,
-      bank_account_number,
+      bank_account_number: user?.bank?.accountNumber,
       transaction_id,
       user_id: req.user.id,
     });

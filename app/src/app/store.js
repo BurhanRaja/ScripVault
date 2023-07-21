@@ -20,6 +20,7 @@ import companyMFReducer from "../features/mutualfunds/companyMF";
 import mfDetailsReducer from "../features/mutualfunds/mfDetails";
 import getTransactionReducer from "../features/transaction/getTransaction";
 import addTransactionReducer from "../features/transaction/addTransaction";
+import walletReducer from "../features/transaction/wallet";
 
 const reducers = combineReducers({
   authReducer,
@@ -43,6 +44,7 @@ const reducers = combineReducers({
   mfDetailsReducer,
   getTransactionReducer,
   addTransactionReducer,
+  walletReducer,
 });
 
 const store = configureStore({
