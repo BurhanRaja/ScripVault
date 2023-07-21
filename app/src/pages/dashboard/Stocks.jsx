@@ -56,22 +56,29 @@ const Stocks = ({ setAlert }) => {
 
   // mstockTransactionReducer
   const handleBuy = () => {
-    let data = {
-      buy_price: stockPrice,
-      no_of_shares: quantity,
-      symbol: stockSymbol,
-      name: stockName,
-    };
+    if (quantity === "") {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: "Please add Required Data.",
+      });
+    }
 
     let hour = new Date().getHours();
 
     if (hour < 15 && hour > 9) {
+      let data = {
+        buy_price: stockPrice,
+        no_of_shares: Number(quantity),
+        symbol: stockSymbol,
+        name: stockName,
+      };
       dispatch(buyStockThunk(data)).then((data) => {
         if (!data?.payload?.success) {
           setAlert({
             show: true,
             type: "warning",
-            message: "Please Wait for the Market to Open.",
+            message: data?.response.message,
           });
         } else {
           setAlert({
@@ -79,11 +86,18 @@ const Stocks = ({ setAlert }) => {
             type: "success",
             message: `Congratulations! You Successfully bought ${stockName}.`,
           });
+          setIsModal(false);
           setQuantity("");
           setStockPrice("");
           setStockName("");
           setStockSymbol("");
         }
+      });
+    } else {
+      setAlert({
+        show: true,
+        type: "danger",
+        message: "Currently Market is Closed.",
       });
     }
     return;
@@ -120,10 +134,10 @@ const Stocks = ({ setAlert }) => {
           setQuantity={(val) => setQuantity(val)}
         />
       )}
-      <div className='bg-gray-100 p-2'>
-        <div className='bg-white rounded-md p-5'>
-          <h1 className='text-3xl font-bold mb-8 p-5'>Stocks</h1>
-          <div className='flex justify-evenly items-center mb-5'>
+      <div className="bg-gray-100 p-2">
+        <div className="bg-white rounded-md p-5">
+          <h1 className="text-3xl font-bold mb-8 p-5">Stocks</h1>
+          <div className="flex justify-evenly items-center mb-5">
             <StockIndexWidget
               name={indexes?.nse?.name}
               symbol={indexes?.nse?.symbol}
@@ -141,14 +155,14 @@ const Stocks = ({ setAlert }) => {
               size={"w-[40%]"}
             />
           </div>
-          <div className='p-5'>
+          <div className="p-5">
             {isLoading && !isSuccess ? (
               <>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
-                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
               </>
             ) : (
               nseData?.map((el) => {
@@ -170,20 +184,20 @@ const Stocks = ({ setAlert }) => {
               })
             )}
           </div>
-          <div className='flex items-center justify-evenly'>
+          <div className="flex items-center justify-evenly">
             <button
-              className='px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center'
+              className="px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center"
               onClick={() => handlePrev()}
             >
-              <BsChevronLeft className='me-3' />
+              <BsChevronLeft className="me-3" />
               Prev
             </button>
             <button
-              className='px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center'
+              className="px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center"
               onClick={() => handleNext()}
             >
               Next
-              <BsChevronRight className='ms-3' />
+              <BsChevronRight className="ms-3" />
             </button>
           </div>
         </div>

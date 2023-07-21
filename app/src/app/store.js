@@ -21,6 +21,7 @@ import mfDetailsReducer from "../features/mutualfunds/mfDetails";
 import getTransactionReducer from "../features/transaction/getTransaction";
 import addTransactionReducer from "../features/transaction/addTransaction";
 import walletReducer from "../features/transaction/wallet";
+import mfTransactionReducer from "../features/portfolio/mfTransaction";
 
 import stockTransactionReducer from "../features/portfolio/stockTransaction";
 
@@ -48,6 +49,7 @@ const reducers = combineReducers({
   addTransactionReducer,
   walletReducer,
   stockTransactionReducer,
+  mfTransactionReducer,
 });
 
 const store = configureStore({
