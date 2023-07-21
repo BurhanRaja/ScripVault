@@ -42,3 +42,7 @@ const stockTransaction = createSlice({
       });
   },
 });
+
+export const { clearStockTransaction } = stockTransaction.actions;
+
+export default stockTransaction.reducer;

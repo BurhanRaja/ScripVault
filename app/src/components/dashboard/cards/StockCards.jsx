@@ -16,6 +16,7 @@ const StockCards = ({
   setSymbol,
   setModal,
   link,
+  setPrice,
 }) => {
   const [stockPrice, setStockPrice] = useState("");
   const [stockPriceChange, setStockPriceChange] = useState("");
@@ -115,6 +116,7 @@ const StockCards = ({
               setSymbol(symbol);
               setName(name);
               setModal(true);
+              setPrice(stockPrice);
             }}
           >
             Buy

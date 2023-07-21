@@ -22,6 +22,8 @@ import getTransactionReducer from "../features/transaction/getTransaction";
 import addTransactionReducer from "../features/transaction/addTransaction";
 import walletReducer from "../features/transaction/wallet";
 
+import stockTransactionReducer from "../features/portfolio/stockTransaction";
+
 const reducers = combineReducers({
   authReducer,
   nominateReducer,
@@ -45,6 +47,7 @@ const reducers = combineReducers({
   getTransactionReducer,
   addTransactionReducer,
   walletReducer,
+  stockTransactionReducer,
 });
 
 const store = configureStore({

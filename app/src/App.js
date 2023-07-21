@@ -82,7 +82,10 @@ function App() {
 
             <Route path='/dashboard/topstock' element={<TopStocksPage />} />
 
-            <Route path='/dashboard/stocks' element={<Stocks />} />
+            <Route
+              path='/dashboard/stocks'
+              element={<Stocks setAlert={setAlert} />}
+            />
             <Route path='/dashboard/stocks/:id' element={<StockDetails />} />
 
             <Route path='/dashboard/mutual-funds' element={<MutualFunds />} />

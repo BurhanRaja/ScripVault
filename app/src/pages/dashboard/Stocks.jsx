@@ -12,14 +12,16 @@ import {
   getStockIndexesThunk,
 } from "../../features/stocks/stockIndexes";
 import StockModal from "../../components/dashboard/modals/StockModal";
+import { buyStockThunk } from "../../features/portfolio/stockTransaction";
 // import { Link } from "react-router-dom";
 
-const Stocks = () => {
+const Stocks = ({ setAlert }) => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
 
   const [stockName, setStockName] = useState("");
   const [stockSymbol, setStockSymbol] = useState("");
+  const [stockPrice, setStockPrice] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [quantity, setQuantity] = useState(0);
 
@@ -52,7 +54,40 @@ const Stocks = () => {
     };
   }, []);
 
-  const handleBuy = () => {};
+  // mstockTransactionReducer
+  const handleBuy = () => {
+    let data = {
+      buy_price: stockPrice,
+      no_of_shares: quantity,
+      symbol: stockSymbol,
+      name: stockName,
+    };
+
+    let hour = new Date().getHours();
+
+    if (hour < 15 && hour > 9) {
+      dispatch(buyStockThunk(data)).then((data) => {
+        if (!data?.payload?.success) {
+          setAlert({
+            show: true,
+            type: "warning",
+            message: "Please Wait for the Market to Open.",
+          });
+        } else {
+          setAlert({
+            show: true,
+            type: "success",
+            message: `Congratulations! You Successfully bought ${stockName}.`,
+          });
+          setQuantity("");
+          setStockPrice("");
+          setStockName("");
+          setStockSymbol("");
+        }
+      });
+    }
+    return;
+  };
 
   const handleNext = () => {
     if (limit < 50) {
@@ -129,6 +164,7 @@ const Stocks = () => {
                     setName={(val) => setStockName(val)}
                     setSymbol={(val) => setStockSymbol(val)}
                     setModal={(val) => setIsModal(val)}
+                    setPrice={(val) => setStockPrice(val)}
                   />
                 );
               })

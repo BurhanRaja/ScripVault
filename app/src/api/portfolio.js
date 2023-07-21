@@ -27,7 +27,6 @@ export const buyMutualFund = async (data) => {
       },
     }
   );
-
   return response.data;
 };
 
