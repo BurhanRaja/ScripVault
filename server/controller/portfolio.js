@@ -13,7 +13,16 @@ export const stockBuyTicker = async (req, res) => {
 
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
-    let wallet = await Wallet.findOneAndUpdate(
+    let wallet = await Wallet.findOne({ user_id: req.user.id });
+
+    if (wallet.balance < investment) {
+      return res.status(400).send({
+        success,
+        message: "Not Enough Funds in the Wallet.",
+      });
+    }
+
+    wallet = await Wallet.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $inc: {
@@ -65,7 +74,6 @@ export const stockBuyTicker = async (req, res) => {
       message: `Stock bought successfully`,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -558,8 +566,6 @@ export const getStockPortfolio = async (req, res) => {
 
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
-
-    console.log(portfolio);
 
     let stocksData = [];
 

@@ -106,7 +106,7 @@ const MutualFunds = ({ setAlert }) => {
   };
 
   const handleBuy = () => {
-    if (investment === price) {
+    if (investment < price) {
       setAlert({
         show: true,
         type: "warning",

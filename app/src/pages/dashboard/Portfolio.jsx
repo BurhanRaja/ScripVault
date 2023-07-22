@@ -21,9 +21,6 @@ const Portfolio = () => {
     dispatch(getMutualFundPortfolioThunk());
   }, []);
 
-  // console.log(mutualFunds)
-  console.log(stocks);
-
   return (
     <>
       <div className="bg-gray-100 p-2">
@@ -112,7 +109,6 @@ const Portfolio = () => {
                 <div className="flex justify-between items-center w-[78%]">
                   <p className={`text-sm`}>Buy Price (NAV)</p>
                   <p className={`text-sm`}>Exp. Amount Earned</p>
-                  <p className={`text-sm`}>Total Investment</p>
                   <p className={`text-sm`}>Exp. Interest Earned</p>
                   <p className={`text-sm`}>Total years</p>
                   <p className={`text-sm`}>Date of Buy</p>

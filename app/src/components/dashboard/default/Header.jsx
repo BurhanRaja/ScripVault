@@ -2,7 +2,10 @@ import React from "react";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { IoIosNotificationsOutline } from "react-icons/io";
 
+
 const Header = () => {
+
+
   return (
     <>
       <nav class='relative bg-gray-800'>

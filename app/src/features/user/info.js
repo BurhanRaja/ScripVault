@@ -17,7 +17,6 @@ export const addUserInfoThunk = createAsyncThunk("info/add", async (data) => {
   }
 });
 
-
 export const getUserThunk = createAsyncThunk("info/user", async () => {
   let res = await getUser();
   return res;
