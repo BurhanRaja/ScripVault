@@ -73,6 +73,7 @@ const MutualFunds = ({ setAlert }) => {
   const [investment, setInvestment] = useState("");
   const [price, setPrice] = useState("");
   const [years, setYears] = useState("");
+  const [oneYear, setOneYear] = useState("");
 
   const { isSuccess, isLoading, isError, allMF } = useSelector(
     (state) => state.allMutualFundsReducer
@@ -105,6 +106,14 @@ const MutualFunds = ({ setAlert }) => {
   };
 
   const handleBuy = () => {
+    if (investment === price) {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: `You have to invest minimum ${price}.`,
+      });
+    }
+
     if (investment === "" || years === "") {
       setAlert({
         show: true,
@@ -117,6 +126,7 @@ const MutualFunds = ({ setAlert }) => {
     let data = {
       name: mfName,
       symbol,
+      one_year_return: Number(oneYear),
       buy_price: Number(price?.substring(1)),
       investment: Number(investment),
       type_mf: type,
@@ -129,7 +139,7 @@ const MutualFunds = ({ setAlert }) => {
         setAlert({
           show: true,
           type: "warning",
-          message: data?.response.message,
+          message: data?.payload.message,
         });
       } else {
         setAlert({
@@ -208,6 +218,7 @@ const MutualFunds = ({ setAlert }) => {
                     setModal={(val) => setIsModal(val)}
                     setSymbol={(val) => setSymbol(val)}
                     setPrice={(val) => setPrice(val)}
+                    setOneYear={(val) => setOneYear(val)}
                   />
                 );
               })

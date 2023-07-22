@@ -30,6 +30,9 @@ const PortfolioSchema = new Schema(
         name: {
           type: String,
         },
+        one_year_return: {
+          type: Number,
+        },
         symbol: {
           type: String,
         },
@@ -37,6 +40,9 @@ const PortfolioSchema = new Schema(
           type: Number,
         },
         total_price: {
+          type: Number,
+        },
+        remaining_price: {
           type: Number,
         },
         no_of_units: {
@@ -76,10 +82,6 @@ const PortfolioSchema = new Schema(
       },
     ],
     total_investment: {
-      type: Number,
-      default: 0,
-    },
-    total_profit: {
       type: Number,
       default: 0,
     },

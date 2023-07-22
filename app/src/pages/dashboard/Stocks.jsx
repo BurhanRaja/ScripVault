@@ -65,41 +65,44 @@ const Stocks = ({ setAlert }) => {
     }
 
     let hour = new Date().getHours();
+    let day = new Date().getDay();
 
-    if (hour < 15 && hour > 9) {
-      let data = {
-        buy_price: stockPrice,
-        no_of_shares: Number(quantity),
-        symbol: stockSymbol,
-        name: stockName,
-      };
-      dispatch(buyStockThunk(data)).then((data) => {
-        if (!data?.payload?.success) {
-          setAlert({
-            show: true,
-            type: "warning",
-            message: data?.response.message,
-          });
-        } else {
-          setAlert({
-            show: true,
-            type: "success",
-            message: `Congratulations! You Successfully bought ${stockName}.`,
-          });
-          setIsModal(false);
-          setQuantity("");
-          setStockPrice("");
-          setStockName("");
-          setStockSymbol("");
-        }
-      });
-    } else {
-      setAlert({
-        show: true,
-        type: "danger",
-        message: "Currently Market is Closed.",
-      });
-    }
+    // if (hour < 15 && hour > 9 && day > 0 && day < 6) {
+    let data = {
+      buy_price: stockPrice,
+      no_of_shares: Number(quantity),
+      symbol: stockSymbol,
+      name: stockName,
+    };
+    console.log(data);
+
+    dispatch(buyStockThunk(data)).then((data) => {
+      if (!data?.payload?.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: data?.payload.message,
+        });
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `Congratulations! You Successfully bought ${stockName}.`,
+        });
+        setIsModal(false);
+        setQuantity("");
+        setStockPrice("");
+        setStockName("");
+        setStockSymbol("");
+      }
+    });
+    // } else {
+    // setAlert({
+    //   show: true,
+    //   type: "danger",
+    //   message: "Currently Market is Closed.",
+    // });
+    // }
     return;
   };
 

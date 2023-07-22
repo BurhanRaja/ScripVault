@@ -43,3 +43,29 @@ export const buyETF = async (data) => {
 
   return response.data;
 };
+
+export const getStockPortfolio = async () => {
+  let response = await axios.get(
+    config.node_url + "/api/portfolio/all/stocks/portfolio",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const getMutualFundPortfolio = async () => {
+  let response = await axios.get(
+    config.node_url + "/api/portfolio/all/mfs/portfolio",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};

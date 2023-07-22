@@ -12,6 +12,7 @@ const MutualFundCards = ({
   setModal,
   setSymbol,
   setPrice,
+  setOneYear,
 }) => {
   return (
     <>
@@ -51,6 +52,7 @@ const MutualFundCards = ({
               setModal(true);
               setSymbol(symbol);
               setPrice(price);
+              setOneYear(oneYear);
             }}
             className="p-1 px-3 text-white bg-green-700 text-sm rounded-sm"
           >

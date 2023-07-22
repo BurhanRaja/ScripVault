@@ -3,6 +3,7 @@ import Portfolio from "../model/Portfolio.js";
 import SoldTicker from "../model/SoldTicker.js";
 import Wallet from "../model/Wallet.js";
 import config from "../config.js";
+import { pow } from "mathjs";
 
 // Stock Buy ---------------------------------------------------------------------------
 export const stockBuyTicker = async (req, res) => {
@@ -21,6 +22,8 @@ export const stockBuyTicker = async (req, res) => {
       }
     );
 
+    let date = new Date();
+
     if (!portfolio) {
       portfolio = await Portfolio.create({
         user_id: req.user.id,
@@ -30,7 +33,7 @@ export const stockBuyTicker = async (req, res) => {
             symbol,
             no_of_shares,
             buy_price,
-            date_of_buy: new Date(),
+            date_of_buy: date,
           },
         ],
         total_investment: buy_price * no_of_shares,
@@ -45,7 +48,7 @@ export const stockBuyTicker = async (req, res) => {
               symbol,
               no_of_shares,
               buy_price,
-              date_of_buy,
+              date_of_buy: date,
             },
           },
           $inc: {
@@ -62,6 +65,7 @@ export const stockBuyTicker = async (req, res) => {
       message: `Stock bought successfully`,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -80,16 +84,28 @@ export const mutualFundBuyTicker = async (req, res) => {
       investment,
       type_mf,
       total_years,
+      one_year_return,
       year_sell,
     } = req.body;
 
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
-    let wallet = await Wallet.findOneAndUpdate(
+    let wallet = await Wallet.findOne({ user_id: req.user.id });
+
+    if (wallet.balance < investment) {
+      return res.status(400).send({
+        success,
+        message: "Not Enough Funds in the Wallet.",
+      });
+    }
+
+    let realInvestment = Math.floor(investment / buy_price) * buy_price;
+
+    wallet = await Wallet.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $inc: {
-          balance: -buy_price,
+          balance: -realInvestment,
         },
       }
     );
@@ -103,13 +119,22 @@ export const mutualFundBuyTicker = async (req, res) => {
             symbol,
             type_mf,
             buy_price,
-            no_of_units: Math.floor(investment / buy_price),
+            one_year_return,
+            no_of_units: realInvestment / buy_price,
+            total_price:
+              type_mf === 1
+                ? realInvestment * total_years * 12
+                : realInvestment,
+            remaining_price:
+              type_mf === 1
+                ? realInvestment * total_years * 12 - realInvestment
+                : 0,
             date_of_buy: new Date(),
             total_years,
             year_sell,
           },
         ],
-        total_investment: Math.floor(investment / buy_price) * buy_price,
+        total_investment: realInvestment,
       });
     } else {
       portfolio = await Portfolio.findOneAndUpdate(
@@ -120,15 +145,24 @@ export const mutualFundBuyTicker = async (req, res) => {
               name,
               symbol,
               type_mf,
+              total_price:
+                type_mf === 1
+                  ? realInvestment * total_years * 12
+                  : realInvestment,
+              remaining_price:
+                type_mf === 1
+                  ? realInvestment * total_years * 12 - realInvestment
+                  : 0,
               buy_price,
-              no_of_units: Math.floor(investment / buy_price),
+              one_year_return,
+              no_of_units: realInvestment / buy_price,
               date_of_buy: new Date(),
               total_years,
               year_sell,
             },
           },
           $inc: {
-            total_investment: Math.floor(investment / buy_price) * buy_price,
+            total_investment: realInvestment,
           },
         }
       );
@@ -525,18 +559,22 @@ export const getStockPortfolio = async (req, res) => {
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
+    console.log(portfolio);
+
     let stocksData = [];
 
     for (const stock of portfolio?.stocks) {
       let currStock = await axios.get(
-        config.stock_api + "/stock/currentprice" + p.symbol
+        config.stock_api + "/stock/currentprice/" + stock.symbol
       );
 
       stocksData.push({
         name: stock.name,
         symbol: stock.symbol,
         buy_price: stock.buy_price,
-        profit: (currStock?.curr_price - stock.buy_price) * stock.no_of_shares,
+        profit:
+          (currStock?.data.curr_price - stock.buy_price) * stock.no_of_shares,
+        total_price: stock.buy_price * stock.no_of_shares,
         quantity: stock.no_of_shares,
         date_of_buy: stock.date_of_buy,
       });
@@ -563,39 +601,51 @@ export const getMFPortfolio = async (req, res) => {
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
-    let mfData = [];
+    let lumpsumMF = [];
+    let sipMF = [];
 
     for (const mf of portfolio?.mutual_funds) {
       let currMF = await axios.get(
-        config.stock_api + "/mutualfund/current/price/" + stock.symbol
+        config.stock_api + "/mutualfund/current/price/" + mf.symbol
       );
 
       let cagr =
-        (Math.pow(currMF?.curr_price - mf.buy_price, 1 / mf.total_years) - 1) *
+        pow(currMF?.data.curr_price / mf.buy_price, 1 / mf.total_years - 1) *
         100;
 
       if (mf.type_mf === 0) {
-        mfData.push({
+        const profit =
+          mf.buy_price *
+          mf.no_of_units *
+          pow(1 + mf.one_year_return / (1 * 100), mf.total_years * 1);
+        lumpsumMF.push({
           name: mf.name,
           symbol: mf.symbol,
-          total_price: mf.total_price,
+          total_years: mf.total_years,
           buy_price: mf.buy_price,
-          profit: mf.buy_price * Math.pow(1 + cagr, mf.total_years),
+          total_investment: mf.total_price,
+          expected_net_profit: profit,
+          expected_interest_earned: profit - mf.total_price,
           year_sell: mf.year_sell,
           date_of_buy: mf.date_of_buy,
         });
       } else {
-        mfData.push({
+        const monthlyReturn = mf.one_year_return / 100 / 12;
+        const profit =
+          mf.buy_price *
+          mf.no_of_units *
+          ((pow(1 + monthlyReturn, mf.total_years * 12) - 1) / monthlyReturn) *
+          (1 + monthlyReturn);
+
+        sipMF.push({
           name: mf.name,
           symbol: mf.symbol,
+          total_years: mf.total_years,
           buy_price: mf.buy_price,
-          total_price: mf.total_price,
-          profit:
-            mf.buy_price *
-            12 *
-            mf.total_years *
-            Math.pow(1 + cagr, mf.total_years - 1) *
-            ((1 + cagr) / cagr),
+          no_of_units: mf.no_of_units,
+          one_year_return: mf.one_year_return,
+          expected_net_profit: profit,
+          expected_interest_earned: profit - mf.total_price,
           year_sell: mf.year_sell,
           date_of_buy: mf.date_of_buy,
         });
@@ -606,7 +656,8 @@ export const getMFPortfolio = async (req, res) => {
 
     return res.status(200).send({
       success,
-      mfPortfolio: mfData,
+      lumpsumMF,
+      sipMF,
     });
   } catch (err) {
     return res.status(500).send({
@@ -627,7 +678,7 @@ export const getETFPortfolio = async (req, res) => {
 
     for (const etf of portfolio?.etfs) {
       let currEtf = await axios.get(
-        config.stock_api + "/etf/current/price/" + p.symbol
+        config.stock_api + "etf/current/price/" + p.symbol
       );
 
       etfData.push({
@@ -655,64 +706,16 @@ export const getETFPortfolio = async (req, res) => {
 };
 
 // Get Total Investment
-export const getTotalInvestment = () => {};
-
-// Get Total Profit
-
-// Update and get Total Portfolio Amount ---------------------------------------------------------------------------
-export const getProfit = async (req, res) => {
+export const getTotalInvestment = async (req, res) => {
   let success = false;
-
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
-    let date = new Date().toLocaleDateString().split("/");
-
-    let curr = new Date().getTime();
-    let later = new Date(
-      `${date[2]}-0${date[1]}-0${date[0]} 15:35:00`
-    ).getTime();
-
-    let profit = 0;
-    let portfolioData = portfolio.portfolio;
-
-    if (curr > later) {
-      for (let p in portfolioData) {
-        let currPrice = 0;
-        if (p.type === "Stock") {
-          currPrice = await axios.get(
-            config.stock_api + "/stock/currentprice" + p.symbol
-          );
-        }
-        if (p.type === "Mutual Fund") {
-          currPrice = await axios.get(
-            config.stock_api + "/mutualfund/current/price/" + p.symbol
-          );
-        }
-        if (p.type === "ETF") {
-          currPrice = await axios.get(
-            config.stock_api + "/etf/current/price" + p.symbol
-          );
-        }
-
-        profit += (currPrice - p.buy_price) * p.no_of_shares;
-      }
-      success = true;
-
-      portfolio = await Portfolio.findOneAndUpdate(
-        { user_id: req.user.id },
-        {
-          $set: {
-            total_profit: profit,
-          },
-        }
-      );
-    }
     success = true;
 
     return res.status(200).send({
       success,
-      profit: portfolio.total_profit,
+      total_investment: portfolio.total_investment,
     });
   } catch (err) {
     return res.status(500).send({
@@ -721,3 +724,68 @@ export const getProfit = async (req, res) => {
     });
   }
 };
+
+// Get Total Profit
+
+// Update and get Total Portfolio Amount ---------------------------------------------------------------------------
+// export const getProfit = async (req, res) => {
+//   let success = false;
+
+//   try {
+//     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+//     let date = new Date().toLocaleDateString().split("/");
+
+//     let curr = new Date().getTime();
+//     let later = new Date(
+//       `${date[2]}-0${date[1]}-0${date[0]} 15:35:00`
+//     ).getTime();
+
+//     let profit = 0;
+//     let portfolioData = portfolio.portfolio;
+
+//     if (curr > later) {
+//       for (let p in portfolioData) {
+//         let currPrice = 0;
+//         if (p.type === "Stock") {
+//           currPrice = await axios.get(
+//             config.stock_api + "/stock/currentprice" + p.symbol
+//           );
+//         }
+//         if (p.type === "Mutual Fund") {
+//           currPrice = await axios.get(
+//             config.stock_api + "/mutualfund/current/price/" + p.symbol
+//           );
+//         }
+//         if (p.type === "ETF") {
+//           currPrice = await axios.get(
+//             config.stock_api + "/etf/current/price" + p.symbol
+//           );
+//         }
+
+//         profit += (currPrice - p.buy_price) * p.no_of_shares;
+//       }
+//       success = true;
+
+//       portfolio = await Portfolio.findOneAndUpdate(
+//         { user_id: req.user.id },
+//         {
+//           $set: {
+//             total_profit: profit,
+//           },
+//         }
+//       );
+//     }
+//     success = true;
+
+//     return res.status(200).send({
+//       success,
+//       profit: portfolio.total_profit,
+//     });
+//   } catch (err) {
+//     return res.status(500).send({
+//       success,
+//       message: "Internal Server Error.",
+//     });
+//   }
+// };

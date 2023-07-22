@@ -88,6 +88,7 @@ const Deposit = ({ setAlert }) => {
                   {amount === "" && error && (
                     <small className='text-red-500'>{error}</small>
                   )}
+                  <small>You will be provided with a fake Bank Balance containing the balance of ₹ 1,00,000</small>
                 </div>
                 <div className='text-start'>
                   <button

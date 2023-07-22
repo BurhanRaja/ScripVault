@@ -110,7 +110,7 @@ const MutualFundModal = ({
                   <div className="mb-4">
                     <Input
                       type={"text"}
-                      labelName={"SIP - No. of Years"}
+                      labelName={"Lumpsum - No. of Years"}
                       value={years}
                       handleValue={(val) => setYears(val)}
                       handleFocus={() => {}}

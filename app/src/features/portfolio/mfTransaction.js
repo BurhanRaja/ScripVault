@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { buyMutualFund, buyStock } from "../../api/portfolio";
+import { buyMutualFund } from "../../api/portfolio";
 
 const initialState = {
   isSuccess: false,
