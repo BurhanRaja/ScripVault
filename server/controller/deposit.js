@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import BankBalance from "../model/BankBalance.js";
 import Deposit from "../model/Deposit.js";
 import User from "../model/User.js";
@@ -81,6 +82,42 @@ export const getAllDeposits = async (req, res) => {
 
     success = true;
 
+    return res.status(200).send({
+      success,
+      deposits,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+export const getDepositGraph = async (req, res) => {
+  let success = false;
+
+  try {
+    let deposits = await Deposit.aggregate([
+      {
+        $match: { user_id: new mongoose.Types.ObjectId(req.user.id) },
+      },
+      {
+        $group: {
+          _id: {
+            month: {
+              $month: "$createdAt",
+            },
+            year: {
+              $year: "$createdAt",
+            },
+          },
+          total: { $sum: "$amount" },
+        },
+      },
+    ]);
+
+    success = true;
     return res.status(200).send({
       success,
       deposits,

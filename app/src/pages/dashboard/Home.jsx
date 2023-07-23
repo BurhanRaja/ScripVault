@@ -17,7 +17,15 @@ import { HiChartSquareBar } from "react-icons/hi";
 import { GiTiedScroll } from "react-icons/gi";
 import TypeETF from "../../components/dashboard/widgets/TypeETF";
 import { Link } from "react-router-dom";
-import { clearWalletState, getWalletThunk } from "../../features/transaction/wallet";
+import {
+  clearWalletState,
+  getWalletThunk,
+} from "../../features/transaction/wallet";
+import {
+  clearDepositWithdrawGraph,
+  getDepositGraphThunk,
+  getWithdrawGraphThunk,
+} from "../../features/graph/depositWithdraw";
 // name, symbol, currPrice, currPer, currGap, size
 
 // Data
@@ -54,7 +62,7 @@ let etfData = [
     name: "Best Sector ETFs",
     logo: (
       <>
-        <IoPieChartSharp className='text-3xl text-gray-500' />
+        <IoPieChartSharp className="text-3xl text-gray-500" />
       </>
     ),
     url: "/dashboard/etfs/best/sector",
@@ -63,7 +71,7 @@ let etfData = [
     name: "Best Gold ETFs",
     logo: (
       <>
-        <AiFillGolden className='text-3xl text-gray-500' />
+        <AiFillGolden className="text-3xl text-gray-500" />
       </>
     ),
     url: "/dashboard/etfs/best/gold",
@@ -72,7 +80,7 @@ let etfData = [
     name: "Best Index ETFs",
     logo: (
       <>
-        <HiChartSquareBar className='text-3xl text-gray-500' />
+        <HiChartSquareBar className="text-3xl text-gray-500" />
       </>
     ),
     url: "/dashboard/etfs/best/index",
@@ -81,7 +89,7 @@ let etfData = [
     name: "Best Bond ETFs",
     logo: (
       <>
-        <GiTiedScroll className='text-3xl text-gray-500' />
+        <GiTiedScroll className="text-3xl text-gray-500" />
       </>
     ),
     url: "/dashboard/etfs/best/bond",
@@ -95,8 +103,17 @@ const Home = () => {
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { stocks, isLoading } = useSelector((state) => state.stockTopReducer);
   const { wallet } = useSelector((state) => state.walletReducer);
+  const { deposit, withdraw } = useSelector((state) => state.depositWithdrawReducer);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearDepositWithdrawGraph());
+    dispatch(getDepositGraphThunk());
+    dispatch(getWithdrawGraphThunk());
+  }, []);
+
+  console.log(deposit);
 
   useEffect(() => {
     dispatch(clearWalletState());
@@ -181,36 +198,36 @@ const Home = () => {
         </div>
       </div> */}
 
-      <div className='bg-gray-100 p-2'>
-        <div className='flex'>
-          <div className='w-[69%] p-4 me-2 bg-white rounded-md'>
-            <h1 className='text-3xl font-bold p-5'>Dashboard</h1>
-            <div className='flex justify-evenly mb-10 mt-3'>
-              <div className='w-[32%] border p-4'>
-                <h4 className='text-xl font-bold'>Wallet Balance</h4>
-                <p className='text-lg mt-4 text-gray-600 font-semibold'>
+      <div className="bg-gray-100 p-2">
+        <div className="flex">
+          <div className="w-[69%] p-4 me-2 bg-white rounded-md">
+            <h1 className="text-3xl font-bold p-5">Dashboard</h1>
+            <div className="flex justify-evenly mb-10 mt-3">
+              <div className="w-[32%] border p-4">
+                <h4 className="text-xl font-bold">Wallet Balance</h4>
+                <p className="text-lg mt-4 text-gray-600 font-semibold">
                   ₹ {wallet?.balance}
                 </p>
               </div>
-              <div className='w-[32%] border p-4'>
-                <h4 className='text-xl font-bold'>Total Investment</h4>
-                <p className='text-lg mt-4 text-gray-600 font-semibold'>
+              <div className="w-[32%] border p-4">
+                <h4 className="text-xl font-bold">Total Investment</h4>
+                <p className="text-lg mt-4 text-gray-600 font-semibold">
                   ₹ 1,00,000
                 </p>
               </div>
-              <div className='w-[32%] border p-4'>
-                <h4 className='text-xl font-bold '>Total Profit</h4>
-                <p className='text-lg mt-4 text-green-500 font-semibold'>
+              <div className="w-[32%] border p-4">
+                <h4 className="text-xl font-bold ">Total Profit</h4>
+                <p className="text-lg mt-4 text-green-500 font-semibold">
                   ₹ 1,00,000
                 </p>
               </div>
             </div>
-            <img src='/assets/images/demo-chart.png' width={800} />
-            <div className='mt-8'>
-              <h1 className='text-2xl font-semibold text-start p-5 pt-0'>
+            <img src="/assets/images/demo-chart.png" width={800} />
+            <div className="mt-8">
+              <h1 className="text-2xl font-semibold text-start p-5 pt-0">
                 Discover Mutual Funds
               </h1>
-              <div className='flex justify-center items-center flex-wrap w-[100%]'>
+              <div className="flex justify-center items-center flex-wrap w-[100%]">
                 {dataMF?.map((el) => {
                   return (
                     <TypeMF
@@ -223,11 +240,11 @@ const Home = () => {
                 })}
               </div>
             </div>
-            <div className='mt-8'>
-              <h1 className='text-2xl font-semibold text-start p-5 pt-0'>
+            <div className="mt-8">
+              <h1 className="text-2xl font-semibold text-start p-5 pt-0">
                 Discover ETFs
               </h1>
-              <div className='flex justify-center items-center flex-wrap w-[100%]'>
+              <div className="flex justify-center items-center flex-wrap w-[100%]">
                 {etfData?.map((el) => {
                   return (
                     <TypeETF
@@ -241,9 +258,9 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className='w-[29%]'>
-            <div className='bg-white p-3 rounded-md mb-3'>
-              <h1 className='text-lg mb-2 font-semibold'>Stock Indexes</h1>
+          <div className="w-[29%]">
+            <div className="bg-white p-3 rounded-md mb-3">
+              <h1 className="text-lg mb-2 font-semibold">Stock Indexes</h1>
               <StockIndexWidget
                 name={indexes?.nse?.name}
                 symbol={indexes?.nse?.symbol}
@@ -261,29 +278,29 @@ const Home = () => {
                 size={"w-[100%]"}
               />
             </div>
-            <div className='bg-white p-3 rounded-md mb-3'>
-              <div className='flex justify-between mb-2 items-center'>
-                <h1 className='text-lg font-semibold'>Top Gainers</h1>
+            <div className="bg-white p-3 rounded-md mb-3">
+              <div className="flex justify-between mb-2 items-center">
+                <h1 className="text-lg font-semibold">Top Gainers</h1>
                 <Link to={"/dashboard/topstock"}>
-                  <button className='text-sm text-blue-600 underline'>
+                  <button className="text-sm text-blue-600 underline">
                     Know More
                   </button>
                 </Link>
               </div>
-              <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
+              <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
                 <div>
                   <h2 className={`text-sm font-bold me-3`}>Symbol</h2>
                 </div>
-                <div className='flex justify-around items-center w-[58%]'>
+                <div className="flex justify-around items-center w-[58%]">
                   <p className={`text-xs font-semibold`}>LTP</p>
                   <p className={`font-semibold text-xs `}>%Chng</p>
                 </div>
               </div>
               {isLoading ? (
                 <>
-                  <span className='w-full p-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-full p-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-full p-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                 </>
               ) : (
                 stocks?.gainers?.map((el, index) => {
@@ -304,28 +321,28 @@ const Home = () => {
                   }
                 })
               )}
-              <div className='flex justify-between mb-2 items-center mt-3'>
-                <h1 className='text-lg font-semibold'>Top Losers</h1>
+              <div className="flex justify-between mb-2 items-center mt-3">
+                <h1 className="text-lg font-semibold">Top Losers</h1>
                 <Link to={"/dashboard/topstock"}>
-                  <button className='text-sm text-blue-600 underline'>
+                  <button className="text-sm text-blue-600 underline">
                     Know More
                   </button>
                 </Link>
               </div>
-              <div className='flex justify-between items-center p-4 border bg-gray-50 overflow-hidden'>
+              <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
                 <div>
                   <h2 className={`text-sm font-bold me-3`}>Symbol</h2>
                 </div>
-                <div className='flex justify-around items-center w-[58%]'>
+                <div className="flex justify-around items-center w-[58%]">
                   <p className={`text-xs font-semibold`}>LTP</p>
                   <p className={`font-semibold text-xs `}>%Chng</p>
                 </div>
               </div>
               {isLoading ? (
                 <>
-                  <span className='w-full p-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-full p-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-full p-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                 </>
               ) : (
                 stocks?.losers?.map((el, index) => {

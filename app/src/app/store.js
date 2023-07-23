@@ -29,6 +29,8 @@ import notificationReducer from "../features/notification";
 import getWatchlistReducer from "../features/watchlist/getWatchlist";
 import watchlistReducer from "../features/watchlist/watchlist";
 
+import depositWithdrawReducer from "../features/graph/depositWithdraw";
+
 const reducers = combineReducers({
   authReducer,
   nominateReducer,
@@ -58,6 +60,7 @@ const reducers = combineReducers({
   notificationReducer,
   getWatchlistReducer,
   watchlistReducer,
+  depositWithdrawReducer,
 });
 
 const store = configureStore({

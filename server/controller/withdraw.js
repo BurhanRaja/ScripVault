@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import BankBalance from "../model/BankBalance.js";
 import Wallet from "../model/Wallet.js";
 import Withdraw from "../model/Withdraw.js";
@@ -66,6 +67,42 @@ export const getAllWithdraws = async (req, res) => {
 
     success = true;
 
+    return res.status(200).send({
+      success,
+      withdraws,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+export const getWithdrawGraph = async (req, res) => {
+  let success = false;
+
+  try {
+    let withdraws = await Withdraw.aggregate([
+      {
+        $match: { user_id: new mongoose.Types.ObjectId(req.user.id) },
+      },
+      {
+        $group: {
+          _id: {
+            month: {
+              $month: "$createdAt",
+            },
+            year: {
+              $year: "$createdAt",
+            },
+          },
+          total: { $sum: "$amount" },
+        },
+      },
+    ]);
+
+    success = true;
     return res.status(200).send({
       success,
       withdraws,
