@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BiSolidDashboard, BiMoneyWithdraw } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { BsFillTicketPerforatedFill } from "react-icons/bs";
-import { IoSettingsSharp } from "react-icons/io5";
+import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { RiLuggageDepositLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -116,21 +116,19 @@ const Sidebar = () => {
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
               to="#"
             >
-              <BsFillTicketPerforatedFill className="text-white text-2xl" />
+              <MdOutlinePlaylistAdd className="text-white text-2xl" />
 
-              <span className="mx-4 font-medium">Tickets</span>
+              <span className="mx-4 font-medium">Watchlist</span>
             </Link>
-
             <Link
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
               to="#"
             >
-              <IoSettingsSharp className="text-white text-2xl" />
+              <BsFillTicketPerforatedFill className="text-white text-2xl" />
 
-              <span className="mx-4 font-medium">Settings</span>
+              <span className="mx-4 font-medium">Tickets</span>
             </Link>
           </nav>
-
           <Link
             to="/dashboard/profile"
             className="flex items-center px-4 py-2 rounded-md -mx-2 mt-5 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"

@@ -2,8 +2,14 @@ import mongoose, { Schema } from "mongoose";
 
 const NotificationSchema = new Schema(
   {
+    body: {
+      type: String,
+    },
     data: {
       type: Object,
+    },
+    title: {
+      type: String,
     },
     user_id: {
       type: Schema.Types.ObjectId,
@@ -13,8 +19,8 @@ const NotificationSchema = new Schema(
       default: "reminder",
     },
     read: {
-        type: Boolean
-    }
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

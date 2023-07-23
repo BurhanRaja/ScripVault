@@ -25,6 +25,9 @@ import mfTransactionReducer from "../features/portfolio/mfTransaction";
 import portfolioReducer from "../features/portfolio/portfolio";
 
 import stockTransactionReducer from "../features/portfolio/stockTransaction";
+import notificationReducer from "../features/notification";
+import getWatchlistReducer from "../features/watchlist/getWatchlist";
+import watchlistReducer from "../features/watchlist/watchlist";
 
 const reducers = combineReducers({
   authReducer,
@@ -52,6 +55,9 @@ const reducers = combineReducers({
   stockTransactionReducer,
   mfTransactionReducer,
   portfolioReducer,
+  notificationReducer,
+  getWatchlistReducer,
+  watchlistReducer,
 });
 
 const store = configureStore({

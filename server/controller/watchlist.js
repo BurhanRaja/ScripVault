@@ -49,19 +49,15 @@ export const addWatchlist = async (req, res) => {
 };
 
 // Get ALl Watchlist
-export const getAllWatchlist = async (req, res) => {
+export const getStockWatchlist = async (req, res) => {
   let success = false;
 
   try {
     const allWatchlists = await Watchlist.findOne({ user_id: req.user.id });
 
     const stocks = allWatchlists.stocks;
-    const mutualFunds = allWatchlists.mutual_funds;
-    const etfs = allWatchlists.etfs;
 
     let stocksData = [];
-    let mutualFundsData = [];
-    let etfsData = [];
 
     for (let s in stocks) {
       let data = await axios.get(
@@ -70,12 +66,58 @@ export const getAllWatchlist = async (req, res) => {
       stocksData.push(data);
     }
 
+    return res.status(200).send({
+      success,
+      stocksData,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// Mutual Fund
+export const getMFWatchlist = async (req, res) => {
+  let success = false;
+
+  try {
+    const allWatchlists = await Watchlist.findOne({ user_id: req.user.id });
+
+    const mutualFunds = allWatchlists.mutual_funds;
+
+    let mutualFundsData = [];
+
     for (let mf in mutualFunds) {
       let data = await axios.get(
         config.stock_api + "/mutualfund/current/price" + mf.symbol
       );
       mutualFundsData.push(data);
     }
+
+    return res.status(200).send({
+      success,
+      mutualFundsData,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
+// ETF
+export const getETFWatchlist = async (req, res) => {
+  let success = false;
+
+  try {
+    const allWatchlists = await Watchlist.findOne({ user_id: req.user.id });
+
+    const etfs = allWatchlists.etfs;
+
+    let etfsData = [];
 
     for (let etf in etfs) {
       let data = await axios.get(
@@ -86,11 +128,7 @@ export const getAllWatchlist = async (req, res) => {
 
     return res.status(200).send({
       success,
-      data: {
-        stocksData,
-        mutualFundsData,
-        etfsData,
-      },
+      etfsData,
     });
   } catch (err) {
     return res.status(500).send({

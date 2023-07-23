@@ -12,6 +12,7 @@ import { emailRouter } from "./routes/email.js";
 import { verifyRouter } from "./routes/verify.js";
 import { kycRouter } from "./routes/kyc.js";
 import { walletRouter } from "./routes/wallet.js";
+import { notificationRouter } from "./routes/notification.js";
 
 
 const app = express();
@@ -38,6 +39,7 @@ app.use("/api/wallet", walletRouter)
 app.use("/api/soldticker", soldTickerRouter);
 app.use("/api/email", emailRouter);
 app.use("/api/verify", verifyRouter);
+app.use("/api/notification", notificationRouter);
 
 app.listen(port, () => {
   console.log(`App started at http://localhost:${port}`);

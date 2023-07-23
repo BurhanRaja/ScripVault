@@ -11,32 +11,24 @@ export const investSIPNotification = async (req, res) => {
 
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
+    if (!portfolio) {
+      return res.status(404);
+    }
+
     for (const el of portfolio.mutual_funds) {
       let mfDate = new Date(el.date_of_buy);
 
       if (mfDate.getTime() - todayDate.getTime() === 2592000 && el.type === 1) {
-        let response = await axios.get(
-          config.stock_api + `mutualfund/current/price/${el.symbol}`
-        );
-
-        if (response.data.curr_price === el.buy_price) {
-          portfolio = await Portfolio.findOneAndUpdate(
-            { user_id: req.user.id, "mutual_funds._id": el._id },
-            {
-              $set: {
-                "mutual_funds.$.buy_price": response.data.curr_price,
-              },
-            }
-          );
-        }
-
         const obj = {
           today_date: todayDate,
           ...el,
         };
+
         await Notification.create({
+          title: "SIP - Reminder",
           user_id: req.user.id,
           data: obj,
+          body: `SIP Investment Reminder for ${obj.name} - ${obj.buy_price}`,
           type: "reminder",
           read: false,
         });
