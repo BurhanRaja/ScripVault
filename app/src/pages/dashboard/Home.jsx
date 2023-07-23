@@ -26,6 +26,17 @@ import {
   getDepositGraphThunk,
   getWithdrawGraphThunk,
 } from "../../features/graph/depositWithdraw";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
 // name, symbol, currPrice, currPer, currGap, size
 
 // Data
@@ -103,7 +114,9 @@ const Home = () => {
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { stocks, isLoading } = useSelector((state) => state.stockTopReducer);
   const { wallet } = useSelector((state) => state.walletReducer);
-  const { deposit, withdraw } = useSelector((state) => state.depositWithdrawReducer);
+  const { deposit, withdraw } = useSelector(
+    (state) => state.depositWithdrawReducer
+  );
 
   const dispatch = useDispatch();
 
@@ -112,8 +125,6 @@ const Home = () => {
     dispatch(getDepositGraphThunk());
     dispatch(getWithdrawGraphThunk());
   }, []);
-
-  console.log(deposit);
 
   useEffect(() => {
     dispatch(clearWalletState());
@@ -137,6 +148,116 @@ const Home = () => {
       clearInterval(timeOut);
     };
   }, []);
+
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
+
+  const options = {
+    responsive: true,
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
+    stacked: false,
+    plugins: {
+      title: {
+        display: true,
+        text: "Chart.js Line Chart - Multi Axis",
+      },
+    },
+    scales: {
+      y: {
+        type: "linear",
+        display: true,
+        position: "left",
+      },
+      y1: {
+        type: "linear",
+        display: true,
+        position: "right",
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
+    },
+  };
+
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Deposit",
+        data: labels.map((el, index) => {
+          let data = "";
+          let curryear = new Date().getFullYear();
+          deposit?.deposits?.forEach((el) => {
+            if (el?._id?.month === index + 1 && curryear === el?._id?.year) {
+              data = el?.total;
+            } else {
+              data = 0;
+            }
+          });
+          return data;
+        }),
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        yAxisID: "y",
+      },
+      {
+        label: "Withdraw",
+        data: labels.map((el, index) => {
+          let data = "";
+          let curryear = new Date().getFullYear();
+          withdraw?.withdraws?.forEach((el) => {
+            if (el?._id?.month === index + 1  && curryear === el?._id?.year) {
+              data = el?.total;
+            } else {
+              data = 0;
+            }
+          });
+          return data;
+        }),
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        yAxisID: 'y1',
+      },
+    ],
+  };
+
+  console.log(
+    labels.map((el, index) => {
+      let data = "";
+      deposit?.deposits?.forEach((el) => {
+        if (el?._id?.month === index + 1) {
+          data = el?.total;
+        } else {
+          data = 0;
+        }
+      });
+      return data;
+    })
+  );
 
   return (
     <>
@@ -222,7 +343,8 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <img src="/assets/images/demo-chart.png" width={800} />
+            {/* <img src="/assets/images/demo-chart.png" width={800} /> */}
+            <Line options={options} data={data} />
             <div className="mt-8">
               <h1 className="text-2xl font-semibold text-start p-5 pt-0">
                 Discover Mutual Funds
