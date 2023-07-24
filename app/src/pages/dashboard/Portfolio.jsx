@@ -21,6 +21,8 @@ const Portfolio = () => {
     dispatch(getMutualFundPortfolioThunk());
   }, []);
 
+  console.log(mutualFunds);
+
   return (
     <>
       <div className="bg-gray-100 p-2">

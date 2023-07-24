@@ -9,13 +9,15 @@ import { GiTiedScroll } from "react-icons/gi";
 import TypeETF from "../../components/dashboard/widgets/TypeETF";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import ETFModal from "../../components/dashboard/modals/ETFModal";
+import { buyETFThunk } from "../../features/portfolio/etfTransaction";
 
-const ETFs = () => {
+const ETFs = ({ setAlert }) => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
 
   const [etfName, setETFName] = useState("");
   const [etfSymbol, setETFSymbol] = useState("");
+  const [etfPrice, setETFPrice] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [quantity, setQuantity] = useState(0);
 
@@ -89,7 +91,44 @@ const ETFs = () => {
     },
   ];
 
-  const handleBuy = () => {};
+  const handleBuy = () => {
+    if (quantity === "") {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: "Please add Required Data.",
+      });
+    }
+
+    let data = {
+      name: etfName,
+      symbol: etfSymbol,
+      buy_price: etfPrice,
+      no_of_shares: Number(quantity),
+    };
+
+    dispatch(buyETFThunk(data)).then((data) => {
+      if (!data?.payload?.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: data?.payload.message,
+        });
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `Congratulations! You Successfully bought ${etfName}.`,
+        });
+        setETFPrice("");
+        setETFSymbol("");
+        setETFName("");
+        setQuantity("");
+        setIsModal(false);
+        return;
+      }
+    });
+  };
 
   return (
     <>
@@ -144,6 +183,7 @@ const ETFs = () => {
                     symbol={el?.symbol}
                     setSymbol={(val) => setETFSymbol(val)}
                     setName={(val) => setETFName(val)}
+                    setPrice={(val) => setETFPrice(val)}
                   />
                 );
               })

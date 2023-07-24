@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { buyMutualFund } from "../../api/portfolio";
+import { buyETF } from "../../api/portfolio";
 
 const initialState = {
   isSuccess: false,
@@ -7,11 +7,11 @@ const initialState = {
   isLoading: false,
 };
 
-export const buyMFThunk = createAsyncThunk(
-  "mfTransaction/buyMF",
+export const buyETFThunk = createAsyncThunk(
+  "etfTransaction/buyETF",
   async (data) => {
     try {
-      let res = await buyMutualFund(data);
+      let res = await buyETF(data);
       return res;
     } catch (err) {
       return err?.response.data;
@@ -21,28 +21,28 @@ export const buyMFThunk = createAsyncThunk(
 
 export const sellMFThunk = async (data) => {};
 
-const mfTransaction = createSlice({
-  name: "mfTransaction",
+const etfTransaction = createSlice({
+  name: "etfTransaction",
   initialState,
   reducers: {
-    clearStockTransaction: () => initialState,
+    clearETFTransaction: () => initialState,
   },
   extraReducers: (build) => {
     build
-      .addCase(buyMFThunk.pending, (state) => {
+      .addCase(buyETFThunk.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(buyMFThunk.fulfilled, (state) => {
+      .addCase(buyETFThunk.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
       })
-      .addCase(buyMFThunk.rejected, (state) => {
+      .addCase(buyETFThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });
   },
 });
 
-export const { clearStockTransaction } = mfTransaction.actions;
+export const { clearETFTransaction } = etfTransaction.actions;
 
-export default mfTransaction.reducer;
+export default etfTransaction.reducer;

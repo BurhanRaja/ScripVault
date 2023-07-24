@@ -173,15 +173,15 @@ const MutualFunds = ({ setAlert }) => {
           setType={(val) => setType(val)}
         />
       )}
-      <div className="bg-gray-100 p-2">
-        <div className="bg-white rounded-md p-5">
-          <div className="p-5">
-            <h1 className="text-2xl font-bold mb-5">Mutual Funds</h1>
-            <div className="my-8">
-              <h1 className="text-xl font-semibold text-center p-5 pt-0">
+      <div className='bg-gray-100 p-2'>
+        <div className='bg-white rounded-md p-5'>
+          <div className='p-5'>
+            <h1 className='text-2xl font-bold mb-5'>Mutual Funds</h1>
+            <div className='my-8'>
+              <h1 className='text-xl font-semibold text-center p-5 pt-0'>
                 Discover Mutual Funds
               </h1>
-              <div className="flex justify-center items-center flex-wrap w-[100%]">
+              <div className='flex justify-center items-center flex-wrap w-[100%]'>
                 {dataMF?.map((el) => {
                   return (
                     <TypeMF
@@ -197,11 +197,11 @@ const MutualFunds = ({ setAlert }) => {
             {isLoading ? (
               <>
                 {" "}
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
-                <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
+                <span className='w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse'></span>
               </>
             ) : (
               allMF?.data?.map((el) => {
@@ -224,44 +224,44 @@ const MutualFunds = ({ setAlert }) => {
               })
             )}
             {isError && (
-              <p className="text-red-500 text-3xl">Some Error Occurred.</p>
+              <p className='text-red-500 text-3xl'>Some Error Occurred.</p>
             )}
           </div>
-          <div className="flex items-center justify-evenly">
+          <div className='flex items-center justify-evenly'>
             <button
-              className="px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center"
+              className='px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center'
               onClick={() => handlePrev()}
             >
-              <BsChevronLeft className="me-3" />
+              <BsChevronLeft className='me-3' />
               Prev
             </button>
             <button
-              className="px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center"
+              className='px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center'
               onClick={() => handleNext()}
             >
               Next
-              <BsChevronRight className="ms-3" />
+              <BsChevronRight className='ms-3' />
             </button>
           </div>
 
-          <div className="mt-10">
-            <h2 className="text-2xl font-semibold">
+          <div className='mt-10'>
+            <h2 className='text-2xl font-semibold'>
               All Mutual Fund Companies
             </h2>
-            <div className="flex justify-between items-center flex-wrap mt-10">
+            <div className='flex justify-between items-center flex-wrap mt-10'>
               {allCompanies?.map((el) => {
                 return (
                   <Link
                     key={el}
                     to={`/dashboard/mutual-funds/company/${el?.toLowerCase()}`}
-                    className="w-[28%] group mb-6"
+                    className='w-[28%] group mb-6'
                   >
-                    <div className="bg-gray-100 p-4 rounded-md">
-                      <div className="flex items-center justify-between">
-                        <p className="text-lg font-semibold text-gray-700">
+                    <div className='bg-gray-100 p-4 rounded-md'>
+                      <div className='flex items-center justify-between'>
+                        <p className='text-lg font-semibold text-gray-700'>
                           {el}
                         </p>
-                        <BsChevronRight className="me-4 text-gray-700 font-bold transition-all duration-100 group-hover:me-0" />
+                        <BsChevronRight className='me-4 text-gray-700 font-bold transition-all duration-100 group-hover:me-0' />
                       </div>
                     </div>
                   </Link>

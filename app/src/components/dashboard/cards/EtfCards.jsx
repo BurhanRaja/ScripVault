@@ -9,6 +9,7 @@ const EtfCards = ({
   setModal,
   setSymbol,
   setName,
+  setPrice
 }) => {
   return (
     <>
@@ -43,6 +44,7 @@ const EtfCards = ({
               setSymbol(symbol);
               setModal(true);
               setName(name);
+              setPrice(price)
             }}
           >
             Buy

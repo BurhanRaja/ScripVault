@@ -55,71 +55,77 @@ function App() {
   }, [alert]);
 
   return (
-    <div className="App">
+    <div className='App'>
       <BrowserRouter>
         <Alert data={alert} closeVisible={(val) => setAlert(val)} />
         <Routes>
-          <Route path="/" element={<Home setAlert={setAlert} />} />
-          <Route path="/login" element={<Login setAlert={setAlert} />} />
-          <Route path="/register" element={<Register setAlert={setAlert} />} />
-          <Route path="/user/info" element={<UserInfo setAlert={setAlert} />} />
+          <Route path='/' element={<Home setAlert={setAlert} />} />
+          <Route path='/login' element={<Login setAlert={setAlert} />} />
+          <Route path='/register' element={<Register setAlert={setAlert} />} />
+          <Route path='/user/info' element={<UserInfo setAlert={setAlert} />} />
           <Route
-            path="/verify/:token"
+            path='/verify/:token'
             element={<VerifyLogin setAlert={setAlert} />}
           />
           <Route
-            path="/user/nominate"
+            path='/user/nominate'
             element={<UserNominate setAlert={setAlert} />}
           />
-          <Route path="/user/kyc" element={<Kyc setAlert={setAlert} />} />
+          <Route path='/user/kyc' element={<Kyc setAlert={setAlert} />} />
           <Route
-            path="/approve/kyc"
+            path='/approve/kyc'
             element={<ApproveKyc setAlert={setAlert} />}
           />
           <Route element={<Layout />}>
-            <Route path="/dashboard/home" element={<DashHome />} />
-            <Route path="/dashboard/portfolio" element={<Portfolio />} />
+            <Route path='/dashboard/home' element={<DashHome />} />
+            <Route path='/dashboard/portfolio' element={<Portfolio />} />
 
-            <Route path="/dashboard/topstock" element={<TopStocksPage />} />
+            <Route path='/dashboard/topstock' element={<TopStocksPage />} />
 
             <Route
-              path="/dashboard/stocks"
+              path='/dashboard/stocks'
               element={<Stocks setAlert={setAlert} />}
             />
-            <Route path="/dashboard/stocks/:id" element={<StockDetails />} />
+            <Route path='/dashboard/stocks/:id' element={<StockDetails />} />
 
             <Route
-              path="/dashboard/mutual-funds"
+              path='/dashboard/mutual-funds'
               element={<MutualFunds setAlert={setAlert} />}
             />
             <Route
-              path="/dashboard/mutual-funds/:id"
-              element={<MutualFundDetails />}
+              path='/dashboard/mutual-funds/:id'
+              element={<MutualFundDetails setAlert={setAlert} />}
             />
             <Route
-              path="/dashboard/mutual-funds/best/:name"
+              path='/dashboard/mutual-funds/best/:name'
               element={<BestMF />}
             />
             <Route
-              path="/dashboard/mutual-funds/company/:name"
+              path='/dashboard/mutual-funds/company/:name'
               element={<CompanyMF setAlert={setAlert} />}
             />
 
-            <Route path="/dashboard/etfs" element={<ETFs />} />
-            <Route path="/dashboard/etfs/:id" element={<></>} />
-            <Route path="/dashboard/etfs/best/:name" element={<BestETF />} />
+            <Route
+              path='/dashboard/etfs'
+              element={<ETFs setAlert={setAlert} />}
+            />
+            <Route path='/dashboard/etfs/:id' element={<></>} />
+            <Route
+              path='/dashboard/etfs/best/:name'
+              element={<BestETF setAlert={setAlert} />}
+            />
 
             <Route
-              path="/dashboard/deposit"
+              path='/dashboard/deposit'
               element={<Deposit setAlert={setAlert} />}
             />
             <Route
-              path="/dashboard/withdraw"
+              path='/dashboard/withdraw'
               element={<Withdraw setAlert={setAlert} />}
             />
-            <Route path="/dashboard/watchlist" element={<>Hello</>} />
+            <Route path='/dashboard/watchlist' element={<>Hello</>} />
             <Route
-              path="/dashboard/profile"
+              path='/dashboard/profile'
               element={<UserAccount setAlert={setAlert} />}
             />
           </Route>

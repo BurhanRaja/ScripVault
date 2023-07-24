@@ -198,11 +198,20 @@ export const etfBuyTicker = async (req, res) => {
 
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
-    let wallet = await Wallet.findOneAndUpdate(
+    let wallet = await Wallet.findOne({ user_id: req.user.id });
+
+    if (wallet.balance < buy_price * no_of_shares) {
+      return res.status(400).send({
+        success,
+        message: "Not Enough Funds in the Wallet.",
+      });
+    }
+
+    wallet = await Wallet.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $inc: {
-          balance: -buy_price,
+          balance: -(buy_price * no_of_shares),
         },
       }
     );
@@ -210,7 +219,7 @@ export const etfBuyTicker = async (req, res) => {
     if (!portfolio) {
       portfolio = await Portfolio.create({
         user_id: req.user.id,
-        stocks: [
+        etfs: [
           {
             name,
             symbol,
@@ -219,14 +228,14 @@ export const etfBuyTicker = async (req, res) => {
             no_of_shares,
           },
         ],
-        total_investment: buy_price,
+        total_investment: buy_price * no_of_shares,
       });
     } else {
       portfolio = await Portfolio.findOneAndUpdate(
         { user_id: req.user.id },
         {
           $push: {
-            stocks: {
+            etfs: {
               name,
               symbol,
               buy_price,
@@ -235,7 +244,7 @@ export const etfBuyTicker = async (req, res) => {
             },
           },
           $inc: {
-            total_investment: buy_price,
+            total_investment: buy_price * no_of_shares,
           },
         }
       );
@@ -248,6 +257,7 @@ export const etfBuyTicker = async (req, res) => {
       message: `ETF bought successfully`,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -612,12 +622,8 @@ export const getMFPortfolio = async (req, res) => {
 
     for (const mf of portfolio?.mutual_funds) {
       let currMF = await axios.get(
-        config.stock_api + "/mutualfund/current/price/" + mf.symbol
+        config.stock_api + "mutualfund/current/price/" + mf.symbol
       );
-
-      let cagr =
-        pow(currMF?.data.curr_price / mf.buy_price, 1 / mf.total_years - 1) *
-        100;
 
       if (mf.type_mf === 0) {
         const profit =
@@ -666,6 +672,7 @@ export const getMFPortfolio = async (req, res) => {
       sipMF,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",

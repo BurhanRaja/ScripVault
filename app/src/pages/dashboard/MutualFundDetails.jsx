@@ -21,19 +21,21 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { getStockHistoricalDataThunk } from "../../features/stocks/stockDetails";
+import { buyMFThunk } from "../../features/portfolio/mfTransaction";
 
 // 3 Month = 7889400
 // 6 Month = 15778800
 // 1 Year = 31557600
 // 5 Year = 157788000
 
-const MutualFundDetails = () => {
+const MutualFundDetails = ({ setAlert }) => {
   const { id } = useParams();
 
   const [isModal, setIsModal] = useState(false);
   const [price, setPrice] = useState(0);
   const [years, setYears] = useState(0);
+  const [type, setType] = useState("");
+  const [investment, setInvestment] = useState("");
 
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
@@ -203,18 +205,53 @@ const MutualFundDetails = () => {
     return;
   };
 
-  const handleBuy = () => {};
+  const handleBuy = () => {
+    let curr_year = new Date().getFullYear();
+    let data = {
+      name: priceData?.name,
+      symbol: id,
+      one_year_return: Number(detailsData?.performance[3]["value"]),
+      buy_price: Number(priceData?.curr_price),
+      investment: Number(investment),
+      type_mf: type,
+      total_years: Number(years),
+      year_sell: curr_year + Number(years),
+    };
+
+    dispatch(buyMFThunk(data)).then((data) => {
+      if (!data?.payload?.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: data?.payload.message,
+        });
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `Congratulations! You Successfully Invested in ${priceData?.name}.`,
+        });
+        setYears("");
+        setInvestment("");
+        setIsModal(false);
+      }
+    });
+
+    return;
+  };
 
   return (
     <>
       {isModal && (
         <MutualFundModal
-          setModal={(val) => setIsModal(val)}
-          price={price}
-          setPrice={(val) => setPrice(val)}
-          years={years}
           handleBuy={() => handleBuy()}
+          name={priceData?.name}
+          setModal={(val) => setIsModal(val)}
+          price={investment}
+          setPrice={(val) => setInvestment(val)}
+          years={years}
           setYears={(val) => setYears(val)}
+          setType={(val) => setType(val)}
         />
       )}
       <div className='bg-gray-100 p-3'>
