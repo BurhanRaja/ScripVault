@@ -3,10 +3,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   clearMFDetails,
+  clearMFHistory,
   getMFCurentPriceThunk,
   getMFDetailsThunk,
+  getMFHistoryThunk,
 } from "../../features/mutualfunds/mfDetails";
 import MutualFundModal from "../../components/dashboard/modals/MutualFundModal";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import { getStockHistoricalDataThunk } from "../../features/stocks/stockDetails";
+
+// 3 Month = 7889400
+// 6 Month = 15778800
+// 1 Year = 31557600
+// 5 Year = 157788000
 
 const MutualFundDetails = () => {
   const { id } = useParams();
@@ -14,6 +34,11 @@ const MutualFundDetails = () => {
   const [isModal, setIsModal] = useState(false);
   const [price, setPrice] = useState(0);
   const [years, setYears] = useState(0);
+
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [period, setPeriod] = useState("ytd");
+  const [interval, setInterval] = useState("1d");
 
   const { isSuccess, isLoading, isError, priceData, detailsData, historyData } =
     useSelector((state) => state.mfDetailsReducer);
@@ -25,9 +50,158 @@ const MutualFundDetails = () => {
       dispatch(clearMFDetails());
       dispatch(getMFCurentPriceThunk(id));
       dispatch(getMFDetailsThunk(id));
-      // dispatch(getMFHistoryThunk())
+      let year = new Date().getFullYear();
+      dispatch(
+        getMFHistoryThunk({
+          symbol: id,
+          start: new Date(`${year}-01-01`).getTime() / 1000,
+          end: parseInt((new Date().getTime() - 345600) / 1000),
+          interval,
+        })
+      );
     }
   }, [id]);
+
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Filler,
+    Legend
+  );
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: priceData?.name,
+      },
+    },
+  };
+
+  const handleChangeInPeriod = (prd) => {
+    setPeriod(prd);
+
+    const endData = parseInt(new Date().getTime() / 1000);
+    if (prd === "1mo") {
+      const OneMonthMS = 2629800;
+      const startData = endData - OneMonthMS;
+
+      setStart(startData);
+      setEnd(endData);
+
+      dispatch(clearMFHistory());
+      dispatch(
+        getMFHistoryThunk({
+          symbol: id,
+          start: startData,
+          end: endData,
+          interval,
+        })
+      );
+    } else if (prd === "3mo") {
+      const ThreeMonthMS = 7889400;
+      const startData = endData - ThreeMonthMS;
+
+      setStart(startData);
+      setEnd(endData);
+
+      dispatch(clearMFHistory());
+      dispatch(
+        getMFHistoryThunk({
+          symbol: id,
+          start: startData,
+          end: endData,
+          interval,
+        })
+      );
+    } else if (prd === "") {
+      const year = new Date().getFullYear();
+      const startData = new Date(`${year}-01-01`).getTime() / 1000;
+      setStart(startData);
+      setEnd(endData);
+
+      dispatch(clearMFHistory());
+      dispatch(
+        getMFHistoryThunk({
+          symbol: id,
+          start: startData,
+          end: endData,
+          interval,
+        })
+      );
+    } else if (prd === "1y") {
+      const oneYearMS = 31557600;
+      const startData = endData - oneYearMS;
+
+      setStart(startData);
+      setEnd(endData);
+
+      dispatch(clearMFHistory());
+      dispatch(
+        getMFHistoryThunk({
+          symbol: id,
+          start: startData,
+          end: endData,
+          interval,
+        })
+      );
+    } else if (prd === "5y") {
+      const fiveYearMS = 157788000;
+      const startData = endData - fiveYearMS;
+
+      setStart(startData);
+      setEnd(endData);
+
+      dispatch(clearMFHistory());
+      dispatch(
+        getMFHistoryThunk({
+          symbol: id,
+          start: startData,
+          end: endData,
+          interval,
+        })
+      );
+    } else {
+      const startData = new Date("2018-03-31").getTime() / 1000;
+
+      setStart(startData);
+      setEnd(endData);
+
+      dispatch(clearMFHistory());
+      dispatch(
+        getMFHistoryThunk({
+          symbol: id,
+          start: startData,
+          end: endData,
+          interval,
+        })
+      );
+    }
+    return;
+  };
+
+  const handleChangeInInterval = (itl) => {
+    setInterval(itl);
+
+    dispatch(clearMFHistory());
+    dispatch(
+      getMFHistoryThunk({
+        symbol: id,
+        start,
+        end,
+        interval: itl,
+      })
+    );
+    return;
+  };
 
   const handleBuy = () => {};
 
@@ -88,7 +262,115 @@ const MutualFundDetails = () => {
         <div className='bg-white rounded-md my-3 p-5'>
           <h3 className='text-2xl font-semibold mb-4'>Price Chart</h3>
           <div className='flex justify-center'>
-            <img src='/assets/images/demo-chart.png' width={800} />
+            <div className='w-[90%]'>
+              <div className='mb-5'>
+                <div className='flex justify-evenly items-center'>
+                  <div className='flex'>
+                    <button
+                      className={`${
+                        period === "1mo"
+                          ? "bg-slate-800 text-white"
+                          : "bg-slate-100 text-black"
+                      } p-3 me-2 text-sm`}
+                      onClick={() => handleChangeInPeriod("1mo")}
+                    >
+                      1M
+                    </button>
+                    <button
+                      className={`${
+                        period === "3mo"
+                          ? "bg-slate-800 text-white"
+                          : "bg-slate-100 text-black"
+                      } p-3 me-2 text-sm`}
+                      onClick={() => handleChangeInPeriod("3mo")}
+                    >
+                      3M
+                    </button>
+                    <button
+                      className={`${
+                        period === "6mo"
+                          ? "bg-slate-800 text-white"
+                          : "bg-slate-100 text-black"
+                      } p-3 me-2 text-sm`}
+                      onClick={() => handleChangeInPeriod("6mo")}
+                    >
+                      6M
+                    </button>
+                    <button
+                      className={`${
+                        period === "ytd"
+                          ? "bg-slate-800 text-white"
+                          : "bg-slate-100 text-black"
+                      } p-3 me-2 text-sm`}
+                      onClick={() => handleChangeInPeriod("ytd")}
+                    >
+                      YTD
+                    </button>
+                    <button
+                      className={`${
+                        period === "1y"
+                          ? "bg-slate-800 text-white"
+                          : "bg-slate-100 text-black"
+                      } p-3 me-2 text-sm`}
+                      onClick={() => handleChangeInPeriod("1y")}
+                    >
+                      1Y
+                    </button>
+                    <button
+                      className={`${
+                        period === "5y"
+                          ? "bg-slate-800 text-white"
+                          : "bg-slate-100 text-black"
+                      } p-3 me-2 text-sm`}
+                      onClick={() => handleChangeInPeriod("5y")}
+                    >
+                      5Y
+                    </button>
+                    <button
+                      className={`${
+                        period === "max"
+                          ? "bg-slate-800 text-white"
+                          : "bg-slate-100 text-black"
+                      } p-3 me-2 text-sm`}
+                      onClick={() => handleChangeInPeriod("max")}
+                    >
+                      MAX
+                    </button>
+                  </div>
+                  <div className='w-25%]'>
+                    <select
+                      className='block w-full placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40'
+                      onChange={(e) => handleChangeInInterval(e.target.value)}
+                      value={interval}
+                    >
+                      <option value={""}>Select Intervals</option>
+                      <option value={"1d"}>Daily</option>
+                      <option value={"1wk"}>Weekly</option>
+                      <option value={"1mo"}>Monthly</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              {historyData?.length > 0 ? (
+                <Line
+                  options={options}
+                  data={{
+                    labels: historyData?.map((el) => el["date"]),
+                    datasets: [
+                      {
+                        fill: true,
+                        data: historyData?.map((el) => parseFloat(el["price"])),
+                        borderColor: "rgb(53, 162, 235)",
+                        label: "NAV",
+                        backgroundColor: "rgba(53, 162, 235, 0.5)",
+                      },
+                    ],
+                  }}
+                />
+              ) : (
+                <span className='w-full p-7 h-[20rem] mb-3 block rounded bg-gray-200 animate-pulse'></span>
+              )}
+            </div>
           </div>
         </div>
         <div className='flex justify-between'>

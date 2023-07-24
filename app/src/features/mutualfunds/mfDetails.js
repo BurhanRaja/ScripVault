@@ -55,6 +55,9 @@ const mfDetailsSlice = createSlice({
   initialState,
   reducers: {
     clearMFDetails: () => initialState,
+    clearMFHistory: (state) => {
+      state.historyData = [];
+    },
   },
   extraReducers: (build) => {
     build
@@ -97,6 +100,6 @@ const mfDetailsSlice = createSlice({
   },
 });
 
-export const { clearMFDetails } = mfDetailsSlice.actions;
+export const { clearMFDetails, clearMFHistory } = mfDetailsSlice.actions;
 
 export default mfDetailsSlice.reducer;

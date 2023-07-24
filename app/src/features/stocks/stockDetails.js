@@ -121,6 +121,9 @@ const stockDetailsSlice = createSlice({
   initialState,
   reducers: {
     clearStockDetails: () => initialState,
+    clearHistoricalState: (state) => {
+      state.historicalData = [];
+    },
   },
   extraReducers: (build) => {
     build
@@ -226,6 +229,6 @@ const stockDetailsSlice = createSlice({
   },
 });
 
-export const { clearStockDetails } = stockDetailsSlice.actions;
+export const { clearStockDetails, clearHistoricalState } = stockDetailsSlice.actions;
 
 export default stockDetailsSlice.reducer;

@@ -245,20 +245,6 @@ const Home = () => {
     ],
   };
 
-  console.log(
-    labels.map((el, index) => {
-      let data = "";
-      deposit?.deposits?.forEach((el) => {
-        if (el?._id?.month === index + 1) {
-          data = el?.total;
-        } else {
-          data = 0;
-        }
-      });
-      return data;
-    })
-  );
-
   return (
     <>
       {/* <div className="p-4">

@@ -1,16 +1,28 @@
 let date = new Date().toLocaleDateString().split("/");
 
 let curr = new Date().getTime();
-let later = new Date(`${date[2]}-0${date[1]}-0${date[0]} 15:30:00`).getTime();
+let early = new Date(`2018-07-24`).getTime();
 
-console.log(new Date("2022-07-21").getTime());
+// console.log(new Date("2022-07-21").getTime());
 
-console.log(1689897600000 - 1658361600000)
+// console.log(1689897600000 - 1658361600000)
+
+
+// 1 Month = 2629800
+// 3 Month = 7889400
+// 6 Month = 15778800
+// 1 Year = 31557600
+// 5 Year = 157788000
+
+console.log(curr/1000 - 157788000);
+console.log(curr);
+console.log(early);
+console.log(curr/1000 - early/1000);
 
 // console.log(curr);
 // console.log(later - curr);
 
-// 
+//
 
 /*
 
