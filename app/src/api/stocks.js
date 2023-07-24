@@ -72,9 +72,10 @@ export const getStockSuggestion = async (symbol) => {
   return response.data;
 };
 
-export const getStockHistoricalData = async (symbol) => {
+export const getStockHistoricalData = async (symbol, period, interval) => {
   const response = await axios.get(
-    process.env.REACT_APP_STOCK_API + `stock/historical/data/${symbol}`
+    process.env.REACT_APP_STOCK_API +
+      `stock/historical/data/${symbol}?period=${period}&interval=${interval}`
   );
   return response.data;
 };

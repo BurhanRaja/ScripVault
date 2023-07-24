@@ -82,9 +82,9 @@ export const getStockSuggestionThunk = createAsyncThunk(
 
 export const getStockHistoricalDataThunk = createAsyncThunk(
   "stockDetails/historicalData",
-  async (symbol) => {
+  async ({ symbol, period, interval }) => {
     try {
-      let res = await getStockHistoricalData(symbol);
+      let res = await getStockHistoricalData(symbol, period, interval);
       return res;
     } catch (err) {
       return err?.response.data;
