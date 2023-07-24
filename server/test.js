@@ -1,7 +1,10 @@
-let date = new Date().toLocaleDateString().split("/");
+// let date = new Date().toLocaleDateString().split("/");
 
 let curr = new Date().getTime();
 let early = new Date(`2018-07-24`).getTime();
+
+let date = new Date(1658650911000).getFullYear();
+console.log(date)
 
 // console.log(new Date("2022-07-21").getTime());
 
@@ -14,10 +17,10 @@ let early = new Date(`2018-07-24`).getTime();
 // 1 Year = 31557600
 // 5 Year = 157788000
 
-console.log(curr/1000 - 157788000);
-console.log(curr);
-console.log(early);
-console.log(curr/1000 - early/1000);
+// console.log(curr/1000 - 157788000);
+// console.log(curr);
+// console.log(early);
+// console.log(curr/1000 - early/1000);
 
 // console.log(curr);
 // console.log(later - curr);

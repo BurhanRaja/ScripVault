@@ -40,9 +40,9 @@ export const getMFDetailsThunk = createAsyncThunk(
 
 export const getMFHistoryThunk = createAsyncThunk(
   "mfDetails/history",
-  async ({ symbol, start, end, interval }) => {
+  async ({ symbol, period, interval }) => {
     try {
-      let res = await getHistoryFunds(symbol, start, end, interval);
+      let res = await getHistoryFunds(symbol, period, interval);
       return res;
     } catch (err) {
       return err?.response?.data;

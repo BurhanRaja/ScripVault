@@ -56,8 +56,7 @@ const MutualFundDetails = ({ setAlert }) => {
       dispatch(
         getMFHistoryThunk({
           symbol: id,
-          start: new Date(`${year}-01-01`).getTime() / 1000,
-          end: parseInt((new Date().getTime() - 345600) / 1000),
+          period,
           interval,
         })
       );
@@ -91,103 +90,14 @@ const MutualFundDetails = ({ setAlert }) => {
   const handleChangeInPeriod = (prd) => {
     setPeriod(prd);
 
-    const endData = parseInt(new Date().getTime() / 1000);
-    if (prd === "1mo") {
-      const OneMonthMS = 2629800;
-      const startData = endData - OneMonthMS;
-
-      setStart(startData);
-      setEnd(endData);
-
-      dispatch(clearMFHistory());
-      dispatch(
-        getMFHistoryThunk({
-          symbol: id,
-          start: startData,
-          end: endData,
-          interval,
-        })
-      );
-    } else if (prd === "3mo") {
-      const ThreeMonthMS = 7889400;
-      const startData = endData - ThreeMonthMS;
-
-      setStart(startData);
-      setEnd(endData);
-
-      dispatch(clearMFHistory());
-      dispatch(
-        getMFHistoryThunk({
-          symbol: id,
-          start: startData,
-          end: endData,
-          interval,
-        })
-      );
-    } else if (prd === "") {
-      const year = new Date().getFullYear();
-      const startData = new Date(`${year}-01-01`).getTime() / 1000;
-      setStart(startData);
-      setEnd(endData);
-
-      dispatch(clearMFHistory());
-      dispatch(
-        getMFHistoryThunk({
-          symbol: id,
-          start: startData,
-          end: endData,
-          interval,
-        })
-      );
-    } else if (prd === "1y") {
-      const oneYearMS = 31557600;
-      const startData = endData - oneYearMS;
-
-      setStart(startData);
-      setEnd(endData);
-
-      dispatch(clearMFHistory());
-      dispatch(
-        getMFHistoryThunk({
-          symbol: id,
-          start: startData,
-          end: endData,
-          interval,
-        })
-      );
-    } else if (prd === "5y") {
-      const fiveYearMS = 157788000;
-      const startData = endData - fiveYearMS;
-
-      setStart(startData);
-      setEnd(endData);
-
-      dispatch(clearMFHistory());
-      dispatch(
-        getMFHistoryThunk({
-          symbol: id,
-          start: startData,
-          end: endData,
-          interval,
-        })
-      );
-    } else {
-      const startData = new Date("2018-03-31").getTime() / 1000;
-
-      setStart(startData);
-      setEnd(endData);
-
-      dispatch(clearMFHistory());
-      dispatch(
-        getMFHistoryThunk({
-          symbol: id,
-          start: startData,
-          end: endData,
-          interval,
-        })
-      );
-    }
-    return;
+    dispatch(clearMFHistory());
+    dispatch(
+      getMFHistoryThunk({
+        symbol: id,
+        period: prd,
+        interval,
+      })
+    );
   };
 
   const handleChangeInInterval = (itl) => {
@@ -197,13 +107,14 @@ const MutualFundDetails = ({ setAlert }) => {
     dispatch(
       getMFHistoryThunk({
         symbol: id,
-        start,
-        end,
+        period,
         interval: itl,
       })
     );
     return;
   };
+
+  console.log(historyData);
 
   const handleBuy = () => {
     let curr_year = new Date().getFullYear();
@@ -254,26 +165,26 @@ const MutualFundDetails = ({ setAlert }) => {
           setType={(val) => setType(val)}
         />
       )}
-      <div className='bg-gray-100 p-3'>
-        <div className='flex justify-between my-5 px-5'>
-          <div className='w-[48%]'>
-            <h1 className='text-3xl mb-4 font-bold'>{priceData?.name}</h1>
-            <button className='bg-black text-white px-2 py-1 text-sm rounded-md'>
+      <div className="bg-gray-100 p-3">
+        <div className="flex justify-between my-5 px-5">
+          <div className="w-[48%]">
+            <h1 className="text-3xl mb-4 font-bold">{priceData?.name}</h1>
+            <button className="bg-black text-white px-2 py-1 text-sm rounded-md">
               {id}
             </button>
           </div>
-          <div className='w-[48%] text-end'>
-            <div className='flex justify-end items-center'>
+          <div className="w-[48%] text-end">
+            <div className="flex justify-end items-center">
               {!priceData && isLoading ? (
-                <span className='w-1/2 p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                <span className="w-1/2 p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
               ) : (
-                <h2 className='text-3xl font-bold mb-2 me-3'>
+                <h2 className="text-3xl font-bold mb-2 me-3">
                   ₹ {priceData?.curr_price}
                 </h2>
               )}
 
               {!priceData && isLoading ? (
-                <span className='w-1/2 p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                <span className="w-1/2 p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
               ) : priceData?.price_change > 0 ? (
                 <p className={"text-green-500 font-semibold text-lg"}>
                   +{priceData?.price_change} ( +{priceData?.per_change}% )
@@ -289,20 +200,20 @@ const MutualFundDetails = ({ setAlert }) => {
               )}
             </div>
             <button
-              className='w-full px-4 py-2 lg:mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-green-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40'
+              className="w-full px-4 py-2 lg:mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-green-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               onClick={() => setIsModal(true)}
             >
               Buy Now
             </button>
           </div>
         </div>
-        <div className='bg-white rounded-md my-3 p-5'>
-          <h3 className='text-2xl font-semibold mb-4'>Price Chart</h3>
-          <div className='flex justify-center'>
-            <div className='w-[90%]'>
-              <div className='mb-5'>
-                <div className='flex justify-evenly items-center'>
-                  <div className='flex'>
+        <div className="bg-white rounded-md my-3 p-5">
+          <h3 className="text-2xl font-semibold mb-4">Price Chart</h3>
+          <div className="flex justify-center">
+            <div className="w-[90%]">
+              <div className="mb-5">
+                <div className="flex justify-evenly items-center">
+                  <div className="flex">
                     <button
                       className={`${
                         period === "1mo"
@@ -322,16 +233,6 @@ const MutualFundDetails = ({ setAlert }) => {
                       onClick={() => handleChangeInPeriod("3mo")}
                     >
                       3M
-                    </button>
-                    <button
-                      className={`${
-                        period === "6mo"
-                          ? "bg-slate-800 text-white"
-                          : "bg-slate-100 text-black"
-                      } p-3 me-2 text-sm`}
-                      onClick={() => handleChangeInPeriod("6mo")}
-                    >
-                      6M
                     </button>
                     <button
                       className={`${
@@ -374,9 +275,9 @@ const MutualFundDetails = ({ setAlert }) => {
                       MAX
                     </button>
                   </div>
-                  <div className='w-25%]'>
+                  <div className="w-25%]">
                     <select
-                      className='block w-full placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40'
+                      className="block w-full placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-5 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       onChange={(e) => handleChangeInInterval(e.target.value)}
                       value={interval}
                     >
@@ -392,11 +293,11 @@ const MutualFundDetails = ({ setAlert }) => {
                 <Line
                   options={options}
                   data={{
-                    labels: historyData?.map((el) => el["date"]),
+                    labels: historyData?.map((el) => new Date(el["Date"]).toDateString()),
                     datasets: [
                       {
                         fill: true,
-                        data: historyData?.map((el) => parseFloat(el["price"])),
+                        data: historyData?.map((el) => parseFloat(el["Open"])),
                         borderColor: "rgb(53, 162, 235)",
                         label: "NAV",
                         backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -405,30 +306,30 @@ const MutualFundDetails = ({ setAlert }) => {
                   }}
                 />
               ) : (
-                <span className='w-full p-7 h-[20rem] mb-3 block rounded bg-gray-200 animate-pulse'></span>
+                <span className="w-full p-7 h-[20rem] mb-3 block rounded bg-gray-200 animate-pulse"></span>
               )}
             </div>
           </div>
         </div>
-        <div className='flex justify-between'>
-          <div className='w-[49%]'>
-            <div className='bg-white p-5 my-3'>
-              <h3 className='text-2xl font-semibold mb-4'>
+        <div className="flex justify-between">
+          <div className="w-[49%]">
+            <div className="bg-white p-5 my-3">
+              <h3 className="text-2xl font-semibold mb-4">
                 Portfolio Composition
               </h3>
               {!detailsData && isLoading ? (
                 <>
-                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                 </>
               ) : (
-                <div className=''>
+                <div className="">
                   {detailsData?.holding_info?.portfolioComposition?.map(
                     (el) => {
                       return (
-                        <div className='flex justify-between items-center mb-3'>
-                          <h5 className='text-lg'>{el?.name}</h5>
-                          <p className='text-lg font-semibold'>{el?.value}</p>
+                        <div className="flex justify-between items-center mb-3">
+                          <h5 className="text-lg">{el?.name}</h5>
+                          <p className="text-lg font-semibold">{el?.value}</p>
                         </div>
                       );
                     }
@@ -436,20 +337,20 @@ const MutualFundDetails = ({ setAlert }) => {
                 </div>
               )}
             </div>
-            <div className='bg-white p-5 my-3'>
-              <h3 className='text-2xl font-semibold mb-4'>Sector Weightings</h3>
+            <div className="bg-white p-5 my-3">
+              <h3 className="text-2xl font-semibold mb-4">Sector Weightings</h3>
               {!detailsData && isLoading ? (
                 <>
-                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                 </>
               ) : (
-                <div className=''>
+                <div className="">
                   {detailsData?.holding_info?.sectorWeighting?.map((el) => {
                     return (
-                      <div className='flex justify-between items-center mb-3'>
-                        <h5 className='text-lg'>{el?.name}</h5>
-                        <p className='text-lg font-semibold'>{el?.value}</p>
+                      <div className="flex justify-between items-center mb-3">
+                        <h5 className="text-lg">{el?.name}</h5>
+                        <p className="text-lg font-semibold">{el?.value}</p>
                       </div>
                     );
                   })}
@@ -457,41 +358,41 @@ const MutualFundDetails = ({ setAlert }) => {
               )}
             </div>
           </div>
-          <div className='w-[49%]'>
-            <div className='bg-white p-5 my-3'>
-              <h3 className='text-2xl font-semibold mb-4'>Equity Holdings</h3>
+          <div className="w-[49%]">
+            <div className="bg-white p-5 my-3">
+              <h3 className="text-2xl font-semibold mb-4">Equity Holdings</h3>
               {!detailsData && isLoading ? (
                 <>
-                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                 </>
               ) : (
-                <div className=''>
+                <div className="">
                   {detailsData?.holding_info?.equityHoldings?.map((el) => {
                     return (
-                      <div className='flex justify-between items-center mb-3'>
-                        <h5 className='text-lg'>{el?.name}</h5>
-                        <p className='text-lg font-semibold'>{el?.value}</p>
+                      <div className="flex justify-between items-center mb-3">
+                        <h5 className="text-lg">{el?.name}</h5>
+                        <p className="text-lg font-semibold">{el?.value}</p>
                       </div>
                     );
                   })}
                 </div>
               )}
             </div>
-            <div className='bg-white p-5 my-3'>
-              <h3 className='text-2xl font-semibold mb-4'>Performance</h3>
+            <div className="bg-white p-5 my-3">
+              <h3 className="text-2xl font-semibold mb-4">Performance</h3>
               {!detailsData && isLoading ? (
                 <>
-                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
-                  <span className='w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse'></span>
+                  <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                 </>
               ) : (
-                <div className=''>
+                <div className="">
                   {detailsData?.performance?.map((el) => {
                     return (
-                      <div className='flex justify-between items-center mb-3'>
-                        <h5 className='text-lg'>{el?.name}</h5>
-                        <p className='text-lg font-semibold'>{el?.value}%</p>
+                      <div className="flex justify-between items-center mb-3">
+                        <h5 className="text-lg">{el?.name}</h5>
+                        <p className="text-lg font-semibold">{el?.value}%</p>
                       </div>
                     );
                   })}

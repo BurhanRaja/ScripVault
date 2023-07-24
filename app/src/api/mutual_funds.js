@@ -61,10 +61,10 @@ export const getAllBestTaxSaverFunds = async (skip, limit) => {
 };
 
 // ------------------------------------ Mutual Funds ----------------------------------
-export const getHistoryFunds = async (symbol, start, end, interval) => {
+export const getHistoryFunds = async (symbol, period, interval) => {
   const response = await axios.get(
     process.env.REACT_APP_STOCK_API +
-      `mutualfund/history/${symbol}?start=${start}&end=${end}&interval=${interval}`
+      `mutualfund/history/${symbol}?period=${period}&interval=${interval}`
   );
   return response.data;
 };

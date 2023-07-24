@@ -622,7 +622,7 @@ export const getMFPortfolio = async (req, res) => {
 
     for (const mf of portfolio?.mutual_funds) {
       let currMF = await axios.get(
-        config.stock_api + "mutualfund/current/price/" + mf.symbol
+        config.stock_api + "/mutualfund/current/price/" + mf.symbol
       );
 
       if (mf.type_mf === 0) {
@@ -672,7 +672,6 @@ export const getMFPortfolio = async (req, res) => {
       sipMF,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -691,16 +690,17 @@ export const getETFPortfolio = async (req, res) => {
 
     for (const etf of portfolio?.etfs) {
       let currEtf = await axios.get(
-        config.stock_api + "etf/current/price/" + p.symbol
+        config.stock_api + "/etf/current/price/" + etf.symbol
       );
 
       etfData.push({
         name: etf.name,
         symbol: etf.symbol,
         buy_price: etf.buy_price,
-        profit: (currEtf?.curr_price - stock.buy_price) * etf.no_of_shares,
+        profit: (currEtf?.data?.curr_price - etf.buy_price) * etf.no_of_shares,
         quantity: etf.no_of_shares,
         date_of_buy: etf.date_of_buy,
+        total_price: etf.buy_price * etf.no_of_shares,
       });
     }
 
@@ -711,6 +711,7 @@ export const getETFPortfolio = async (req, res) => {
       etfPortfolio: etfData,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",

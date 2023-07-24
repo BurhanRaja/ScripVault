@@ -69,3 +69,15 @@ export const getMutualFundPortfolio = async () => {
 
   return response.data;
 };
+
+export const getETFPortfolio = async () => {
+  let response = await axios.get(
+    config.node_url + "/api/portfolio/all/etfs/portfolio",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};

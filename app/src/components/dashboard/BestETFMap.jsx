@@ -1,7 +1,7 @@
 import React from "react";
 import EtfCards from "./cards/EtfCards";
 
-const BestETFMap = ({ data, setModal, setSymbol, setName }) => {
+const BestETFMap = ({ data, setModal, setSymbol, setName, handleBuy, setPrice }) => {
   return (
     <>
       <>
@@ -17,6 +17,8 @@ const BestETFMap = ({ data, setModal, setSymbol, setName }) => {
               setModal={(val) => setModal(val)}
               setSymbol={(val) => setSymbol(val)}
               setName={(val) => setName(val)}
+              setPrice={(val) => setPrice(val)}
+              handleBuy={() => handleBuy()}
             />
           );
         })}

@@ -5,12 +5,14 @@ import PortfolioETF from "../../components/dashboard/cards/portfolio/PortfolioET
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearPortfolioState,
+  getETFPortfolioThunk,
   getMutualFundPortfolioThunk,
   getStockPortfolioThunk,
 } from "../../features/portfolio/portfolio";
+import StockPortfolioModal from "../../components/dashboard/portfolioModal/StockPortfolioModal";
 
 const Portfolio = () => {
-  const { stocks, mutualFunds } = useSelector(
+  const { stocks, mutualFunds, etfs } = useSelector(
     (state) => state.portfolioReducer
   );
   const dispatch = useDispatch();
@@ -19,12 +21,14 @@ const Portfolio = () => {
     dispatch(clearPortfolioState());
     dispatch(getStockPortfolioThunk());
     dispatch(getMutualFundPortfolioThunk());
+    dispatch(getETFPortfolioThunk());
   }, []);
 
-  console.log(mutualFunds);
+  console.log(etfs);
 
   return (
     <>
+    <StockPortfolioModal />
       <div className="bg-gray-100 p-2">
         <div className="bg-white rounded-md p-5">
           <h1 className="text-3xl font-bold p-5">Your Portfolio</h1>
@@ -54,6 +58,7 @@ const Portfolio = () => {
                   <p className={`text-sm`}>Profit Earned</p>
                   <p className={`text-sm`}>Total Investment</p>
                   <p className={`text-sm`}>Buy Price</p>
+                  <p className={`text-sm`}>Date</p>
                   <p className="w-[5rem]"></p>
                 </div>
               </div>
@@ -63,8 +68,9 @@ const Portfolio = () => {
                     name={el?.name}
                     symbol={el?.symbol}
                     price={el?.buy_price}
-                    profit={el?.profit}
+                    profit={el?.profit?.toFixed(2)}
                     totalInvestment={el?.total_price}
+                    dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
                   />
                 );
               })}
@@ -133,12 +139,31 @@ const Portfolio = () => {
             </div>
             <div className="mb-8">
               <h1 className="text-2xl font-bold mb-4">Your ETFs</h1>
-              <PortfolioETF
-                name={"Bajaj Finance"}
-                symbol={"BAJAJFINV"}
-                price={1900}
-                profit={190}
-              />
+              <div className="flex justify-between items-center p-4 border bg-gray-100">
+                <div>
+                  <p className={``}>Name</p>
+                </div>
+                <div className="flex justify-between items-center w-[75%]">
+                  <p className={`text-sm`}>Symbol</p>
+                  <p className={`text-sm`}>Profit Earned</p>
+                  <p className={`text-sm`}>Total Investment</p>
+                  <p className={`text-sm`}>Buy Price</p>
+                  <p className={`text-sm`}>Date</p>
+                  <p className="w-[5rem]"></p>
+                </div>
+              </div>
+              {etfs?.etfPortfolio?.map((el) => {
+                return (
+                  <PortfolioETF
+                    name={el?.name}
+                    symbol={el?.symbol}
+                    price={el?.buy_price}
+                    profit={el?.profit}
+                    totalInvestment={el?.total_price?.toFixed(2)}
+                    dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>

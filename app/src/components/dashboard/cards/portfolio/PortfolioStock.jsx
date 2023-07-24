@@ -9,7 +9,13 @@ const PortfolioStock = ({ name, symbol, profit, price, totalInvestment }) => {
         </div>
         <div className="flex justify-between items-center w-[65%]">
           <p>{symbol}</p>
-          <p className={`font-semibold`}>₹{profit}</p>
+          {profit < 0 ? (
+            <p className={`font-semibold text-red-500`}>₹{profit}</p>
+          ) : profit > 0 ? (
+            <p className={`font-semibold text-green-600`}>₹{profit}</p>
+          ) : (
+            <p className={`font-semibold`}>₹{profit}</p>
+          )}
           <p className={`font-semibold`}>₹{totalInvestment}</p>
           <p className={`font-semibold`}>₹{price}</p>
           <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">

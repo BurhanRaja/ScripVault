@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getMutualFundPortfolio, getStockPortfolio } from "../../api/portfolio";
+import {
+  getETFPortfolio,
+  getMutualFundPortfolio,
+  getStockPortfolio,
+} from "../../api/portfolio";
 
 const initialState = {
   isSuccess: false,
@@ -7,6 +11,7 @@ const initialState = {
   isError: false,
   stocks: {},
   mutualFunds: {},
+  etfs: {}
 };
 
 export const getStockPortfolioThunk = createAsyncThunk(
@@ -26,6 +31,18 @@ export const getMutualFundPortfolioThunk = createAsyncThunk(
   async () => {
     try {
       let res = await getMutualFundPortfolio();
+      return res;
+    } catch (err) {
+      return err?.response.data;
+    }
+  }
+);
+
+export const getETFPortfolioThunk = createAsyncThunk(
+  "portfolio/etfs",
+  async () => {
+    try {
+      let res = await getETFPortfolio();
       return res;
     } catch (err) {
       return err?.response.data;
@@ -62,6 +79,18 @@ const portfolioSlice = createSlice({
         state.mutualFunds = payload;
       })
       .addCase(getMutualFundPortfolioThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getETFPortfolioThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getETFPortfolioThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.etfs = payload;
+      })
+      .addCase(getETFPortfolioThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });
