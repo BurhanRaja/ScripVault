@@ -8,8 +8,10 @@ import {
   getETFHistoryThunk,
 } from "../../features/etfs/etfDetails";
 import Chart from "react-apexcharts";
+import ETFModal from "../../components/dashboard/modals/ETFModal";
+import { buyETFThunk } from "../../features/portfolio/etfTransaction";
 
-const ETFDetails = () => {
+const ETFDetails = ({ setAlert }) => {
   const { id } = useParams();
 
   const { details, isLoading, historicalData } = useSelector(
@@ -19,6 +21,8 @@ const ETFDetails = () => {
 
   const [period, setPeriod] = useState("ytd");
   const [interval, setInterval] = useState("1d");
+  const [isModal, setIsModal] = useState(false);
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     if (id) {
@@ -27,8 +31,6 @@ const ETFDetails = () => {
       dispatch(getETFHistoryThunk({ symbol: id, period, interval }));
     }
   }, [id]);
-
-  console.log(historicalData);
 
   const handleChangeInPeriod = (prd) => {
     setPeriod(prd);
@@ -63,8 +65,53 @@ const ETFDetails = () => {
     },
   };
 
+  const handleBuy = () => {
+    if (quantity === "") {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: "Please add Required Data.",
+      });
+    }
+
+    let data = {
+      name: details?.priceData?.name,
+      symbol: id,
+      buy_price: details?.priceData?.curr_price,
+      no_of_shares: Number(quantity),
+    };
+
+    dispatch(buyETFThunk(data)).then((data) => {
+      if (!data?.payload?.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: data?.payload.message,
+        });
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `Congratulations! You Successfully bought ${details?.priceData?.name}.`,
+        });
+        setQuantity("");
+        setIsModal(false);
+        return;
+      }
+    });
+  };
+
   return (
     <>
+      {isModal && (
+        <ETFModal
+          name={details?.priceData?.name}
+          setModal={(val) => setIsModal(val)}
+          handleBuy={() => handleBuy()}
+          quantity={quantity}
+          setQuantity={(val) => setQuantity(val)}
+        />
+      )}
       <div className="bg-gray-100 p-3">
         <div className="flex justify-between my-5 px-5">
           <div className="w-[48%]">
@@ -106,7 +153,7 @@ const ETFDetails = () => {
             </div>
             <button
               className="w-full px-4 py-2 lg:mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-green-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-              //   onClick={() => setIsModal(true)}
+              onClick={() => setIsModal(true)}
             >
               Buy Now
             </button>

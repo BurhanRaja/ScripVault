@@ -87,7 +87,7 @@ function App() {
               path="/dashboard/stocks"
               element={<Stocks setAlert={setAlert} />}
             />
-            <Route path="/dashboard/stocks/:id" element={<StockDetails />} />
+            <Route path="/dashboard/stocks/:id" element={<StockDetails setAlert={setAlert} />} />
 
             <Route
               path="/dashboard/mutual-funds"
@@ -99,7 +99,7 @@ function App() {
             />
             <Route
               path="/dashboard/mutual-funds/best/:name"
-              element={<BestMF />}
+              element={<BestMF setAlert={setAlert} />}
             />
             <Route
               path="/dashboard/mutual-funds/company/:name"
@@ -110,7 +110,10 @@ function App() {
               path="/dashboard/etfs"
               element={<ETFs setAlert={setAlert} />}
             />
-            <Route path="/dashboard/etfs/:id" element={<ETFDetails />} />
+            <Route
+              path="/dashboard/etfs/:id"
+              element={<ETFDetails setAlert={setAlert} />}
+            />
             <Route
               path="/dashboard/etfs/best/:name"
               element={<BestETF setAlert={setAlert} />}

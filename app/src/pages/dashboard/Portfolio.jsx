@@ -156,7 +156,7 @@ const Portfolio = () => {
                     name={el?.name}
                     symbol={el?.symbol}
                     price={el?.buy_price}
-                    profit={el?.profit}
+                    profit={el?.profit.toFixed(2)}
                     totalInvestment={el?.total_price?.toFixed(2)}
                     dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
                   />
