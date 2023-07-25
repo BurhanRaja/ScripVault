@@ -19,6 +19,8 @@ const StockCards = ({
   setModal,
   link,
   setPrice,
+  handleWatchlist,
+  isWatch,
 }) => {
   const [stockPrice, setStockPrice] = useState("");
   const [stockPriceChange, setStockPriceChange] = useState("");
@@ -128,9 +130,24 @@ const StockCards = ({
               Details
             </button>
           </Link>
-          <button className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm">
-            <MdOutlinePlaylistAdd className="text-black text-lg" />
-          </button>
+          {isWatch ? (
+            <button className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm">
+              <BiListCheck className="text-green-600 text-lg" />
+            </button>
+          ) : (
+            <button
+              onClick={() =>
+                handleWatchlist({
+                  name,
+                  symbol,
+                  type: "stocks",
+                })
+              }
+              className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm"
+            >
+              <MdOutlinePlaylistAdd className="text-black text-lg" />
+            </button>
+          )}
         </div>
       </div>
     </>

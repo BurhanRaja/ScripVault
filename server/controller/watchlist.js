@@ -55,22 +55,23 @@ export const getStockWatchlist = async (req, res) => {
   try {
     const allWatchlists = await Watchlist.findOne({ user_id: req.user.id });
 
-    const stocks = allWatchlists.stocks;
-
     let stocksData = [];
 
-    for (let s in stocks) {
+    for (const s of allWatchlists.stocks) {
       let data = await axios.get(
-        config.stock_api + "/stock/currentprice" + s.symbol
+        config.stock_api + "/stock/currentprice/" + s.symbol
       );
-      stocksData.push(data);
+
+      stocksData.push(data.data);
     }
 
+    success = true;
     return res.status(200).send({
       success,
       stocksData,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -91,7 +92,7 @@ export const getMFWatchlist = async (req, res) => {
 
     for (let mf in mutualFunds) {
       let data = await axios.get(
-        config.stock_api + "/mutualfund/current/price" + mf.symbol
+        config.stock_api + "/mutualfund/current/price/" + mf.symbol
       );
       mutualFundsData.push(data);
     }

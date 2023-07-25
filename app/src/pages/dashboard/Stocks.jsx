@@ -13,6 +13,11 @@ import {
 } from "../../features/stocks/stockIndexes";
 import StockModal from "../../components/dashboard/modals/StockModal";
 import { buyStockThunk } from "../../features/portfolio/stockTransaction";
+import { addToWatchlistThunk } from "../../features/watchlist/watchlist";
+import {
+  clearGetWatchlist,
+  getStocksWatchlistThunk,
+} from "../../features/watchlist/getWatchlist";
 // import { Link } from "react-router-dom";
 
 const Stocks = ({ setAlert }) => {
@@ -29,6 +34,10 @@ const Stocks = ({ setAlert }) => {
   const { isSuccess, isLoading, nseData } = useSelector(
     (state) => state.stockNSEReducer
   );
+  const { stocksWatchlist, isLoading: watchlistLoading } = useSelector(
+    (state) => state.getWatchlistReducer
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,6 +47,11 @@ const Stocks = ({ setAlert }) => {
 
   useEffect(() => {
     dispatch(getStockIndexesThunk());
+  }, []);
+
+  useEffect(() => {
+    dispatch(clearGetWatchlist());
+    dispatch(getStocksWatchlistThunk());
   }, []);
 
   useEffect(() => {
@@ -125,6 +139,26 @@ const Stocks = ({ setAlert }) => {
     }
   };
 
+  const handleAddToWatchlist = (data) => {
+    dispatch(addToWatchlistThunk(data)).then((data) => {
+      if (!data?.payload.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: data?.payload.message,
+        });
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `You added ${stockName} to watchlist.`,
+        });
+        dispatch(clearGetWatchlist());
+        dispatch(getStocksWatchlistThunk());
+      }
+    });
+  };
+
   return (
     <>
       {isModal && (
@@ -158,7 +192,7 @@ const Stocks = ({ setAlert }) => {
             />
           </div>
           <div className="p-5">
-            {isLoading && !isSuccess ? (
+            {(isLoading || watchlistLoading) && !isSuccess ? (
               <>
                 <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
                 <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
@@ -168,6 +202,10 @@ const Stocks = ({ setAlert }) => {
               </>
             ) : (
               nseData?.map((el) => {
+                let watchlistFind = stocksWatchlist?.find(
+                  (wl) => wl.symbol === el.symbol
+                );
+                  console.log(watchlistFind);
                 return (
                   <StockCards
                     link={`/dashboard/stocks/${el?.symbol}`}
@@ -181,6 +219,8 @@ const Stocks = ({ setAlert }) => {
                     setSymbol={(val) => setStockSymbol(val)}
                     setModal={(val) => setIsModal(val)}
                     setPrice={(val) => setStockPrice(val)}
+                    handleWatchlist={(val) => handleAddToWatchlist(val)}
+                    isWatch={watchlistFind !== undefined ? true : false}
                   />
                 );
               })

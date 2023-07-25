@@ -64,7 +64,7 @@ const getWatchlistSlice = createSlice({
       .addCase(getStocksWatchlistThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.stocksWatchlist = payload?.watchlist;
+        state.stocksWatchlist = payload?.stocksData;
       })
       .addCase(getStocksWatchlistThunk.rejected, (state) => {
         state.isLoading = false;
