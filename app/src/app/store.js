@@ -29,6 +29,7 @@ import notificationReducer from "../features/notification";
 import getWatchlistReducer from "../features/watchlist/getWatchlist";
 import watchlistReducer from "../features/watchlist/watchlist";
 
+import etfDetailsReducer from "../features/etfs/etfDetails";
 import depositWithdrawReducer from "../features/graph/depositWithdraw";
 
 const reducers = combineReducers({
@@ -61,6 +62,7 @@ const reducers = combineReducers({
   getWatchlistReducer,
   watchlistReducer,
   depositWithdrawReducer,
+  etfDetailsReducer,
 });
 
 const store = configureStore({

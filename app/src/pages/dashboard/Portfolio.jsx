@@ -9,7 +9,6 @@ import {
   getMutualFundPortfolioThunk,
   getStockPortfolioThunk,
 } from "../../features/portfolio/portfolio";
-import StockPortfolioModal from "../../components/dashboard/portfolioModal/StockPortfolioModal";
 
 const Portfolio = () => {
   const { stocks, mutualFunds, etfs } = useSelector(
@@ -24,11 +23,8 @@ const Portfolio = () => {
     dispatch(getETFPortfolioThunk());
   }, []);
 
-  console.log(etfs);
-
   return (
     <>
-    <StockPortfolioModal />
       <div className="bg-gray-100 p-2">
         <div className="bg-white rounded-md p-5">
           <h1 className="text-3xl font-bold p-5">Your Portfolio</h1>
@@ -104,6 +100,7 @@ const Portfolio = () => {
                     totalYears={el?.total_years}
                     dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
                     totalInvestment={el?.total_investment}
+                    symbol={el?.symbol}
                   />
                 );
               })}
@@ -133,6 +130,7 @@ const Portfolio = () => {
                     totalYears={el?.total_years}
                     dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
                     totalInvestment={""}
+                    symbol={el?.symbol}
                   />
                 );
               })}

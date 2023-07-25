@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const PortfolioMF = ({
   name,
@@ -8,6 +9,7 @@ const PortfolioMF = ({
   totalYears,
   dateOfBuy,
   totalInvestment,
+  symbol,
 }) => {
   return (
     <>
@@ -28,9 +30,11 @@ const PortfolioMF = ({
           <p className={`font-semibold`}>₹{expectedInterest.toFixed(3)}</p>
           <p className={`font-semibold`}>{totalYears}</p>
           <p className={`font-semibold`}>{dateOfBuy}</p>
-          <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
-            Details
-          </button>
+          <Link to={`/dashboard/mutual-funds/${symbol}`}>
+            <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
+              Details
+            </button>
+          </Link>
         </div>
       </div>
     </>

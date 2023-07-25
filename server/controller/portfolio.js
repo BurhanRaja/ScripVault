@@ -803,3 +803,16 @@ export const getTotalInvestment = async (req, res) => {
 //     });
 //   }
 // };
+
+
+export const buySIPMFAgain = (req, res) => {
+  let success = false;
+
+  try {
+
+    
+    
+  } catch (err) {
+    
+  }
+}

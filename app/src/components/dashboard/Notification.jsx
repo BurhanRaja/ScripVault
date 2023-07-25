@@ -4,15 +4,17 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 const Notification = ({ notifications }) => {
   const [openNotification, setOpenNotification] = useState(false);
 
+
   return (
     <>
       <div className="relative">
         <button
-          class="hidden mx-6 text-gray-600 transition-colors duration-300 transform lg:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none"
+          class="hidden relative mx-6 text-gray-600 transition-colors duration-300 transform lg:block dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-400 focus:text-gray-700 dark:focus:text-gray-400 focus:outline-none"
           aria-label="show notifications"
           onClick={() => setOpenNotification(!openNotification)}
         >
           <IoIosNotificationsOutline className="text-gray-300 text-3xl" />
+          <div className="absolute text-white bg-red-600 px-1.5 py-0.5 rounded-full top-0 -right-1" style={{"fontSize": "0.6rem"}}>{notifications?.length}</div>
         </button>
 
         {openNotification && (

@@ -7,7 +7,6 @@ const MutualFundCards = ({
   symbol,
   oneYear,
   fiveYear,
-  link,
   setName,
   setModal,
   setSymbol,
@@ -58,7 +57,7 @@ const MutualFundCards = ({
           >
             Buy
           </button>
-          <Link to={link}>
+          <Link to={`/dashboard/mutual-funds/${symbol}`}>
             <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
               Details
             </button>

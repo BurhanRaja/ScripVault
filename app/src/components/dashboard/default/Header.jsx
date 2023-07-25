@@ -5,6 +5,8 @@ import {
   clearNotification,
   getSIPNotificationThunk,
 } from "../../../features/notification";
+import { LuLogOut } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { sipNotifications } = useSelector(
@@ -16,6 +18,15 @@ const Header = () => {
     dispatch(clearNotification());
     dispatch(getSIPNotificationThunk());
   }, []);
+
+  console.log(sipNotifications);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // remove token on logout action
+    navigate("/");
+  };
 
   return (
     <>
@@ -92,6 +103,16 @@ const Header = () => {
                 </div>
 
                 <Notification notifications={sipNotifications} />
+
+                <button
+                  onClick={() => handleLogout()}
+                  className="flex justify-between items-center bg-slate-900 hover:bg-red-600 rounded-md p-2 px-3 text-white"
+                >
+                  <span className="me-3">Logout</span>
+                  <span>
+                    <LuLogOut />
+                  </span>
+                </button>
               </div>
             </div>
           </div>

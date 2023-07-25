@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const PortfolioStock = ({ name, symbol, profit, price, totalInvestment }) => {
   return (
@@ -18,9 +19,11 @@ const PortfolioStock = ({ name, symbol, profit, price, totalInvestment }) => {
           )}
           <p className={`font-semibold`}>₹{totalInvestment}</p>
           <p className={`font-semibold`}>₹{price}</p>
-          <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
-            Details
-          </button>
+          <Link to={`dashboard/stocks/${symbol}`}>
+            <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
+              Details
+            </button>
+          </Link>
         </div>
       </div>
     </>

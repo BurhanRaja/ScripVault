@@ -15,23 +15,40 @@ export const investSIPNotification = async (req, res) => {
       return res.status(404);
     }
 
+    // console.log(portfolio);
+
     for (const el of portfolio.mutual_funds) {
       let mfDate = new Date(el.date_of_buy);
 
-      if (mfDate.getTime() - todayDate.getTime() === 2592000 && el.type === 1) {
+      if (
+        mfDate.getTime() - todayDate.getTime() === 2592000 &&
+        el.type_mf === 1
+      ) {
         const obj = {
           today_date: todayDate,
           ...el,
         };
 
-        await Notification.create({
-          title: "SIP - Reminder",
+        let notification = await Notification.findOne({
           user_id: req.user.id,
-          data: obj,
-          body: `SIP Investment Reminder for ${obj.name} - ${obj.buy_price}`,
-          type: "reminder",
-          read: false,
+          symbol: el.symbol,
         });
+
+        if (notification) {
+          continue;
+        } else {
+          let body = `SIP Investment Reminder for ${el.name} - ₹${el.buy_price}`;
+
+          await Notification.create({
+            symbol: el.symbol,
+            title: "SIP - Reminder",
+            user_id: req.user.id,
+            data: obj,
+            body,
+            type: "reminder",
+            read: false,
+          });
+        }
       }
     }
 

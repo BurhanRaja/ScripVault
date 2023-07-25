@@ -3,6 +3,7 @@ import {
   getETFPortfolio,
   getMutualFundPortfolio,
   getStockPortfolio,
+  sipMFInvest,
 } from "../../api/portfolio";
 
 const initialState = {
@@ -11,7 +12,7 @@ const initialState = {
   isError: false,
   stocks: {},
   mutualFunds: {},
-  etfs: {}
+  etfs: {},
 };
 
 export const getStockPortfolioThunk = createAsyncThunk(
@@ -46,6 +47,18 @@ export const getETFPortfolioThunk = createAsyncThunk(
       return res;
     } catch (err) {
       return err?.response.data;
+    }
+  }
+);
+
+export const sipMFInvestThunk = createAsyncThunk(
+  "portfolio/sipMF",
+  async ({ symbol, id }) => {
+    try {
+      let res = await sipMFInvest(symbol, id);
+      return res;
+    } catch (err) {
+      return err?.response?.data;
     }
   }
 );

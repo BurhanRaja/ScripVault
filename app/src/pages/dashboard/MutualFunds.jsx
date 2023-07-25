@@ -213,7 +213,6 @@ const MutualFunds = ({ setAlert }) => {
                     price={"₹" + el?.nav}
                     oneYear={el?.return_one_year}
                     fiveYear={el?.return_five_year}
-                    link={`/dashboard/mutual-funds/${el?.symbol}`}
                     setName={(val) => setMFName(val)}
                     setModal={(val) => setIsModal(val)}
                     setSymbol={(val) => setSymbol(val)}

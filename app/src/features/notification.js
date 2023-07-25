@@ -34,7 +34,7 @@ const notificationSlice = createSlice({
       .addCase(getSIPNotificationThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.sipNotification = payload?.notifications;
+        state.sipNotifications = payload?.notifications;
       })
       .addCase(getSIPNotificationThunk.rejected, (state) => {
         state.isLoading = false;

@@ -2,6 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const NotificationSchema = new Schema(
   {
+    symbol: {
+      type: String,
+    },
     body: {
       type: String,
     },

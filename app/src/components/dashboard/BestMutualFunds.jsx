@@ -12,7 +12,6 @@ const BestMutualFunds = ({ data, setName, setModal, setSymbol, setPrice, setOneY
             symbol={el?.symbol}
             oneYear={el?.return_one_year}
             fiveYear={el?.return_five_year}
-            link={`/dashboard/mutual-funds/${el?.symbol}`}
             setName={(val) => setName(val)}
             setModal={(val) => setModal(val)}
             setSymbol={(val) => setSymbol(val)}

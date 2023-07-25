@@ -81,3 +81,13 @@ export const getETFPortfolio = async () => {
   );
   return response.data;
 };
+
+export const sipMFInvest = async (symbol, id) => {
+  let response = await axios.get(config.node_url + `/api/portfolio/sip/buy/${symbol}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};
