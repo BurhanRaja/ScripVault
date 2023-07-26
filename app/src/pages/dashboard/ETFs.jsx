@@ -19,7 +19,7 @@ const ETFs = ({ setAlert }) => {
   const [etfSymbol, setETFSymbol] = useState("");
   const [etfPrice, setETFPrice] = useState("");
   const [isModal, setIsModal] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+
 
   const { isLoading, isSuccess, allETF, isError } = useSelector(
     (state) => state.allEtfsReducer
@@ -91,54 +91,16 @@ const ETFs = ({ setAlert }) => {
     },
   ];
 
-  const handleBuy = () => {
-    if (quantity === "") {
-      setAlert({
-        show: true,
-        type: "warning",
-        message: "Please add Required Data.",
-      });
-    }
-
-    let data = {
-      name: etfName,
-      symbol: etfSymbol,
-      buy_price: etfPrice,
-      no_of_shares: Number(quantity),
-    };
-
-    dispatch(buyETFThunk(data)).then((data) => {
-      if (!data?.payload?.success) {
-        setAlert({
-          show: true,
-          type: "warning",
-          message: data?.payload.message,
-        });
-      } else {
-        setAlert({
-          show: true,
-          type: "success",
-          message: `Congratulations! You Successfully bought ${etfName}.`,
-        });
-        setETFPrice("");
-        setETFSymbol("");
-        setETFName("");
-        setQuantity("");
-        setIsModal(false);
-        return;
-      }
-    });
-  };
-
+  
   return (
     <>
       {isModal && (
         <ETFModal
           name={etfName}
           setModal={(val) => setIsModal(val)}
-          handleBuy={() => handleBuy()}
-          quantity={quantity}
-          setQuantity={(val) => setQuantity(val)}
+          setAlert={setAlert}
+          symbol={etfSymbol}
+          price={etfPrice}
         />
       )}
       <div className='bg-gray-100 p-2'>

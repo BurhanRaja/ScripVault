@@ -18,7 +18,6 @@ import {
   clearGetWatchlist,
   getStocksWatchlistThunk,
 } from "../../features/watchlist/getWatchlist";
-// import { Link } from "react-router-dom";
 
 const Stocks = ({ setAlert }) => {
   const [skip, setSkip] = useState(0);
@@ -28,7 +27,7 @@ const Stocks = ({ setAlert }) => {
   const [stockSymbol, setStockSymbol] = useState("");
   const [stockPrice, setStockPrice] = useState("");
   const [isModal, setIsModal] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+
 
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { isSuccess, isLoading, nseData } = useSelector(
@@ -69,55 +68,6 @@ const Stocks = ({ setAlert }) => {
   }, []);
 
   // mstockTransactionReducer
-  const handleBuy = () => {
-    if (quantity === "") {
-      setAlert({
-        show: true,
-        type: "warning",
-        message: "Please add Required Data.",
-      });
-    }
-
-    let hour = new Date().getHours();
-    let day = new Date().getDay();
-
-    if (hour < 15 && hour > 9 && day > 0 && day < 6) {
-      let data = {
-        buy_price: stockPrice,
-        no_of_shares: Number(quantity),
-        symbol: stockSymbol,
-        name: stockName,
-      };
-
-      dispatch(buyStockThunk(data)).then((data) => {
-        if (!data?.payload?.success) {
-          setAlert({
-            show: true,
-            type: "warning",
-            message: data?.payload.message,
-          });
-        } else {
-          setAlert({
-            show: true,
-            type: "success",
-            message: `Congratulations! You Successfully bought ${stockName}.`,
-          });
-          setIsModal(false);
-          setQuantity("");
-          setStockPrice("");
-          setStockName("");
-          setStockSymbol("");
-        }
-      });
-    } else {
-      setAlert({
-        show: true,
-        type: "danger",
-        message: "Currently Market is Closed.",
-      });
-    }
-    return;
-  };
 
   const handleNext = () => {
     if (limit < 50) {
@@ -165,9 +115,9 @@ const Stocks = ({ setAlert }) => {
         <StockModal
           name={stockName}
           setModal={(val) => setIsModal(val)}
-          handleBuy={() => handleBuy()}
-          quantity={quantity}
-          setQuantity={(val) => setQuantity(val)}
+          price={stockPrice}
+          symbol={stockSymbol}
+          setAlert={setAlert}
         />
       )}
       <div className="bg-gray-100 p-2">
@@ -205,7 +155,6 @@ const Stocks = ({ setAlert }) => {
                 let watchlistFind = stocksWatchlist?.find(
                   (wl) => wl.symbol === el.symbol
                 );
-                  console.log(watchlistFind);
                 return (
                   <StockCards
                     link={`/dashboard/stocks/${el?.symbol}`}

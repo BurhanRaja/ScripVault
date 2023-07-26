@@ -16,12 +16,9 @@ const CompanyMF = ({ setAlert }) => {
   const [limit, setLimit] = useState(10);
 
   const [mfName, setMFName] = useState("");
-  const [type, setType] = useState("");
   const [symbol, setSymbol] = useState("");
   const [isModal, setIsModal] = useState(false);
-  const [investment, setInvestment] = useState("");
   const [price, setPrice] = useState("");
-  const [years, setYears] = useState("");
   const [oneYear, setOneYear] = useState("");
 
   const { companyMF, isLoading, isSuccess, isError } = useSelector(
@@ -60,70 +57,17 @@ const CompanyMF = ({ setAlert }) => {
     }
   };
 
-  const handleBuy = () => {
-    if (investment < price) {
-      setAlert({
-        show: true,
-        type: "warning",
-        message: `You have to invest minimum ${price}.`,
-      });
-    }
-
-    if (investment === "" || years === "") {
-      setAlert({
-        show: true,
-        type: "warning",
-        message: "Please add Required Data.",
-      });
-    }
-
-    let curr_year = Number(new Date().getFullYear());
-    let data = {
-      name: mfName,
-      symbol,
-      one_year_return: Number(oneYear),
-      buy_price: Number(price?.substring(1)),
-      investment: Number(investment),
-      type_mf: type,
-      total_years: Number(years),
-      year_sell: curr_year + Number(years),
-    };
-
-    dispatch(buyMFThunk(data)).then((data) => {
-      if (!data?.payload?.success) {
-        setAlert({
-          show: true,
-          type: "warning",
-          message: data?.payload.message,
-        });
-      } else {
-        setAlert({
-          show: true,
-          type: "success",
-          message: `Congratulations! You Successfully Invested in ${mfName}.`,
-        });
-        setYears("");
-        setInvestment("");
-        setPrice("");
-        setMFName("");
-        setSymbol("");
-        setIsModal(false);
-      }
-    });
-  };
 
   return (
     <>
       {isModal && (
         <MutualFundModal
-          handleBuy={() => handleBuy()}
           name={mfName}
           setModal={(val) => setIsModal(val)}
-          price={investment}
-          setPrice={(val) => setInvestment(val)}
-          years={years}
-          setYears={(val) => setYears(val)}
-          setType={(val) => setType(val)}
+          price={price}
+          oneYear={oneYear}
+          symbol={symbol}
+          setAlert={setAlert}
         />
       )}
       <div className="bg-gray-100 p-2">

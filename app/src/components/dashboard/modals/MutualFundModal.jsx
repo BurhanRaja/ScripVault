@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Input from "../../Input";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { buyMFThunk } from "../../../features/portfolio/mfTransaction";
 
 const MutualFundModal = ({
   name,
-  price,
-  setPrice,
-  years,
-  setYears,
   setModal,
-  handleBuy,
-  setType,
+  price,
+  oneYear,
+  symbol,
+  setAlert,
 }) => {
   const [openLumpsum, setOpenLumpsum] = useState(true);
   const [openSIP, setOpenSIP] = useState(false);
+  const [type, setType] = useState("");
+  const [years, setYears] = useState("");
+  const [investment, setInvestment] = useState("");
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (openLumpsum) {
@@ -26,6 +31,56 @@ const MutualFundModal = ({
       setType(1);
     }
   }, [openSIP]);
+
+  const handleBuy = () => {
+    if (investment < price) {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: `You have to invest minimum ${investment}.`,
+      });
+    }
+
+    if (investment === "" || years === "") {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: "Please add Required Data.",
+      });
+    }
+
+    let curr_year = Number(new Date().getFullYear());
+    let data = {
+      name,
+      symbol,
+      one_year_return: Number(oneYear),
+      buy_investment: Number(investment?.substring(1)),
+      investment: Number(investment),
+      type_mf: type,
+      total_years: Number(years),
+      year_sell: curr_year + Number(years),
+    };
+
+    dispatch(buyMFThunk(data)).then((data) => {
+      if (!data?.payload?.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: data?.payload.message,
+        });
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `Congratulations! You Successfully Invested in ${name}.`,
+        });
+        setYears("");
+        setInvestment("");
+      }
+    });
+
+    return;
+  };
 
   return (
     <>
@@ -102,8 +157,8 @@ const MutualFundModal = ({
                     <Input
                       type={"text"}
                       labelName={"Lumpsum - Money"}
-                      value={price}
-                      handleValue={(val) => setPrice(val)}
+                      value={investment}
+                      handleValue={(val) => setInvestment(val)}
                       handleFocus={() => {}}
                     />
                   </div>
@@ -128,8 +183,8 @@ const MutualFundModal = ({
                     <Input
                       type={"text"}
                       labelName={"SIP - Money"}
-                      value={price}
-                      handleValue={(val) => setPrice(val)}
+                      value={investment}
+                      handleValue={(val) => setInvestment(val)}
                       handleFocus={() => {}}
                     />
                   </div>
