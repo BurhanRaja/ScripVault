@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { buyMutualFund } from "../../api/portfolio";
+import { buyMutualFund, sellMFs } from "../../api/portfolio";
 
 const initialState = {
   isSuccess: false,
@@ -19,7 +19,17 @@ export const buyMFThunk = createAsyncThunk(
   }
 );
 
-export const sellMFThunk = async (data) => {};
+export const sellMFThunk = createAsyncThunk(
+  "mfTransaction/sell",
+  async (data) => {
+    try {
+      let res = await sellMFs(data);
+      return res;
+    } catch (err) {
+      return err?.response.data;
+    }
+  }
+);
 
 const mfTransaction = createSlice({
   name: "mfTransaction",
@@ -37,6 +47,17 @@ const mfTransaction = createSlice({
         state.isSuccess = true;
       })
       .addCase(buyMFThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(sellMFThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sellMFThunk.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(sellMFThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

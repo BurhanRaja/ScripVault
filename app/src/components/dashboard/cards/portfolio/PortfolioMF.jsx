@@ -30,11 +30,9 @@ const PortfolioMF = ({
           <p className={`font-semibold`}>₹{expectedInterest.toFixed(3)}</p>
           <p className={`font-semibold`}>{totalYears}</p>
           <p className={`font-semibold`}>{dateOfBuy}</p>
-          <Link to={`/dashboard/mutual-funds/${symbol}`}>
-            <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
-              Details
-            </button>
-          </Link>
+          <button className="p-1 px-3 text-white bg-red-600 text-sm rounded-sm">
+            Sell
+          </button>
         </div>
       </div>
     </>

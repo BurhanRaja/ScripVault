@@ -282,7 +282,20 @@ export const sellStocksTicker = async (req, res) => {
       stocks_id,
     } = req.body;
 
-    let portfolio = await Portfolio.findOneAndUpdate(
+    let portfolio = await Portfolio.findOne(
+      {
+        user_id: req.user.id,
+        "stocks._id": stocks_id,
+      },
+      {
+        "stocks.$": 1,
+      }
+    );
+
+    console.log(portfolio);
+    return;
+
+    portfolio = await Portfolio.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $pull: {
@@ -291,7 +304,7 @@ export const sellStocksTicker = async (req, res) => {
           },
         },
         $inc: {
-          total_investment: -(buy_price * no_of_shares),
+          total_profit: profit,
         },
       }
     );
@@ -585,9 +598,11 @@ export const getStockPortfolio = async (req, res) => {
       );
 
       stocksData.push({
+        _id: stock._id,
         name: stock.name,
         symbol: stock.symbol,
         buy_price: stock.buy_price,
+        curr_price: currStock?.data.curr_price,
         profit:
           (currStock?.data.curr_price - stock.buy_price) * stock.no_of_shares,
         total_price: stock.buy_price * stock.no_of_shares,
@@ -631,6 +646,7 @@ export const getMFPortfolio = async (req, res) => {
           mf.no_of_units *
           pow(1 + mf.one_year_return / (1 * 100), mf.total_years * 1);
         lumpsumMF.push({
+          _id: mf._id,
           name: mf.name,
           symbol: mf.symbol,
           total_years: mf.total_years,
@@ -650,6 +666,7 @@ export const getMFPortfolio = async (req, res) => {
           (1 + monthlyReturn);
 
         sipMF.push({
+          _id: mf._id,
           name: mf.name,
           symbol: mf.symbol,
           total_years: mf.total_years,
@@ -694,6 +711,7 @@ export const getETFPortfolio = async (req, res) => {
       );
 
       etfData.push({
+        _id: etf._id,
         name: etf.name,
         symbol: etf.symbol,
         buy_price: etf.buy_price,
@@ -804,15 +822,9 @@ export const getTotalInvestment = async (req, res) => {
 //   }
 // };
 
-
 export const buySIPMFAgain = (req, res) => {
   let success = false;
 
   try {
-
-    
-    
-  } catch (err) {
-    
-  }
-}
+  } catch (err) {}
+};

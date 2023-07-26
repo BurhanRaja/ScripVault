@@ -29,11 +29,9 @@ const PortfolioETF = ({
           <p className={`font-semibold`}>₹{totalInvestment}</p>
           <p className={`font-semibold`}>₹{price}</p>
           <p className={`font-semibold`}>{dateOfBuy}</p>
-          <Link to={`/dashboard/etfs/${symbol}`}>
-            <button className="p-1 px-3 text-white bg-gray-700 text-sm rounded-sm">
-              Details
-            </button>
-          </Link>
+          <button className="p-1 px-3 text-white bg-red-600 text-sm rounded-sm">
+            Sell
+          </button>
         </div>
       </div>
     </>

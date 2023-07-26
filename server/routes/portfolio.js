@@ -30,7 +30,7 @@ portfolioRouter.post("/etf/buy", checkuser, checkKyc, etfBuyTicker);
 portfolioRouter.post("/stock/sell", checkuser, checkKyc, sellStocksTicker);
 
 portfolioRouter.post(
-  "/mutual-funds/sell",
+  "/mutual-fund/sell",
   checkuser,
   checkKyc,
   sellMutualFundsTicker

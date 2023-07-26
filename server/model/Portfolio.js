@@ -85,6 +85,10 @@ const PortfolioSchema = new Schema(
       type: Number,
       default: 0,
     },
+    total_profit: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

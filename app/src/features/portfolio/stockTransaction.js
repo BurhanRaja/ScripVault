@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { buyStock } from "../../api/portfolio";
+import { buyStock, sellStocks } from "../../api/portfolio";
 
 const initialState = {
   isSuccess: false,
@@ -19,7 +19,14 @@ export const buyStockThunk = createAsyncThunk(
   }
 );
 
-export const sellStockThunk = async (data) => {};
+export const sellStockThunk = createAsyncThunk("stockTransaction/sell", async (data) => {
+  try {
+    let res = await sellStocks(data);
+    return res;
+  } catch (err) {
+    return err?.response.data;
+  }
+})
 
 const stockTransaction = createSlice({
   name: "stockTransaction",
@@ -37,6 +44,17 @@ const stockTransaction = createSlice({
         state.isSuccess = true;
       })
       .addCase(buyStockThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(sellStockThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sellStockThunk.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(sellStockThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

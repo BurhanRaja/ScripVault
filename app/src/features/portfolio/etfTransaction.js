@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { buyETF } from "../../api/portfolio";
+import { buyETF, sellETFs } from "../../api/portfolio";
 
 const initialState = {
   isSuccess: false,
@@ -19,7 +19,17 @@ export const buyETFThunk = createAsyncThunk(
   }
 );
 
-export const sellMFThunk = async (data) => {};
+export const sellETFThunk = createAsyncThunk(
+  "etfTransaction/sell",
+  async (data) => {
+    try {
+      let res = await sellETFs(data);
+      return res;
+    } catch (err) {
+      return err?.response.data;
+    }
+  }
+);
 
 const etfTransaction = createSlice({
   name: "etfTransaction",
@@ -37,6 +47,17 @@ const etfTransaction = createSlice({
         state.isSuccess = true;
       })
       .addCase(buyETFThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(sellETFThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sellETFThunk.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(sellETFThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

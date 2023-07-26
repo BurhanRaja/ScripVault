@@ -23,6 +23,8 @@ const Portfolio = () => {
     dispatch(getETFPortfolioThunk());
   }, []);
 
+  
+
   return (
     <>
       <div className="bg-gray-100 p-2">
@@ -61,6 +63,7 @@ const Portfolio = () => {
               {stocks?.stocksPortfolio?.map((el) => {
                 return (
                   <PortfolioStock
+                    key={el?._id}
                     name={el?.name}
                     symbol={el?.symbol}
                     price={el?.buy_price}
@@ -93,6 +96,7 @@ const Portfolio = () => {
               {mutualFunds?.lumpsumMF?.map((el) => {
                 return (
                   <PortfolioMF
+                    key={el?._id}
                     name={el?.name}
                     buyPrice={el?.buy_price}
                     expectedProfit={el?.expected_net_profit}
@@ -123,6 +127,7 @@ const Portfolio = () => {
               {mutualFunds?.sipMF?.map((el) => {
                 return (
                   <PortfolioMF
+                    key={el?._id}
                     name={el?.name}
                     buyPrice={el?.buy_price}
                     expectedProfit={el?.expected_net_profit}
