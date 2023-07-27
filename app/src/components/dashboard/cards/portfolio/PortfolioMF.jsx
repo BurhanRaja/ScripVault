@@ -10,6 +10,14 @@ const PortfolioMF = ({
   dateOfBuy,
   totalInvestment,
   symbol,
+  id,
+  setSymbol,
+  setName,
+  setTickerId,
+  setModal,
+  setType,
+  setProfit,
+  setPrice,
 }) => {
   return (
     <>
@@ -30,7 +38,18 @@ const PortfolioMF = ({
           <p className={`font-semibold`}>₹{expectedInterest.toFixed(3)}</p>
           <p className={`font-semibold`}>{totalYears}</p>
           <p className={`font-semibold`}>{dateOfBuy}</p>
-          <button className="p-1 px-3 text-white bg-red-600 text-sm rounded-sm">
+          <button
+            onClick={() => {
+              setName(name);
+              setSymbol(symbol);
+              setModal(true);
+              setType("mutual_funds");
+              setTickerId(id);
+              setProfit(expectedProfit);
+              setPrice(buyPrice);
+            }}
+            className="p-1 px-3 text-white bg-red-600 text-sm rounded-sm"
+          >
             Sell
           </button>
         </div>

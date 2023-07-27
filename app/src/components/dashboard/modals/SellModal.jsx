@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Input from "../../Input";
-import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { sellStockThunk } from "../../../features/portfolio/stockTransaction";
 import {
@@ -9,6 +8,8 @@ import {
   getMutualFundPortfolioThunk,
   getStockPortfolioThunk,
 } from "../../../features/portfolio/portfolio";
+import { sellMFThunk } from "../../../features/portfolio/mfTransaction";
+import { sellETFThunk } from "../../../features/portfolio/etfTransaction";
 
 const SellStockModal = ({
   name,
@@ -23,14 +24,10 @@ const SellStockModal = ({
   currPrice,
 }) => {
   const [quantity, setQuantity] = useState("");
-  const [openLumpsum, setOpenLumpsum] = useState(true);
-  const [openSIP, setOpenSIP] = useState(false);
-  const [years, setYears] = useState("");
-  const [investment, setInvestment] = useState("");
 
   const dispatch = useDispatch();
 
-  const handleSell = () => {
+  const handleStockSell = () => {
     if (Number(nos) < Number(quantity)) {
       setAlert({
         show: true,
@@ -57,6 +54,7 @@ const SellStockModal = ({
           type: "danger",
           message: data?.payload.message,
         });
+        return;
       } else {
         setAlert({
           show: true,
@@ -66,7 +64,67 @@ const SellStockModal = ({
         setQuantity(0);
         dispatch(clearPortfolioState());
         dispatch(getStockPortfolioThunk());
+        return;
+      }
+    });
+  };
+
+  const handleMFSell = () => {
+    let data = {
+      name,
+      symbol,
+      mf_id: id,
+      profit,
+    };
+
+    dispatch(sellMFThunk(data)).then((data) => {
+      if (!data?.payload.success) {
+        setAlert({
+          show: true,
+          type: "danger",
+          message: data?.payload.message,
+        });
+        return;
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `Successful! Mutual Fund Sold at a NAV of ${currPrice} with profit/loss ${profit}`,
+        });
+        dispatch(clearPortfolioState());
         dispatch(getMutualFundPortfolioThunk());
+        return;
+      }
+    });
+  };
+
+  const handleETFSell = () => {
+    // console.log(id);
+    // return;
+    let data = {
+      name,
+      symbol,
+      sell_price: currPrice,
+      profit,
+      etf_id: id,
+      no_of_shares: nos,
+    };
+
+    dispatch(sellETFThunk(data)).then((data) => {
+      if (!data?.payload.success) {
+        setAlert({
+          show: true,
+          type: "danger",
+          message: data?.payload.message,
+        });
+        return;
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `Successful! ETF Sold at a Price of ${currPrice} with profit/loss ${profit}`,
+        });
+        dispatch(clearPortfolioState());
         dispatch(getETFPortfolioThunk());
         return;
       }
@@ -133,93 +191,16 @@ const SellStockModal = ({
                 </>
               ) : (
                 <>
-                  <ul
-                    className="mb-5 flex list-none flex-row flex-wrap border-b-0 pl-0"
-                    role="tablist"
-                    data-te-nav-ref
-                  >
-                    <li role="presentation" className="flex-auto text-center">
-                      <Link
-                        to=""
-                        className={`my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-lg font-bold uppercase leading-tight hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent ${
-                          openLumpsum ? "text-blue-600" : "text-neutral-500"
-                        }`}
-                        onClick={() => {
-                          setOpenSIP(false);
-                          setOpenLumpsum(true);
-                        }}
-                      >
-                        Lumpsum
-                      </Link>
-                    </li>
-                    <li role="presentation" class="flex-auto text-center">
-                      <Link
-                        to=""
-                        class={`my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-lg font-bold uppercase leading-tight hover:isolate hover:border-transparent  focus:isolate hover:bg-neutral-100 focus:border-transparent ${
-                          openSIP ? "text-blue-600" : "text-neutral-500"
-                        }`}
-                        onClick={() => {
-                          setOpenSIP(true);
-                          setOpenLumpsum(false);
-                        }}
-                      >
-                        SIP
-                      </Link>
-                    </li>
-                  </ul>
-
-                  <div className="mb-6">
-                    <div
-                      className={`${
-                        openLumpsum ? "opacity-100" : "hidden opacity-0"
-                      } transition-opacity duration-150 ease-linear data-[te-tab-active]:block`}
-                      id="tabs-home01"
-                    >
-                      <div className="mb-4">
-                        <Input
-                          type={"text"}
-                          labelName={"Lumpsum - Money"}
-                          value={investment}
-                          handleValue={(val) => setInvestment(val)}
-                          handleFocus={() => {}}
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <Input
-                          type={"text"}
-                          labelName={"Lumpsum - No. of Years"}
-                          value={years}
-                          handleValue={(val) => setYears(val)}
-                          handleFocus={() => {}}
-                        />
-                      </div>
-                    </div>
-
-                    <div
-                      class={`${
-                        openSIP ? "opacity-100" : "hidden opacity-0"
-                      } transition-opacity duration-150 ease-linear data-[te-tab-active]:block`}
-                      id="tabs-message01"
-                    >
-                      <div className="mb-4">
-                        <Input
-                          type={"text"}
-                          labelName={"SIP - Money"}
-                          value={investment}
-                          handleValue={(val) => setInvestment(val)}
-                          handleFocus={() => {}}
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <Input
-                          type={"text"}
-                          labelName={"SIP - No. of Years"}
-                          value={years}
-                          handleValue={(val) => setYears(val)}
-                          handleFocus={() => {}}
-                        />
-                      </div>
-                    </div>
+                  <h1 className="text-center text-3xl font-bold mt-4">
+                    Are you sure?
+                  </h1>
+                  <div className="">
+                    <p className="mt-4 text-lg text-center">
+                      Total Profit:{" "}
+                      <span className="font-semibold">
+                        ₹{profit.toFixed(2)}
+                      </span>
+                    </p>
                   </div>
                 </>
               )}
@@ -232,12 +213,28 @@ const SellStockModal = ({
                   Close
                 </button>
 
-                <button
-                  className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                  onClick={() => handleSell()}
-                >
-                  Sell Now
-                </button>
+                {type === "stocks" ? (
+                  <button
+                    className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    onClick={() => handleStockSell()}
+                  >
+                    Sell Now
+                  </button>
+                ) : type === "etfs" ? (
+                  <button
+                    className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    onClick={() => handleETFSell()}
+                  >
+                    Sell Now
+                  </button>
+                ) : (
+                  <button
+                    className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    onClick={() => handleMFSell()}
+                  >
+                    Sell Now
+                  </button>
+                )}
               </div>
             </div>
           </div>

@@ -98,7 +98,6 @@ const Portfolio = ({ setAlert }) => {
                     dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
                     id={el?._id}
                     currPrice={el?.curr_price}
-
                     noOfShares={el?.quantity}
                     setName={(val) => setName(val)}
                     setPrice={(val) => setPrice(val)}
@@ -144,6 +143,14 @@ const Portfolio = ({ setAlert }) => {
                     dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
                     totalInvestment={el?.total_investment}
                     symbol={el?.symbol}
+                    id={el?._id}
+                    setName={(val) => setName(val)}
+                    setSymbol={(val) => setSymbol(val)}
+                    setTickerId={(val) => setTickerId}
+                    setModal={(val) => setIsModal(val)}
+                    setType={(val) => setType(val)}
+                    setProfit={(val) => setProfit(val)}
+                    setPrice={(val) => setCurrPrice(val)}
                   />
                 );
               })}
@@ -175,6 +182,14 @@ const Portfolio = ({ setAlert }) => {
                     dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
                     totalInvestment={""}
                     symbol={el?.symbol}
+                    id={el?._id}
+                    setName={(val) => setName(val)}
+                    setSymbol={(val) => setSymbol(val)}
+                    setTickerId={(val) => setTickerId(val)}
+                    setModal={(val) => setIsModal(val)}
+                    setType={(val) => setType(val)}
+                    setProfit={(val) => setProfit(val)}
+                    setPrice={(val) => setCurrPrice(val)}
                   />
                 );
               })}
@@ -199,10 +214,22 @@ const Portfolio = ({ setAlert }) => {
                   <PortfolioETF
                     name={el?.name}
                     symbol={el?.symbol}
-                    price={el?.buy_price}
+                    price={el?.curr_price}
                     profit={el?.profit.toFixed(2)}
                     totalInvestment={el?.total_price?.toFixed(2)}
                     dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
+                    id={el?.id}
+                    noOfShares={el?.quantity}
+                    buyPrice={el?.buy_price}
+                    setNOS={(val) => setNOS(val)}
+                    setPrice={(val) => setCurrPrice(val)}
+                    setSymbol={(val) => setSymbol(val)}
+                    setName={(val) => setName(val)}
+                    setProfit={(val) => setProfit(val)}
+                    setTickerId={(val) => setTickerId(val)}
+                    setModal={(val) => setIsModal(val)}
+                    setType={(val) => setType(val)}
+                    setBuyPrice={(val) => setPrice(val)}
                   />
                 );
               })}

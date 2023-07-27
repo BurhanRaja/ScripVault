@@ -8,6 +8,18 @@ const PortfolioETF = ({
   price,
   totalInvestment,
   dateOfBuy,
+  id,
+  setPrice,
+  setTickerId,
+  setProfit,
+  setModal,
+  setName,
+  setSymbol,
+  setNOS,
+  noOfShares,
+  setType,
+  buyPrice,
+  setBuyPrice,
 }) => {
   return (
     <>
@@ -29,7 +41,21 @@ const PortfolioETF = ({
           <p className={`font-semibold`}>₹{totalInvestment}</p>
           <p className={`font-semibold`}>₹{price}</p>
           <p className={`font-semibold`}>{dateOfBuy}</p>
-          <button className="p-1 px-3 text-white bg-red-600 text-sm rounded-sm">
+          <button
+            onClick={() => {
+              setModal(true);
+              setName(name);
+              setSymbol(symbol);
+              setPrice(price);
+              setProfit(profit);
+              setTickerId(id);
+              setNOS(noOfShares);
+              setProfit(profit);
+              setType("etfs");
+              setBuyPrice(buyPrice);
+            }}
+            className="p-1 px-3 text-white bg-red-600 text-sm rounded-sm"
+          >
             Sell
           </button>
         </div>

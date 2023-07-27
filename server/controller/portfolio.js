@@ -4,6 +4,7 @@ import SoldTicker from "../model/SoldTicker.js";
 import Wallet from "../model/Wallet.js";
 import config from "../config.js";
 import { pow } from "mathjs";
+import mongoose from "mongoose";
 
 // Stock Buy ---------------------------------------------------------------------------
 export const stockBuyTicker = async (req, res) => {
@@ -303,7 +304,7 @@ export const sellStocksTicker = async (req, res) => {
             "stocks.$.no_of_shares": -no_of_shares,
             total_profit: profit,
           },
-        },
+        }
       );
     }
 
@@ -390,32 +391,31 @@ export const sellMutualFundsTicker = async (req, res) => {
   let success = false;
 
   try {
-    const {
-      name,
-      symbol,
-      buy_price,
-      type_mf,
-      date_of_buy,
-      no_of_units,
-      total_years,
-      year_sell,
-      sell_price,
-      date_of_sell,
-      profit,
-      mf_id,
-    } = req.body;
+    const { name, symbol, mf_id, profit } = req.body;
 
+    let portfolio = await Portfolio.findOne(
+      { user_id: req.user.id, "mutual_funds._id": mf_id },
+      {
+        "mutual_funds.$": 1,
+      }
+    );
+
+    let mutualFund = portfolio.mutual_funds[0];
+
+    const buy_date = new Date(mutualFund?.date_of_buy);
     const date = new Date();
-    const sell_date = new Date(year_sell);
+    const sell_date = new Date(
+      `${mutualFund.year_sell}-${buy_date.getMonth()}-${buy_date?.getDate()}`
+    );
 
-    if (sell_date.getTime() !== date.getTime()) {
+    if (sell_date.getTime() >= date.getTime()) {
       return res.status(405).send({
         success,
-        message: "You cannot sell your Mutual Fund.",
+        message: `Mutual Fund is not mature yet. You can sell it after ${sell_date.toLocaleDateString()}`,
       });
     }
 
-    let portfolio = await Portfolio.findOneAndUpdate(
+    portfolio = await Portfolio.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $pull: {
@@ -423,8 +423,10 @@ export const sellMutualFundsTicker = async (req, res) => {
             _id: mf_id,
           },
         },
+      },
+      {
         $inc: {
-          total_investment: -(buy_price * no_of_units),
+          total_profit: profit,
         },
       }
     );
@@ -438,14 +440,13 @@ export const sellMutualFundsTicker = async (req, res) => {
           {
             name,
             symbol,
-            buy_price,
-            type_mf,
-            date_of_buy,
-            no_of_units,
-            total_years,
-            year_sell,
-            sell_price,
-            date_of_sell,
+            buy_price: mutualFund.buy_price,
+            type_mf: mutualFund.type_mf,
+            date_of_buy: mutualFund.date_of_buy,
+            no_of_units: mutualFund.no_of_units,
+            total_years: mutualFund.total_years,
+            year_sell: mutualFund.year_sell,
+            date_of_sell: new Date(),
             profit,
           },
         ],
@@ -458,13 +459,13 @@ export const sellMutualFundsTicker = async (req, res) => {
             mutual_funds: {
               name,
               symbol,
-              buy_price,
-              type_mf,
-              date_of_buy,
-              total_years,
-              year_sell,
-              sell_price,
-              date_of_sell,
+              buy_price: mutualFund.buy_price,
+              type_mf: mutualFund.type_mf,
+              date_of_buy: mutualFund.date_of_buy,
+              no_of_units: mutualFund.no_of_units,
+              total_years: mutualFund.total_years,
+              year_sell: mutualFund.year_sell,
+              date_of_sell: new Date(),
               profit,
             },
           },
@@ -472,13 +473,11 @@ export const sellMutualFundsTicker = async (req, res) => {
       );
     }
 
-    price = 0;
-
     let wallet = await Wallet.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $inc: {
-          balance: sell_price * no_of_units,
+          balance: profit,
         },
       }
     );
@@ -502,37 +501,41 @@ export const sellEtfTicker = async (req, res) => {
   let success = false;
 
   try {
-    const {
-      name,
-      symbol,
-      buy_price,
-      date_of_buy,
-      sell_price,
-      date_of_sell,
-      profit,
-      etf_id,
-    } = req.body;
+    const { name, symbol, sell_price, profit, etf_id, no_of_shares } = req.body;
 
-    const date = new Date();
-    const sell_date = new Date(year_sell);
-
-    if (sell_date.getTime() !== date.getTime()) {
-      return res.status(405).send({
-        success,
-        message: "You cannot sell your Mutual Fund.",
-      });
-    }
-
-    let portfolio = await Portfolio.findOneAndUpdate(
-      { user_id: req.user.id },
+    let portfolio = await Portfolio.findOne(
       {
-        $pull: {
-          stocks: {
-            _id: etf_id,
+        user_id: req.user.id,
+        "etfs._id": etf_id,
+      },
+      {
+        "etfs.$": 1,
+      }
+    );
+
+    let etf = portfolio.etfs[0];
+
+    if (no_of_shares === etf.no_of_shares) {
+      portfolio = await Portfolio.findOneAndUpdate(
+        { user_id: req.user.id, "etfs._id": etf_id },
+        {
+          $pull: {
+            "etfs.$._id": etf_id,
           },
         },
+        {
+          $inc: {
+            total_profit: profit,
+          },
+        }
+      );
+    }
+    portfolio = await Portfolio.findOneAndUpdate(
+      { user_id: req.user.id, "etfs._id": etf_id },
+      {
         $inc: {
-          total_investment: -buy_price,
+          "etfs.$.no_of_shares": no_of_shares,
+          total_profit: profit,
         },
       }
     );
@@ -546,10 +549,11 @@ export const sellEtfTicker = async (req, res) => {
           {
             name,
             symbol,
-            buy_price,
-            date_of_buy,
+            no_of_shares,
+            buy_price: etf.buy_price,
+            date_of_buy: etf.date_of_buy,
             sell_price,
-            date_of_sell,
+            date_of_sell: new Date(),
             profit,
           },
         ],
@@ -562,18 +566,17 @@ export const sellEtfTicker = async (req, res) => {
             etfs: {
               name,
               symbol,
-              buy_price,
-              date_of_buy,
+              no_of_shares,
+              buy_price: etf.buy_price,
+              date_of_buy: etf.date_of_buy,
               sell_price,
-              date_of_sell,
+              date_of_sell: new Date(),
               profit,
             },
           },
         }
       );
     }
-
-    price = 0;
 
     let wallet = await Wallet.findOneAndUpdate(
       { user_id: req.user.id },
@@ -591,6 +594,7 @@ export const sellEtfTicker = async (req, res) => {
       message: `${name} successfully Sold.`,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
@@ -651,10 +655,6 @@ export const getMFPortfolio = async (req, res) => {
     let sipMF = [];
 
     for (const mf of portfolio?.mutual_funds) {
-      let currMF = await axios.get(
-        config.stock_api + "/mutualfund/current/price/" + mf.symbol
-      );
-
       if (mf.type_mf === 0) {
         const profit =
           mf.buy_price *
@@ -726,9 +726,10 @@ export const getETFPortfolio = async (req, res) => {
       );
 
       etfData.push({
-        _id: etf._id,
+        id: etf._id,
         name: etf.name,
         symbol: etf.symbol,
+        curr_price: currEtf?.data?.curr_price,
         buy_price: etf.buy_price,
         profit: (currEtf?.data?.curr_price - etf.buy_price) * etf.no_of_shares,
         quantity: etf.no_of_shares,

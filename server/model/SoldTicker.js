@@ -60,9 +60,6 @@ const SoldTickerSchema = new Schema(
         date_of_buy: {
           type: Date,
         },
-        date_of_sell: {
-          type: Date,
-        },
         profit: {
           type: Number,
         },
