@@ -79,7 +79,7 @@ function App() {
           />
           <Route element={<Layout />}>
             <Route path="/dashboard/home" element={<DashHome />} />
-            <Route path="/dashboard/portfolio" element={<Portfolio />} />
+            <Route path="/dashboard/portfolio" element={<Portfolio setAlert={setAlert} />} />
 
             <Route path="/dashboard/topstock" element={<TopStocksPage />} />
 

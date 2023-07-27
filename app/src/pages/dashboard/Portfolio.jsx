@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PortfolioStock from "../../components/dashboard/cards/portfolio/PortfolioStock";
 import PortfolioMF from "../../components/dashboard/cards/portfolio/PortfolioMF";
 import PortfolioETF from "../../components/dashboard/cards/portfolio/PortfolioETF";
@@ -9,8 +9,20 @@ import {
   getMutualFundPortfolioThunk,
   getStockPortfolioThunk,
 } from "../../features/portfolio/portfolio";
+import SellStockModal from "../../components/dashboard/modals/SellModal";
 
-const Portfolio = () => {
+const Portfolio = ({ setAlert }) => {
+  const [isModal, setIsModal] = useState(false);
+
+  const [name, setName] = useState("");
+  const [profit, setProfit] = useState("");
+  const [price, setPrice] = useState("");
+  const [currPrice, setCurrPrice] = useState("");
+  const [symbol, setSymbol] = useState("");
+  const [tickerId, setTickerId] = useState("");
+  const [nos, setNOS] = useState("");
+  const [type, setType] = useState("");
+
   const { stocks, mutualFunds, etfs } = useSelector(
     (state) => state.portfolioReducer
   );
@@ -23,10 +35,24 @@ const Portfolio = () => {
     dispatch(getETFPortfolioThunk());
   }, []);
 
-  
+  // console.log(stocks)
 
   return (
     <>
+      {isModal && (
+        <SellStockModal
+          setModal={(val) => setIsModal(val)}
+          name={name}
+          symbol={symbol}
+          price={price}
+          profit={profit}
+          id={tickerId}
+          nos={nos}
+          setAlert={setAlert}
+          type={type}
+          currPrice={currPrice}
+        />
+      )}
       <div className="bg-gray-100 p-2">
         <div className="bg-white rounded-md p-5">
           <h1 className="text-3xl font-bold p-5">Your Portfolio</h1>
@@ -70,6 +96,19 @@ const Portfolio = () => {
                     profit={el?.profit?.toFixed(2)}
                     totalInvestment={el?.total_price}
                     dateOfBuy={new Date(el?.date_of_buy).toLocaleDateString()}
+                    id={el?._id}
+                    currPrice={el?.curr_price}
+
+                    noOfShares={el?.quantity}
+                    setName={(val) => setName(val)}
+                    setPrice={(val) => setPrice(val)}
+                    setProfit={(val) => setProfit(val)}
+                    setSymbol={(val) => setSymbol(val)}
+                    setTickerId={(val) => setTickerId(val)}
+                    setNOS={(val) => setNOS(val)}
+                    setModal={(val) => setIsModal(val)}
+                    setType={(val) => setType(val)}
+                    setCurrPrice={(val) => setCurrPrice(val)}
                   />
                 );
               })}

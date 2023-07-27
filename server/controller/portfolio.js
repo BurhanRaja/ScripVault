@@ -276,8 +276,6 @@ export const sellStocksTicker = async (req, res) => {
       buy_price,
       sell_price,
       no_of_shares,
-      date_of_buy,
-      date_of_sell,
       profit,
       stocks_id,
     } = req.body;
@@ -292,22 +290,38 @@ export const sellStocksTicker = async (req, res) => {
       }
     );
 
-    console.log(portfolio);
-    return;
+    const currStock = portfolio.stocks[0];
 
-    portfolio = await Portfolio.findOneAndUpdate(
-      { user_id: req.user.id },
-      {
-        $pull: {
-          stocks: {
-            _id: stocks_id,
+    if (currStock.no_of_shares > no_of_shares) {
+      await Portfolio.findOneAndUpdate(
+        {
+          user_id: req.user.id,
+          "stocks._id": stocks_id,
+        },
+        {
+          $inc: {
+            "stocks.$.no_of_shares": -no_of_shares,
+            total_profit: profit,
           },
         },
-        $inc: {
-          total_profit: profit,
-        },
-      }
-    );
+      );
+    }
+
+    if (currStock?.no_of_shares === no_of_shares) {
+      await Portfolio.findOneAndUpdate(
+        { user_id: req.user.id },
+        {
+          $pull: {
+            stocks: {
+              _id: stocks_id,
+            },
+          },
+          $inc: {
+            total_profit: profit,
+          },
+        }
+      );
+    }
 
     let soldTicker = await SoldTicker.findOne({ user_id: req.user.id });
 
@@ -321,8 +335,8 @@ export const sellStocksTicker = async (req, res) => {
             buy_price,
             sell_price,
             no_of_shares,
-            date_of_buy,
-            date_of_sell,
+            date_of_buy: currStock.date_of_buy,
+            date_of_sell: new Date(),
             profit,
           },
         ],
@@ -338,8 +352,8 @@ export const sellStocksTicker = async (req, res) => {
               buy_price,
               sell_price,
               no_of_shares,
-              date_of_buy,
-              date_of_sell,
+              date_of_buy: currStock.date_of_buy,
+              date_of_sell: new Date(),
               profit,
             },
           },
@@ -347,7 +361,7 @@ export const sellStocksTicker = async (req, res) => {
       );
     }
 
-    let wallet = await Wallet.findOneAndUpdate(
+    await Wallet.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $inc: {
@@ -363,6 +377,7 @@ export const sellStocksTicker = async (req, res) => {
       message: `${name} successfully Sold.`,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",

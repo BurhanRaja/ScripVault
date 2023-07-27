@@ -8,6 +8,18 @@ const PortfolioStock = ({
   price,
   totalInvestment,
   dateOfBuy,
+  id,
+  currPrice,
+  noOfShares,
+  setName,
+  setPrice,
+  setProfit,
+  setSymbol,
+  setTickerId,
+  setNOS,
+  setModal,
+  setType,
+  setCurrPrice,
 }) => {
   return (
     <>
@@ -27,7 +39,20 @@ const PortfolioStock = ({
           <p className={`font-semibold`}>₹{totalInvestment}</p>
           <p className={`font-semibold`}>₹{price}</p>
           <p className={`font-semibold`}>{dateOfBuy}</p>
-          <button className="p-1 px-3 text-white bg-red-600 text-sm rounded-sm">
+          <button
+            className="p-1 px-3 text-white bg-red-600 text-sm rounded-sm"
+            onClick={() => {
+              setName(name);
+              setPrice(price);
+              setSymbol(symbol);
+              setProfit(profit);
+              setTickerId(id);
+              setNOS(noOfShares);
+              setModal(true);
+              setType("stocks");
+              setCurrPrice(currPrice);
+            }}
+          >
             Sell
           </button>
         </div>
