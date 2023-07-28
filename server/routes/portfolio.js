@@ -6,6 +6,7 @@ import {
   getMFPortfolio,
   getStockPortfolio,
   getTotalInvestment,
+  getTotalProfit,
   mutualFundBuyTicker,
   sellEtfTicker,
   sellMutualFundsTicker,
@@ -59,4 +60,11 @@ portfolioRouter.get(
   checkuser,
   checkKyc,
   getTotalInvestment
+);
+
+portfolioRouter.get(
+  "/total/profit",
+  checkuser,
+  checkKyc,
+  getTotalProfit
 );

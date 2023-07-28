@@ -10,6 +10,11 @@ import {
   getStockPortfolioThunk,
 } from "../../features/portfolio/portfolio";
 import SellStockModal from "../../components/dashboard/modals/SellModal";
+import {
+  clearInvestmentDetailsState,
+  getTotalInvestmentThunk,
+  getTotalProfitThunk,
+} from "../../features/portfolio/investmentDetails";
 
 const Portfolio = ({ setAlert }) => {
   const [isModal, setIsModal] = useState(false);
@@ -26,7 +31,16 @@ const Portfolio = ({ setAlert }) => {
   const { stocks, mutualFunds, etfs } = useSelector(
     (state) => state.portfolioReducer
   );
+  const { investment, profit: totalProfit } = useSelector(
+    (state) => state.investmentDetailsReducer
+  );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearInvestmentDetailsState());
+    dispatch(getTotalInvestmentThunk());
+    dispatch(getTotalProfitThunk());
+  }, []);
 
   useEffect(() => {
     dispatch(clearPortfolioState());
@@ -60,14 +74,24 @@ const Portfolio = ({ setAlert }) => {
             <div className="w-[45%] border p-4">
               <h4 className="text-xl font-bold">Total Investment</h4>
               <p className="text-lg mt-4 text-gray-600 font-semibold">
-                ₹ 1,00,000
+                ₹{investment}
               </p>
             </div>
             <div className="w-[45%] border p-4">
               <h4 className="text-xl font-bold ">Total Profit</h4>
-              <p className="text-lg mt-4 text-green-500 font-semibold">
-                ₹ 1,00,000
-              </p>
+              {totalProfit > 0 ? (
+                <p className="text-lg mt-4 text-green-500 font-semibold">
+                  ₹{totalProfit}
+                </p>
+              ) : totalProfit < 0 ? (
+                <p className="text-lg mt-4 text-red-500 font-semibold">
+                  ₹{totalProfit}
+                </p>
+              ) : (
+                <p className="text-lg mt-4 text-gray-800 font-semibold">
+                  ₹{totalProfit}
+                </p>
+              )}
             </div>
           </div>
           <div className="p-5">

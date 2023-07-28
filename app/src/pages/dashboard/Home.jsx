@@ -37,6 +37,11 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import {
+  clearInvestmentDetailsState,
+  getTotalInvestmentThunk,
+  getTotalProfitThunk,
+} from "../../features/portfolio/investmentDetails";
 // name, symbol, currPrice, currPer, currGap, size
 
 // Data
@@ -117,8 +122,20 @@ const Home = () => {
   const { deposit, withdraw } = useSelector(
     (state) => state.depositWithdrawReducer
   );
+  const { investment, profit } = useSelector(
+    (state) => state.investmentDetailsReducer
+  );
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearInvestmentDetailsState());
+    dispatch(getTotalInvestmentThunk());
+    dispatch(getTotalProfitThunk());
+  }, []);
+
+  console.log(investment);
+  console.log(profit);
 
   useEffect(() => {
     dispatch(clearDepositWithdrawGraph());
@@ -189,6 +206,9 @@ const Home = () => {
     },
   };
 
+  console.log(deposit)
+  console.log(withdraw)
+
   const labels = [
     "January",
     "February",
@@ -230,7 +250,7 @@ const Home = () => {
           let data = "";
           let curryear = new Date().getFullYear();
           withdraw?.withdraws?.forEach((el) => {
-            if (el?._id?.month === index + 1  && curryear === el?._id?.year) {
+            if (el?._id?.month === index + 1 && curryear === el?._id?.year) {
               data = el?.total;
             } else {
               data = 0;
@@ -238,9 +258,9 @@ const Home = () => {
           });
           return data;
         }),
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        yAxisID: 'y1',
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        yAxisID: "y1",
       },
     ],
   };
@@ -319,14 +339,24 @@ const Home = () => {
               <div className="w-[32%] border p-4">
                 <h4 className="text-xl font-bold">Total Investment</h4>
                 <p className="text-lg mt-4 text-gray-600 font-semibold">
-                  ₹ 1,00,000
+                  ₹{investment}
                 </p>
               </div>
               <div className="w-[32%] border p-4">
                 <h4 className="text-xl font-bold ">Total Profit</h4>
-                <p className="text-lg mt-4 text-green-500 font-semibold">
-                  ₹ 1,00,000
-                </p>
+                {profit > 0 ? (
+                  <p className="text-lg mt-4 text-green-500 font-semibold">
+                    ₹{profit}
+                  </p>
+                ) : profit < 0 ? (
+                  <p className="text-lg mt-4 text-red-500 font-semibold">
+                    ₹{profit}
+                  </p>
+                ) : (
+                  <p className="text-lg mt-4 text-gray-800 font-semibold">
+                    ₹{profit}
+                  </p>
+                )}
               </div>
             </div>
             {/* <img src="/assets/images/demo-chart.png" width={800} /> */}

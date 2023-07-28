@@ -773,6 +773,26 @@ export const getTotalInvestment = async (req, res) => {
   }
 };
 
+// Get Total Investment
+export const getTotalProfit = async (req, res) => {
+  let success = false;
+  try {
+    let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    success = true;
+
+    return res.status(200).send({
+      success,
+      total_profit: portfolio.total_profit,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success,
+      message: "Internal Server Error.",
+    });
+  }
+};
+
 // Get Total Profit
 
 // Update and get Total Portfolio Amount ---------------------------------------------------------------------------

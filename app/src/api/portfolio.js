@@ -136,6 +136,18 @@ export const getTotalInvestment = async () => {
   return response.data;
 };
 
+export const getTotalProit = async () => {
+  let response = await axios.get(
+    config.node_url + "/api/portfolio/total/profit",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
 export const sipMFInvest = async (symbol, id) => {
   let response = await axios.get(
     config.node_url + `/api/portfolio/sip/buy/${symbol}/${id}`,
