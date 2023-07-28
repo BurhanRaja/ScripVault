@@ -76,7 +76,7 @@ const getWatchlistSlice = createSlice({
       .addCase(getMFsWatchlistThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.mfsWatchlist = payload?.watchlist;
+        state.mfsWatchlist = payload?.mutualFundsData;
       })
       .addCase(getMFsWatchlistThunk.rejected, (state) => {
         state.isLoading = false;
@@ -88,7 +88,7 @@ const getWatchlistSlice = createSlice({
       .addCase(getETFsWatchlistThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.etfsWatchlist = payload?.watchlist;
+        state.etfsWatchlist = payload?.etfsData;
       })
       .addCase(getETFsWatchlistThunk.rejected, (state) => {
         state.isLoading = false;

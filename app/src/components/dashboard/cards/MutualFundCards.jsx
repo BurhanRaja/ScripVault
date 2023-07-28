@@ -1,4 +1,6 @@
 import React from "react";
+import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { BiListCheck } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
 const MutualFundCards = ({
@@ -12,6 +14,8 @@ const MutualFundCards = ({
   setSymbol,
   setPrice,
   setOneYear,
+  addToWatchlist,
+  isWatch,
 }) => {
   return (
     <>
@@ -62,6 +66,24 @@ const MutualFundCards = ({
               Details
             </button>
           </Link>
+          {isWatch ? (
+            <button className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm">
+              <BiListCheck className="text-green-600 text-lg" />
+            </button>
+          ) : (
+            <button
+              onClick={() =>
+                addToWatchlist({
+                  name,
+                  symbol,
+                  type: "mutual_funds",
+                })
+              }
+              className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm"
+            >
+              <MdOutlinePlaylistAdd className="text-black text-lg" />
+            </button>
+          )}
         </div>
       </div>
     </>

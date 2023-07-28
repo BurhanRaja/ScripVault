@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { BiListCheck } from "react-icons/bi";
 
 const EtfCards = ({
   name,
@@ -11,13 +13,15 @@ const EtfCards = ({
   setSymbol,
   setName,
   setPrice,
+  addToWatchlist,
+  isWatch,
 }) => {
   return (
     <>
       <div className="flex justify-between items-center p-4 border bg-gray-50 mb-4">
         <div>
           <h2 className={`text-xl font-bold`}>
-            {name?.length > 10 ? name?.substring(0, 10) : name}
+            {name?.length > 15 ? name?.substring(0, 15) + "..." : name}
           </h2>
         </div>
         <div className="flex justify-between items-center w-[40%]">
@@ -55,6 +59,24 @@ const EtfCards = ({
               Details
             </button>
           </Link>
+          {isWatch ? (
+            <button className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm">
+              <BiListCheck className="text-green-600 text-lg" />
+            </button>
+          ) : (
+            <button
+              onClick={() =>
+                addToWatchlist({
+                  name,
+                  symbol,
+                  type: "etfs",
+                })
+              }
+              className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm"
+            >
+              <MdOutlinePlaylistAdd className="text-black text-lg" />
+            </button>
+          )}
         </div>
       </div>
     </>

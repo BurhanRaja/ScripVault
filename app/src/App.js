@@ -27,6 +27,7 @@ import MutualFundDetails from "./pages/dashboard/MutualFundDetails";
 import CompanyMF from "./pages/dashboard/CompanyMF";
 import BestETF from "./pages/dashboard/BestETF";
 import ETFDetails from "./pages/dashboard/ETFDetails";
+import Watchlist from "./pages/dashboard/Watchlist";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -79,7 +80,10 @@ function App() {
           />
           <Route element={<Layout />}>
             <Route path="/dashboard/home" element={<DashHome />} />
-            <Route path="/dashboard/portfolio" element={<Portfolio setAlert={setAlert} />} />
+            <Route
+              path="/dashboard/portfolio"
+              element={<Portfolio setAlert={setAlert} />}
+            />
 
             <Route path="/dashboard/topstock" element={<TopStocksPage />} />
 
@@ -87,7 +91,10 @@ function App() {
               path="/dashboard/stocks"
               element={<Stocks setAlert={setAlert} />}
             />
-            <Route path="/dashboard/stocks/:id" element={<StockDetails setAlert={setAlert} />} />
+            <Route
+              path="/dashboard/stocks/:id"
+              element={<StockDetails setAlert={setAlert} />}
+            />
 
             <Route
               path="/dashboard/mutual-funds"
@@ -127,7 +134,10 @@ function App() {
               path="/dashboard/withdraw"
               element={<Withdraw setAlert={setAlert} />}
             />
-            <Route path="/dashboard/watchlist" element={<>Hello</>} />
+            <Route
+              path="/dashboard/watchlist"
+              element={<Watchlist setAlert={setAlert} />}
+            />
             <Route
               path="/dashboard/profile"
               element={<UserAccount setAlert={setAlert} />}

@@ -62,7 +62,10 @@ export const getStockWatchlist = async (req, res) => {
         config.stock_api + "/stock/currentprice/" + s.symbol
       );
 
-      stocksData.push(data.data);
+      stocksData.push({
+        ...data.data,
+        id: s._id,
+      });
     }
 
     success = true;
@@ -88,13 +91,18 @@ export const getMFWatchlist = async (req, res) => {
 
     const mutualFunds = allWatchlists.mutual_funds;
 
+    // console.log(mutualFunds);
+
     let mutualFundsData = [];
 
-    for (let mf in mutualFunds) {
+    for (let mf of mutualFunds) {
       let data = await axios.get(
         config.stock_api + "/mutualfund/current/price/" + mf.symbol
       );
-      mutualFundsData.push(data);
+      mutualFundsData.push({
+        ...data.data,
+        id: mf._id,
+      });
     }
 
     return res.status(200).send({
@@ -120,11 +128,11 @@ export const getETFWatchlist = async (req, res) => {
 
     let etfsData = [];
 
-    for (let etf in etfs) {
+    for (let etf of etfs) {
       let data = await axios.get(
         config.stock_api + "/etf/current/price/" + etf.symbol
       );
-      etfsData.push(data);
+      etfsData.push(data.data);
     }
 
     return res.status(200).send({

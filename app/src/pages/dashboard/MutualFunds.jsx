@@ -10,6 +10,11 @@ import TypeMF from "../../components/dashboard/widgets/TypeMF";
 import { Link } from "react-router-dom";
 import MutualFundModal from "../../components/dashboard/modals/MutualFundModal";
 import { buyMFThunk } from "../../features/portfolio/mfTransaction";
+import {
+  clearGetWatchlist,
+  getMFsWatchlistThunk,
+} from "../../features/watchlist/getWatchlist";
+import { addToWatchlistThunk } from "../../features/watchlist/watchlist";
 
 // Data
 let dataMF = [
@@ -75,7 +80,15 @@ const MutualFunds = ({ setAlert }) => {
   const { isSuccess, isLoading, isError, allMF } = useSelector(
     (state) => state.allMutualFundsReducer
   );
+  const { mfsWatchlist, isLoading: watchlistLoading } = useSelector(
+    (state) => state.getWatchlistReducer
+  );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearGetWatchlist());
+    dispatch(getMFsWatchlistThunk());
+  }, []);
 
   useEffect(() => {
     dispatch(clearAllMFState());
@@ -100,6 +113,26 @@ const MutualFunds = ({ setAlert }) => {
       setSkip(skip - 10);
       setLimit(limit - 10);
     }
+  };
+
+  const handleAddToWatchlist = (data) => {
+    dispatch(addToWatchlistThunk(data)).then((data) => {
+      if (!data?.payload.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: data?.payload.message,
+        });
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `You added ${mfName} to watchlist.`,
+        });
+        dispatch(clearGetWatchlist());
+        dispatch(getMFsWatchlistThunk());
+      }
+    });
   };
 
   return (
@@ -146,6 +179,9 @@ const MutualFunds = ({ setAlert }) => {
               </>
             ) : (
               allMF?.data?.map((el) => {
+                let watchlistFind = mfsWatchlist?.find(
+                  (wl) => wl.symbol === el.symbol + ".BO"
+                );
                 return (
                   <MutualFundCards
                     name={el?.fund}
@@ -159,6 +195,8 @@ const MutualFunds = ({ setAlert }) => {
                     setSymbol={(val) => setSymbol(val)}
                     setPrice={(val) => setPrice(val)}
                     setOneYear={(val) => setOneYear(val)}
+                    addToWatchlist={(val) => handleAddToWatchlist(val)}
+                    isWatch={watchlistFind !== undefined ? true : false}
                   />
                 );
               })

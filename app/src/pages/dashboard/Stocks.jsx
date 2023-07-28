@@ -28,7 +28,6 @@ const Stocks = ({ setAlert }) => {
   const [stockPrice, setStockPrice] = useState("");
   const [isModal, setIsModal] = useState(false);
 
-
   const { indexes } = useSelector((state) => state.stockIndexesReducer);
   const { isSuccess, isLoading, nseData } = useSelector(
     (state) => state.stockNSEReducer

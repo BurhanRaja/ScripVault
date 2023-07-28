@@ -20,7 +20,10 @@ const StockCards = ({
   link,
   setPrice,
   handleWatchlist,
+  rWatchlist,
+  removeWatchlist,
   isWatch,
+  id,
 }) => {
   const [stockPrice, setStockPrice] = useState("");
   const [stockPriceChange, setStockPriceChange] = useState("");
@@ -131,7 +134,17 @@ const StockCards = ({
             </button>
           </Link>
           {isWatch ? (
-            <button className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm">
+            <button
+              onClick={() => {
+                if (rWatchlist) {
+                  removeWatchlist({
+                    type: "stocks",
+                    id,
+                  });
+                }
+              }}
+              className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm"
+            >
               <BiListCheck className="text-green-600 text-lg" />
             </button>
           ) : (

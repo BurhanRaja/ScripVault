@@ -54,7 +54,7 @@ export const getMFWatchlist = async () => {
 };
 
 export const getETFsWatchlist = async () => {
-  let response = await axios.get(config.node_url + "/api/watchlist/etfs/all", {
+  let response = await axios.get(config.node_url + "/api/watchlist/etf/all", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
