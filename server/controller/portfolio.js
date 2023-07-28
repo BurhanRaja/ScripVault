@@ -293,6 +293,14 @@ export const sellStocksTicker = async (req, res) => {
 
     const currStock = portfolio.stocks[0];
 
+    if (currStock.no_of_shares < no_of_shares) {
+      return res.status(400).send({
+        success,
+        message:
+          "Not Allowed! Quantity of selling is higher than Current total shares.",
+      });
+    }
+
     if (currStock.no_of_shares > no_of_shares) {
       await Portfolio.findOneAndUpdate(
         {
@@ -515,12 +523,21 @@ export const sellEtfTicker = async (req, res) => {
 
     let etf = portfolio.etfs[0];
 
+    if (etf.no_of_shares < no_of_shares) {
+      return res.status(400).send({
+        success,
+        message:
+          "Not Allowed! Quantity of selling is higher than Current total shares.",
+      });
+    }
+
     if (no_of_shares === etf.no_of_shares) {
+      console.log("Hello Equal")
       portfolio = await Portfolio.findOneAndUpdate(
         { user_id: req.user.id, "etfs._id": etf_id },
         {
           $pull: {
-            "etfs.$._id": etf_id,
+            "etfs.$.0._id": etf_id,
           },
         },
         {
@@ -530,15 +547,19 @@ export const sellEtfTicker = async (req, res) => {
         }
       );
     }
-    portfolio = await Portfolio.findOneAndUpdate(
-      { user_id: req.user.id, "etfs._id": etf_id },
-      {
-        $inc: {
-          "etfs.$.no_of_shares": no_of_shares,
-          total_profit: profit,
-        },
-      }
-    );
+
+    if (etf.no_of_shares > no_of_shares) {
+      console.log("Hello Greater")
+      portfolio = await Portfolio.findOneAndUpdate(
+        { user_id: req.user.id, "etfs._id": etf_id },
+        {
+          $inc: {
+            "etfs.$.no_of_shares": -no_of_shares,
+            total_profit: profit,
+          },
+        }
+      );
+    }
 
     let soldTicker = await SoldTicker.findOne({ user_id: req.user.id });
 

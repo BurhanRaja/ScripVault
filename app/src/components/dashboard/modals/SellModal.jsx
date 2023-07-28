@@ -64,6 +64,8 @@ const SellStockModal = ({
         setQuantity(0);
         dispatch(clearPortfolioState());
         dispatch(getStockPortfolioThunk());
+        dispatch(getMutualFundPortfolioThunk());
+        dispatch(getETFPortfolioThunk());
         return;
       }
     });
@@ -92,13 +94,23 @@ const SellStockModal = ({
           message: `Successful! Mutual Fund Sold at a NAV of ${currPrice} with profit/loss ${profit}`,
         });
         dispatch(clearPortfolioState());
+        dispatch(getStockPortfolioThunk());
         dispatch(getMutualFundPortfolioThunk());
+        dispatch(getETFPortfolioThunk());
         return;
       }
     });
   };
 
   const handleETFSell = () => {
+    if (Number(nos) < Number(quantity)) {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: `Not Allowed! Quantity of selling is higher than Current total shares.`,
+      });
+      return;
+    }
     // console.log(id);
     // return;
     let data = {
@@ -107,7 +119,7 @@ const SellStockModal = ({
       sell_price: currPrice,
       profit,
       etf_id: id,
-      no_of_shares: nos,
+      no_of_shares: quantity,
     };
 
     dispatch(sellETFThunk(data)).then((data) => {
@@ -125,6 +137,8 @@ const SellStockModal = ({
           message: `Successful! ETF Sold at a Price of ${currPrice} with profit/loss ${profit}`,
         });
         dispatch(clearPortfolioState());
+        dispatch(getStockPortfolioThunk());
+        dispatch(getMutualFundPortfolioThunk());
         dispatch(getETFPortfolioThunk());
         return;
       }
