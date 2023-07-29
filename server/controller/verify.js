@@ -1,3 +1,4 @@
+import { decode } from "js-base64";
 import User from "../model/User.js";
 
 export const verifyToLogin = async (req, res) => {
@@ -5,7 +6,7 @@ export const verifyToLogin = async (req, res) => {
   try {
     let { token } = req.params;
 
-    let decodedToken = atob(token);
+    let decodedToken = decode(token);
 
     let user = await User.findOne({ _id: decodedToken });
 

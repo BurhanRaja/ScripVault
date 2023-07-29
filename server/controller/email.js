@@ -1,7 +1,7 @@
+import { encode } from "js-base64";
 import User from "../model/User.js";
 import transporter from "../utils/emailSend.js";
 import template from "../utils/emailTemplate.js";
-
 
 export const sendEmailLogin = async (req, res) => {
   let success = false;
@@ -11,7 +11,7 @@ export const sendEmailLogin = async (req, res) => {
 
     let user = await User.findOne({ _id: id });
 
-    let token = btoa(user._id.toString());
+    let token = encode(user._id.toString());
 
     await transporter.sendMail({
       from: "burhanraja02@yahoo.com",
