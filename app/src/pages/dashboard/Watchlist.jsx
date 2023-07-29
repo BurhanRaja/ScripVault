@@ -10,6 +10,9 @@ import StockCards from "../../components/dashboard/cards/StockCards";
 import MutualFundCards from "../../components/dashboard/cards/MutualFundCards";
 import { removeWatchlistThunk } from "../../features/watchlist/watchlist";
 import EtfCards from "../../components/dashboard/cards/EtfCards";
+import StockModal from "../../components/dashboard/modals/StockModal";
+import ETFModal from "../../components/dashboard/modals/ETFModal";
+import MutualFundModal from "../../components/dashboard/modals/MutualFundModal";
 
 const Watchlist = ({ setAlert }) => {
   const [name, setName] = useState("");
@@ -32,9 +35,8 @@ const Watchlist = ({ setAlert }) => {
     dispatch(getETFsWatchlistThunk());
   }, []);
 
-  console.log(etfsWatchlist);
-
   const handleRemoveWatchlist = (data) => {
+    console.log("Hello");
     dispatch(removeWatchlistThunk(data)).then((data) => {
       if (!data?.payload.success) {
         setAlert({
@@ -58,6 +60,34 @@ const Watchlist = ({ setAlert }) => {
 
   return (
     <>
+      {stockModal && (
+        <StockModal
+          name={name}
+          setModal={(val) => setStockModal(val)}
+          price={price}
+          symbol={symbol}
+          setAlert={setAlert}
+        />
+      )}
+      {mfModal && (
+        <MutualFundModal
+          name={name}
+          setModal={(val) => setMFModal(val)}
+          price={price}
+          oneYear={oneYear}
+          symbol={symbol.split(".")[0]}
+          setAlert={setAlert}
+        />
+      )}
+      {etfModal && (
+        <ETFModal
+          name={name}
+          setModal={(val) => setETFModal(val)}
+          setAlert={setAlert}
+          symbol={symbol}
+          price={price}
+        />
+      )}
       <div className="bg-gray-100 p-2">
         <div className="bg-white rounded-md p-5">
           <div className="mb-8">
@@ -108,14 +138,12 @@ const Watchlist = ({ setAlert }) => {
               </>
             ) : (
               mfsWatchlist?.map((el) => {
-                let watchlistFind = mfsWatchlist?.find(
-                  (wl) => wl.symbol === el.symbol + ".BO"
-                );
                 return (
                   <MutualFundCards
                     name={el?.name}
+                    id={el?.id}
                     key={el?.symbol}
-                    symbol={el?.symbol}
+                    symbol={el?.symbol?.split(".")[0]}
                     price={"₹" + el?.curr_price}
                     oneYear={el?.price_change}
                     fiveYear={el?.per_change}
@@ -148,7 +176,9 @@ const Watchlist = ({ setAlert }) => {
               etfsWatchlist?.map((el) => {
                 return (
                   <EtfCards
+                    key={el?.id}
                     name={el?.name}
+                    id={el?.id}
                     price={el?.curr_price}
                     priceChange={el?.price_change}
                     perChange={el?.per_change}

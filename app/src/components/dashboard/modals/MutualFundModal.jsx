@@ -18,7 +18,7 @@ const MutualFundModal = ({
   const [years, setYears] = useState("");
   const [investment, setInvestment] = useState("");
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (openLumpsum) {

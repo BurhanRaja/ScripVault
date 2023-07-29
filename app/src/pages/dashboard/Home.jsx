@@ -206,8 +206,8 @@ const Home = () => {
     },
   };
 
-  console.log(deposit)
-  console.log(withdraw)
+  console.log(deposit);
+  console.log(withdraw);
 
   const labels = [
     "January",
@@ -326,8 +326,8 @@ const Home = () => {
       </div> */}
 
       <div className="bg-gray-100 p-2">
-        <div className="flex">
-          <div className="w-[69%] p-4 me-2 bg-white rounded-md">
+        <div className="xl:flex xl:flex-row flex sm:flex-col-reverse">
+          <div className="xl:w-[69%] lg:w-[100%] p-4 me-2 bg-white rounded-md">
             <h1 className="text-3xl font-bold p-5">Dashboard</h1>
             <div className="flex justify-evenly mb-10 mt-3">
               <div className="w-[32%] border p-4">
@@ -396,8 +396,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="w-[29%]">
-            <div className="bg-white p-3 rounded-md mb-3">
+          <div className="xl:w-[29%] xl:block lg:w-[100%] lg:justify-between lg:flex">
+            <div className="bg-white p-3 rounded-md mb-3 xl:w-[100%] lg:w-[39%]">
               <h1 className="text-lg mb-2 font-semibold">Stock Indexes</h1>
               <StockIndexWidget
                 name={indexes?.nse?.name}
@@ -416,91 +416,95 @@ const Home = () => {
                 size={"w-[100%]"}
               />
             </div>
-            <div className="bg-white p-3 rounded-md mb-3">
-              <div className="flex justify-between mb-2 items-center">
-                <h1 className="text-lg font-semibold">Top Gainers</h1>
-                <Link to={"/dashboard/topstock"}>
-                  <button className="text-sm text-blue-600 underline">
-                    Know More
-                  </button>
-                </Link>
-              </div>
-              <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
-                <div>
-                  <h2 className={`text-sm font-bold me-3`}>Symbol</h2>
+            <div className="bg-white p-3 rounded-md mb-3 xl:block xl:w-[100%] lg:w-[60%] lg:flex lg:justify-between lg:items-center">
+              <div className="lg:w-[48%] xl:w-[100%]">
+                <div className="flex justify-between mb-2 items-center">
+                  <h1 className="text-lg font-semibold">Top Gainers</h1>
+                  <Link to={"/dashboard/topstock"}>
+                    <button className="text-sm text-blue-600 underline">
+                      Know More
+                    </button>
+                  </Link>
                 </div>
-                <div className="flex justify-around items-center w-[58%]">
-                  <p className={`text-xs font-semibold`}>LTP</p>
-                  <p className={`font-semibold text-xs `}>%Chng</p>
+                <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
+                  <div>
+                    <h2 className={`text-lg font-bold me-3`}>Symbol</h2>
+                  </div>
+                  <div className="flex justify-around items-center w-[58%]">
+                    <p className={`text-xs font-semibold`}>LTP</p>
+                    <p className={`font-semibold text-xs `}>%Chng</p>
+                  </div>
                 </div>
+                {isLoading ? (
+                  <>
+                    <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                    <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                    <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  </>
+                ) : (
+                  stocks?.gainers?.map((el, index) => {
+                    if (index < 3) {
+                      return (
+                        <TopStocks
+                          key={el?.name}
+                          name={
+                            el?.company?.length > 14
+                              ? el?.company?.substring(0, 14) + "..."
+                              : el?.company
+                          }
+                          ltp={el?.price}
+                          priceChange={el?.change}
+                          link={`/dashboard/stocks/${el?.symbol}`}
+                        />
+                      );
+                    }
+                  })
+                )}
               </div>
-              {isLoading ? (
-                <>
-                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
-                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
-                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
-                </>
-              ) : (
-                stocks?.gainers?.map((el, index) => {
-                  if (index < 3) {
-                    return (
-                      <TopStocks
-                        key={el?.name}
-                        name={
-                          el?.company?.length > 14
-                            ? el?.company?.substring(0, 14) + "..."
-                            : el?.company
-                        }
-                        ltp={el?.price}
-                        priceChange={el?.change}
-                        link={`/dashboard/stocks/${el?.symbol}`}
-                      />
-                    );
-                  }
-                })
-              )}
-              <div className="flex justify-between mb-2 items-center mt-3">
-                <h1 className="text-lg font-semibold">Top Losers</h1>
-                <Link to={"/dashboard/topstock"}>
-                  <button className="text-sm text-blue-600 underline">
-                    Know More
-                  </button>
-                </Link>
-              </div>
-              <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
-                <div>
-                  <h2 className={`text-sm font-bold me-3`}>Symbol</h2>
+              <div className="lg:w-[48%]  xl:w-[100%]">
+                <div className="flex justify-between mb-2 items-center xl:mt-3">
+                  <h1 className="text-lg font-semibold">Top Losers</h1>
+                  <Link to={"/dashboard/topstock"}>
+                    <button className="text-sm text-blue-600 underline">
+                      Know More
+                    </button>
+                  </Link>
                 </div>
-                <div className="flex justify-around items-center w-[58%]">
-                  <p className={`text-xs font-semibold`}>LTP</p>
-                  <p className={`font-semibold text-xs `}>%Chng</p>
+                <div className="flex justify-between items-center p-4 border bg-gray-50 overflow-hidden">
+                  <div>
+                    <h2 className={`text-lg font-bold me-3`}>Symbol</h2>
+                  </div>
+                  <div className="flex justify-around items-center w-[58%]">
+                    <p className={`text-xs font-semibold`}>LTP</p>
+                    <p className={`font-semibold text-xs `}>%Chng</p>
+                  </div>
                 </div>
+                {isLoading ? (
+                  <>
+                    <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                    <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                    <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
+                  </>
+                ) : (
+                  stocks?.losers?.map((el, index) => {
+                    if (index < 3) {
+                      return (
+                        <TopStocks
+                          key={el?.name}
+                          name={
+                            el?.company?.length > 14
+                              ? el?.company?.substring(0, 14) + "..."
+                              : el?.company
+                          }
+                          ltp={el?.price}
+                          priceChange={el?.change}
+                          link={`/dashboard/stocks/${el?.symbol}`}
+                        />
+                      );
+                    }
+                  })
+                )}
               </div>
-              {isLoading ? (
-                <>
-                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
-                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
-                  <span className="w-full p-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
-                </>
-              ) : (
-                stocks?.losers?.map((el, index) => {
-                  if (index < 3) {
-                    return (
-                      <TopStocks
-                        key={el?.name}
-                        name={
-                          el?.company?.length > 14
-                            ? el?.company?.substring(0, 14) + "..."
-                            : el?.company
-                        }
-                        ltp={el?.price}
-                        priceChange={el?.change}
-                        link={`/dashboard/stocks/${el?.symbol}`}
-                      />
-                    );
-                  }
-                })
-              )}
             </div>
           </div>
         </div>

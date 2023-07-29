@@ -10,7 +10,7 @@ const ProtectedRoute = () => {
     </>
   ) : (
     <>
-      <Navigate to='/login' />
+      <Navigate to="/login" />
     </>
   );
 };

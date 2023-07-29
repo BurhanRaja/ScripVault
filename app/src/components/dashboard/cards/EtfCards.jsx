@@ -14,14 +14,17 @@ const EtfCards = ({
   setName,
   setPrice,
   addToWatchlist,
+  removeWatchlist,
+  rWatchlist,
   isWatch,
+  id,
 }) => {
   return (
     <>
       <div className="flex justify-between items-center p-4 border bg-gray-50 mb-4">
         <div>
           <h2 className={`text-xl font-bold`}>
-            {name?.length > 15 ? name?.substring(0, 15) + "..." : name}
+            {name?.length > 20 ? name?.substring(0, 20) + "..." : name}
           </h2>
         </div>
         <div className="flex justify-between items-center w-[40%]">
@@ -60,7 +63,17 @@ const EtfCards = ({
             </button>
           </Link>
           {isWatch ? (
-            <button className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm">
+            <button
+              onClick={() => {
+                if (rWatchlist) {
+                  removeWatchlist({
+                    type: "etfs",
+                    id,
+                  });
+                }
+              }}
+              className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm"
+            >
               <BiListCheck className="text-green-600 text-lg" />
             </button>
           ) : (

@@ -532,7 +532,7 @@ export const sellEtfTicker = async (req, res) => {
     }
 
     if (no_of_shares === etf.no_of_shares) {
-      console.log("Hello Equal")
+      console.log("Hello Equal");
       portfolio = await Portfolio.findOneAndUpdate(
         { user_id: req.user.id, "etfs._id": etf_id },
         {
@@ -549,7 +549,7 @@ export const sellEtfTicker = async (req, res) => {
     }
 
     if (etf.no_of_shares > no_of_shares) {
-      console.log("Hello Greater")
+      console.log("Hello Greater");
       portfolio = await Portfolio.findOneAndUpdate(
         { user_id: req.user.id, "etfs._id": etf_id },
         {

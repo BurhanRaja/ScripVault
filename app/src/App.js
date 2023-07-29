@@ -28,6 +28,7 @@ import CompanyMF from "./pages/dashboard/CompanyMF";
 import BestETF from "./pages/dashboard/BestETF";
 import ETFDetails from "./pages/dashboard/ETFDetails";
 import Watchlist from "./pages/dashboard/Watchlist";
+import ProtectedRoute from "./components/dashboard/default/ProtectedRoute";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -78,70 +79,72 @@ function App() {
             path="/approve/kyc"
             element={<ApproveKyc setAlert={setAlert} />}
           />
-          <Route element={<Layout />}>
-            <Route path="/dashboard/home" element={<DashHome />} />
-            <Route
-              path="/dashboard/portfolio"
-              element={<Portfolio setAlert={setAlert} />}
-            />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Layout />}>
+              <Route path="/dashboard/home" element={<DashHome />} />
+              <Route
+                path="/dashboard/portfolio"
+                element={<Portfolio setAlert={setAlert} />}
+              />
 
-            <Route path="/dashboard/topstock" element={<TopStocksPage />} />
+              <Route path="/dashboard/topstock" element={<TopStocksPage />} />
 
-            <Route
-              path="/dashboard/stocks"
-              element={<Stocks setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/stocks/:id"
-              element={<StockDetails setAlert={setAlert} />}
-            />
+              <Route
+                path="/dashboard/stocks"
+                element={<Stocks setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/stocks/:id"
+                element={<StockDetails setAlert={setAlert} />}
+              />
 
-            <Route
-              path="/dashboard/mutual-funds"
-              element={<MutualFunds setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/mutual-funds/:id"
-              element={<MutualFundDetails setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/mutual-funds/best/:name"
-              element={<BestMF setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/mutual-funds/company/:name"
-              element={<CompanyMF setAlert={setAlert} />}
-            />
+              <Route
+                path="/dashboard/mutual-funds"
+                element={<MutualFunds setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/mutual-funds/:id"
+                element={<MutualFundDetails setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/mutual-funds/best/:name"
+                element={<BestMF setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/mutual-funds/company/:name"
+                element={<CompanyMF setAlert={setAlert} />}
+              />
 
-            <Route
-              path="/dashboard/etfs"
-              element={<ETFs setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/etfs/:id"
-              element={<ETFDetails setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/etfs/best/:name"
-              element={<BestETF setAlert={setAlert} />}
-            />
+              <Route
+                path="/dashboard/etfs"
+                element={<ETFs setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/etfs/:id"
+                element={<ETFDetails setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/etfs/best/:name"
+                element={<BestETF setAlert={setAlert} />}
+              />
 
-            <Route
-              path="/dashboard/deposit"
-              element={<Deposit setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/withdraw"
-              element={<Withdraw setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/watchlist"
-              element={<Watchlist setAlert={setAlert} />}
-            />
-            <Route
-              path="/dashboard/profile"
-              element={<UserAccount setAlert={setAlert} />}
-            />
+              <Route
+                path="/dashboard/deposit"
+                element={<Deposit setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/withdraw"
+                element={<Withdraw setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/watchlist"
+                element={<Watchlist setAlert={setAlert} />}
+              />
+              <Route
+                path="/dashboard/profile"
+                element={<UserAccount setAlert={setAlert} />}
+              />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

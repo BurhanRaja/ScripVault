@@ -34,6 +34,8 @@ import depositWithdrawReducer from "../features/graph/depositWithdraw";
 
 import investmentDetailsReducer from "../features/portfolio/investmentDetails";
 
+import searchTickerReducer from "../features/searchTicker";
+
 const reducers = combineReducers({
   authReducer,
   nominateReducer,
@@ -66,6 +68,7 @@ const reducers = combineReducers({
   depositWithdrawReducer,
   etfDetailsReducer,
   investmentDetailsReducer,
+  searchTickerReducer,
 });
 
 const store = configureStore({

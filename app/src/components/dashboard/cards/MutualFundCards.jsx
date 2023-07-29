@@ -15,7 +15,10 @@ const MutualFundCards = ({
   setPrice,
   setOneYear,
   addToWatchlist,
+  removeWatchlist,
+  rWatchlist,
   isWatch,
+  id,
 }) => {
   return (
     <>
@@ -67,7 +70,17 @@ const MutualFundCards = ({
             </button>
           </Link>
           {isWatch ? (
-            <button className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm">
+            <button
+              onClick={() => {
+                if (rWatchlist) {
+                  removeWatchlist({
+                    type: "mutual_funds",
+                    id,
+                  });
+                }
+              }}
+              className="p-1 px-1 text-white bg-slate-200 text-sm rounded-sm"
+            >
               <BiListCheck className="text-green-600 text-lg" />
             </button>
           ) : (

@@ -132,7 +132,10 @@ export const getETFWatchlist = async (req, res) => {
       let data = await axios.get(
         config.stock_api + "/etf/current/price/" + etf.symbol
       );
-      etfsData.push(data.data);
+      etfsData.push({
+        ...data.data,
+        id: etf._id,
+      });
     }
 
     return res.status(200).send({
@@ -155,20 +158,53 @@ export const removeWatchlist = async (req, res) => {
     // stocks, mutual_funds, etfs
     const { type, id } = req.params;
 
-    let watchlist = await Watchlist.findOne({
-      user_id: req.user.id,
-      [type]: { _id: id },
-    });
+    let watchlist = "";
 
-    if (!watchlist[type]) {
-      return res.status(400).send({
+    if (type === "stocks") {
+      watchlist = await Watchlist.findOne(
+        {
+          user_id: req.user.id,
+          "stocks._id": id,
+        },
+        {
+          "stocks.$": 1,
+        }
+      );
+    }
+
+    if (type === "mutual_funds") {
+      watchlist = await Watchlist.findOne(
+        {
+          user_id: req.user.id,
+          "mutual_funds._id": id,
+        },
+        {
+          "mutual_funds.$": 1,
+        }
+      );
+    }
+
+    if (type === "etfs") {
+      watchlist = await Watchlist.findOne(
+        {
+          user_id: req.user.id,
+          "etfs._id": id,
+        },
+        {
+          "etfs.$": 1,
+        }
+      );
+    }
+
+    if (!watchlist) {
+      return res.status(404).send({
         success,
-        message: `${type} not present.`,
+        message: "Ticker not found.",
       });
     }
 
     watchlist = await Watchlist.findOneAndUpdate(
-      { user_id: id },
+      { user_id: req.user.id },
       {
         $pull: { [type]: { _id: id } },
       }
@@ -181,6 +217,7 @@ export const removeWatchlist = async (req, res) => {
       message: `${type} deleted from Watchlist.`,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
