@@ -633,6 +633,13 @@ export const getStockPortfolio = async (req, res) => {
     let stocksData = [];
 
     for (const stock of portfolio?.stocks) {
+      if (!portfolio) {
+        return res.status(200).send({
+          success,
+          stocksPortfolio: stocksData,
+        });
+      }
+
       let currStock = await axios.get(
         config.stock_api + "/stock/currentprice/" + stock.symbol
       );
@@ -671,6 +678,14 @@ export const getMFPortfolio = async (req, res) => {
 
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    if (!portfolio) {
+      return res.status(200).send({
+        success,
+        lumpsumMF,
+        sipMF,
+      });
+    }
 
     let lumpsumMF = [];
     let sipMF = [];
@@ -739,6 +754,13 @@ export const getETFPortfolio = async (req, res) => {
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
+    if (!portfolio) {
+      return res.status(200).send({
+        success,
+        etfPortfolio: etfData,
+      });
+    }
+
     let etfData = [];
 
     for (const etf of portfolio?.etfs) {
@@ -780,6 +802,13 @@ export const getTotalInvestment = async (req, res) => {
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
 
+    if (!portfolio) {
+      return res.status(200).send({
+        success,
+        total_investment: 0,
+      });
+    }
+
     success = true;
 
     return res.status(200).send({
@@ -799,6 +828,13 @@ export const getTotalProfit = async (req, res) => {
   let success = false;
   try {
     let portfolio = await Portfolio.findOne({ user_id: req.user.id });
+
+    if (!portfolio) {
+      return res.status(200).send({
+        success,
+        total_profit: 0,
+      });
+    }
 
     success = true;
 

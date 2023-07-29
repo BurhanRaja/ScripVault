@@ -13,9 +13,9 @@ const Home = ({ setAlert }) => {
       <div className="mx-auto lg:w-[80%] md:w-[90%] sm:w-[100%]">
         <Hero />
       </div>
-      <FeaturesSection />
+      {/* <FeaturesSection />
       <InvestmentOptionSection />
-      <Testimony />
+      <Testimony /> */}
       <Footer />
     </>
   );

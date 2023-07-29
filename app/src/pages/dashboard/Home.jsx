@@ -326,6 +326,11 @@ const Home = () => {
       </div> */}
 
       <div className="bg-gray-100 p-2">
+        <div className="text-xl font-extrabold bg-white p-3 mb-2">
+          We have provided a free & fake Bank Balance of ₹1,00,000 as it is a demo
+          project to use. You can deposit and withdraw the money from Bank to
+          Wallet and vise-versa
+        </div>
         <div className="xl:flex xl:flex-row flex sm:flex-col-reverse">
           <div className="xl:w-[69%] lg:w-[100%] p-4 me-2 bg-white rounded-md">
             <h1 className="text-3xl font-bold p-5">Dashboard</h1>
@@ -333,28 +338,28 @@ const Home = () => {
               <div className="w-[32%] border p-4">
                 <h4 className="text-xl font-bold">Wallet Balance</h4>
                 <p className="text-lg mt-4 text-gray-600 font-semibold">
-                  ₹ {wallet?.balance}
+                  ₹ {wallet?.balance > 0 ? wallet?.balance : 0}
                 </p>
               </div>
               <div className="w-[32%] border p-4">
                 <h4 className="text-xl font-bold">Total Investment</h4>
                 <p className="text-lg mt-4 text-gray-600 font-semibold">
-                  ₹{investment}
+                  ₹ {investment > 0 ? investment : 0}
                 </p>
               </div>
               <div className="w-[32%] border p-4">
                 <h4 className="text-xl font-bold ">Total Profit</h4>
                 {profit > 0 ? (
                   <p className="text-lg mt-4 text-green-500 font-semibold">
-                    ₹{profit}
+                    ₹ {profit}
                   </p>
                 ) : profit < 0 ? (
                   <p className="text-lg mt-4 text-red-500 font-semibold">
-                    ₹{profit}
+                    ₹ {profit}
                   </p>
                 ) : (
                   <p className="text-lg mt-4 text-gray-800 font-semibold">
-                    ₹{profit}
+                    ₹ 0
                   </p>
                 )}
               </div>

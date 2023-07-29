@@ -29,6 +29,7 @@ import BestETF from "./pages/dashboard/BestETF";
 import ETFDetails from "./pages/dashboard/ETFDetails";
 import Watchlist from "./pages/dashboard/Watchlist";
 import ProtectedRoute from "./components/dashboard/default/ProtectedRoute";
+import NotFound from "./pages/dashboard/NotFound";
 
 function App() {
   const [alert, setAlert] = useState({
@@ -146,6 +147,7 @@ function App() {
               />
             </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </div>

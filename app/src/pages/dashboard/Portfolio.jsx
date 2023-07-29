@@ -74,7 +74,7 @@ const Portfolio = ({ setAlert }) => {
             <div className="w-[45%] border p-4">
               <h4 className="text-xl font-bold">Total Investment</h4>
               <p className="text-lg mt-4 text-gray-600 font-semibold">
-                ₹{investment}
+                ₹ {investment > 0 ? investment : 0}
               </p>
             </div>
             <div className="w-[45%] border p-4">
@@ -88,9 +88,7 @@ const Portfolio = ({ setAlert }) => {
                   ₹{totalProfit}
                 </p>
               ) : (
-                <p className="text-lg mt-4 text-gray-800 font-semibold">
-                  ₹{totalProfit}
-                </p>
+                <p className="text-lg mt-4 text-gray-800 font-semibold">₹ 0</p>
               )}
             </div>
           </div>
@@ -135,6 +133,9 @@ const Portfolio = ({ setAlert }) => {
                   />
                 );
               })}
+              {stocks?.stocksPortfolio === undefined && (
+                <p>No Data Avalaibale</p>
+              )}
             </div>
             <div className="mb-8">
               <h1 className="text-2xl font-bold mb-4">Your Mutual Funds</h1>
@@ -178,6 +179,9 @@ const Portfolio = ({ setAlert }) => {
                   />
                 );
               })}
+              {mutualFunds?.lumpsumMF === undefined && (
+                <p>No Data Avalaibale</p>
+              )}
               <h3 className="mb-4 text-lg font-semibold mt-7">
                 Your SIP Investments
               </h3>
@@ -217,6 +221,7 @@ const Portfolio = ({ setAlert }) => {
                   />
                 );
               })}
+              {mutualFunds?.sipMF === undefined && <p>No Data Avalaibale</p>}
             </div>
             <div className="mb-8">
               <h1 className="text-2xl font-bold mb-4">Your ETFs</h1>
@@ -257,6 +262,9 @@ const Portfolio = ({ setAlert }) => {
                   />
                 );
               })}
+              {etfs?.etfPortfolio === undefined && (
+                <p>No Data Avalaibale</p>
+              )}
             </div>
           </div>
         </div>

@@ -4,7 +4,6 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 const Notification = ({ notifications }) => {
   const [openNotification, setOpenNotification] = useState(false);
 
-
   return (
     <>
       <div className="relative">
@@ -14,7 +13,14 @@ const Notification = ({ notifications }) => {
           onClick={() => setOpenNotification(!openNotification)}
         >
           <IoIosNotificationsOutline className="text-gray-300 text-3xl" />
-          <div className="absolute text-white bg-red-600 px-1.5 py-0.5 rounded-full top-0 -right-1" style={{"fontSize": "0.6rem"}}>{notifications?.length}</div>
+          {notifications?.length > 0 && (
+            <div
+              className="absolute text-white bg-red-600 px-1.5 py-0.5 rounded-full top-0 -right-1"
+              style={{ fontSize: "0.6rem" }}
+            >
+              {notifications?.length}
+            </div>
+          )}
         </button>
 
         {openNotification && (

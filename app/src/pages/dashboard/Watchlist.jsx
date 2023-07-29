@@ -124,6 +124,7 @@ const Watchlist = ({ setAlert }) => {
                 );
               })
             )}
+            {stocksWatchlist === undefined && <p>No Data Avalaibale</p>}
           </div>
           <div className="mb-8">
             <h1 className="text-2xl font-bold mb-4">Mutual Funds</h1>
@@ -160,6 +161,7 @@ const Watchlist = ({ setAlert }) => {
                 );
               })
             )}
+            {mfsWatchlist === undefined && <p>No Data Avalaibale</p>}
           </div>
           <div className="mb-8">
             <h1 className="text-2xl font-bold mb-4">ETFs</h1>
@@ -195,6 +197,7 @@ const Watchlist = ({ setAlert }) => {
                 );
               })
             )}
+            {etfsWatchlist === undefined && <p>No Data Avalaibale</p>}
           </div>
         </div>
       </div>

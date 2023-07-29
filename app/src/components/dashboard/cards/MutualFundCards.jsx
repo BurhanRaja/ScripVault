@@ -37,7 +37,7 @@ const MutualFundCards = ({
               {parseFloat(oneYear).toFixed(2)}%
             </p>
           ) : (
-            <p>{oneYear}%</p>
+            <p className="font-semibold">N/A</p>
           )}
           {fiveYear > 0 ? (
             <p className={` text-green-500 font-semibold`}>
@@ -48,7 +48,7 @@ const MutualFundCards = ({
               {parseFloat(fiveYear).toFixed(2)}%
             </p>
           ) : (
-            <p className="font-semibold">{fiveYear}%</p>
+            <p className="font-semibold">N/A</p>
           )}
         </div>
         <div className="w-[15%] flex justify-between">

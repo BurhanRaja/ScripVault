@@ -201,6 +201,7 @@ export const getUser = async (req, res) => {
       user,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
