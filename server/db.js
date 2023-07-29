@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-
-const mongoURI = "mongodb://127.0.0.1:27017/investmentadvisor";
+import config from "./config.js";
 
 const connectToMongoDB = () => {
   mongoose
-    .connect(mongoURI)
+    .connect(config.mongo_uri)
     .then(() => console.log("Mongodb Connected"))
     .catch((err) => console.log(err));
 };

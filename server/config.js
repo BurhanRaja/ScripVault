@@ -10,4 +10,5 @@ export default {
   smtp_username: process.env.SMTP_USERNAME,
   smtp_password: process.env.SMTP_PASSWORD,
   crypto_secret: process.env.CRYPTO_SECRET,
+  mongo_uri: process.env.MONGO_DB_URI
 };
