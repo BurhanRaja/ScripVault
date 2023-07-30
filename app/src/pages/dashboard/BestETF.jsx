@@ -24,6 +24,8 @@ const BestETF = ({ setAlert }) => {
   );
   const dispatch = useDispatch();
 
+  console.log(bestETF);
+
   useEffect(() => {
     if (name) {
       dispatch(clearBestETFState());

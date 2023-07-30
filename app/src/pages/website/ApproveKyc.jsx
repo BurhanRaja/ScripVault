@@ -1,12 +1,17 @@
 import React from "react";
 import { sendEmailLoginThunk } from "../../features/email/sendLoginEmail";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { approveKycThunk } from "../../features/kyc/kyc";
+import Loading from "../../components/Loading";
 
 const ApproveKyc = ({ setAlert }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { isLoading, isSuccess, isError } = useSelector(
+    (state) => state.kycReducer
+  );
 
   const handleEmail = () => {
     let data = {
@@ -33,9 +38,10 @@ const ApproveKyc = ({ setAlert }) => {
               setAlert({
                 show: true,
                 type: "success",
-                message: "KYC approved successfully. You will recieve an email. Please Verify to login.",
+                message:
+                  "KYC approved successfully. You will recieve an email. Please Verify to login.",
               });
-              localStorage.clear()
+              localStorage.clear();
               navigate("/login");
               return;
             }
@@ -56,7 +62,7 @@ const ApproveKyc = ({ setAlert }) => {
             onClick={handleEmail}
             className="p-3 px-5 text-lg font-semibold rounded-md bg-black text-white"
           >
-            Approve KYC
+            {isLoading ? <Loading size={"text-lg"} /> : "Approve KYC"}
           </button>
         </div>
       </div>

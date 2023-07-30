@@ -4,6 +4,7 @@ import TextArea from "../../components/TextArea";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserInfoThunk } from "../../features/user/info";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading";
 
 // const PAN_NUM_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 const ACCOUNT_NUM_REGEX = /^[0-9]{9,18}$/;
@@ -82,11 +83,11 @@ const UserInfo = ({ setAlert }) => {
         });
         return;
       } else {
-          setAlert({
-            show: true,
-            type: "info",
-            message: "Great! Please fill the nomination for your account.",
-          });
+        setAlert({
+          show: true,
+          type: "info",
+          message: "Great! Please fill the nomination for your account.",
+        });
         navigate("/user/nominate");
       }
     });
@@ -173,7 +174,7 @@ const UserInfo = ({ setAlert }) => {
                 <Input
                   type="text"
                   labelName="Acct Type"
-                  placeholder="Account Type"
+                  placeholder="Savings or Current"
                   value={acctType}
                   handleValue={(val) => setAcctType(val)}
                   handleFocus={() => {}}
@@ -211,7 +212,7 @@ const UserInfo = ({ setAlert }) => {
             </div>
             <div class="flex justify-center mt-6">
               <button class="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-1/2">
-                Submit
+                {isLoading ? <Loading size={"text-lg"} /> : "Submit"}
               </button>
             </div>
           </form>

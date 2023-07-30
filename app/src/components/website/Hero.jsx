@@ -16,22 +16,22 @@ const Hero = () => {
               The Best Investment Advisor
             </span>
             <p class="mb-8 leading-relaxed text-xl">
-              Fast, Efficient and Research oriented Investment Recommendations
-              at your fingertips.
+              Fast, Efficient and Research oriented Investments at your
+              fingertips. Build your Portfolio with us.
             </p>
             <div class="flex justify-center">
-                <Button
-                  text={
-                    <span className="flex items-center justify-between">
-                      Get Started <BsArrowRight className="ms-3 text-lg" />
-                    </span>
-                  }
-                  link="/register"
-                  textSize="text-lg"
-                  color="bg-indigo-500"
-                  hoverColor="hover:bg-indigo-600 hover:scale-105 transition-all duration-150"
-                  textColor="text-white"
-                />
+              <Button
+                text={
+                  <span className="flex items-center justify-between">
+                    Get Started <BsArrowRight className="ms-3 text-lg" />
+                  </span>
+                }
+                link="/register"
+                textSize="text-lg"
+                color="bg-indigo-500"
+                hoverColor="hover:bg-indigo-600 hover:scale-105 transition-all duration-150"
+                textColor="text-white"
+              />
             </div>
           </div>
           <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">

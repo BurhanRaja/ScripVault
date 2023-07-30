@@ -176,8 +176,8 @@ const ETFs = ({ setAlert }) => {
                   <EtfCards
                     name={el?.name}
                     price={el?.curr_price}
-                    priceChange={el?.curr_price_change}
-                    perChange={el?.curr_per_change}
+                    priceChange={el?.price_change}
+                    perChange={el?.per_change}
                     setModal={(val) => setIsModal(val)}
                     symbol={el?.symbol}
                     setSymbol={(val) => setETFSymbol(val)}

@@ -129,6 +129,8 @@ const BestMF = ({ setAlert }) => {
               setSymbol={(val) => setSymbol(val)}
               setPrice={(val) => setPrice(val)}
               setOneYear={(val) => setOneYear(val)}
+              mfName={mfName}
+              setAlert={setAlert}
             />
 
             {isError && (

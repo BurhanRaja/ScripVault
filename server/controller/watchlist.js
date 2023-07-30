@@ -97,7 +97,7 @@ export const getMFWatchlist = async (req, res) => {
 
     for (let mf of mutualFunds) {
       let data = await axios.get(
-        config.stock_api + "/mutualfund/current/price/" + mf.symbol
+        config.stock_api + "/mutualfund/current/price/" + mf.symbol.split(".")[0]
       );
       mutualFundsData.push({
         ...data.data,

@@ -55,7 +55,8 @@ const Stocks = ({ setAlert }) => {
   useEffect(() => {
     let timeOut = setInterval(() => {
       let hour = new Date().getHours();
-      if (hour < 16 && hour > 9) {
+      let day = new Date().getDay();
+      if (hour < 16 && hour > 9 && day > 0 && day < 6) {
         dispatch(clearStockIndexesState());
         dispatch(getStockIndexesThunk());
       }

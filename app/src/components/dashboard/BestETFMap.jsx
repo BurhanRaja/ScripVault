@@ -10,7 +10,7 @@ const BestETFMap = ({ data, setModal, setSymbol, setName, handleBuy, setPrice })
             <EtfCards
               name={el?.name}
               key={el?.symbol}
-              price={el?.price}
+              price={el?.curr_price}
               priceChange={el?.price_change}
               perChange={el?.per_change}
               symbol={el?.symbol}

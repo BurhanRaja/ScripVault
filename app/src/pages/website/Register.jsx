@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userRegisterThunk } from "../../features/user/auth";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { BsCheckLg } from "react-icons/bs";
+import Loading from "../../components/Loading";
 
 const EMAIL_REGEX = /^[a-z0-9._]+@[a-z]+\.[a-z]{2,4}$/;
 const NAME_REGEX = /^[A-Za-z]+[\sA-Za-z]{5,20}$/;
@@ -262,7 +263,7 @@ const Register = ({ setAlert }) => {
             </div>
             <div class="flex justify-center mt-6">
               <button class="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-1/2">
-                Register
+                {isLoading ? <Loading /> : "Register"}
               </button>
             </div>
             <p className="text-center text-gray-800 mt-4">

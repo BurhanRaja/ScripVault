@@ -4,12 +4,17 @@ import { sendEmailLoginThunk } from "../../features/email/sendLoginEmail";
 import { useNavigate } from "react-router-dom";
 import { addKycThunk } from "../../features/kyc/kyc";
 import config from "../../config";
+import Loading from "../../components/Loading";
 
 const Kyc = ({ setAlert }) => {
   const [poi, setPoi] = useState({});
   const [poa, setPoa] = useState({});
 
   const [error, setError] = useState("");
+
+  const { isLoading, isSuccess, isError } = useSelector(
+    (state) => state.kycReducer
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +28,7 @@ const Kyc = ({ setAlert }) => {
     }
 
     if (poi.size > 1048576 * 10 || poa.size > 1048576 * 10) {
-      setError("The size of the above file is more.")
+      setError("The size of the above file is more.");
       return;
     }
 
@@ -76,7 +81,8 @@ const Kyc = ({ setAlert }) => {
                 />
                 <small className="text-sm text-gray-400">
                   File Size upto: 10MB
-                </small><br/>
+                </small>
+                <br />
                 {poi === "" || error ? (
                   <small className="text-red-500 mt-2">{error}</small>
                 ) : (
@@ -96,7 +102,8 @@ const Kyc = ({ setAlert }) => {
                 />
                 <small className="text-sm text-gray-400">
                   File Size upto: 10MB
-                </small><br/>
+                </small>
+                <br />
                 {poa === "" || error ? (
                   <small className="text-red-500 mt-2">{error}</small>
                 ) : (
@@ -105,7 +112,7 @@ const Kyc = ({ setAlert }) => {
               </div>
               <div className="flex justify-center mt-6">
                 <button className="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-1/2">
-                  Add Documents
+                  {isLoading ? <Loading size={"text-lg"} /> : "Add Documents"}
                 </button>
               </div>
             </form>

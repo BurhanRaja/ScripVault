@@ -13,7 +13,9 @@ const UserNominate = ({ setAlert }) => {
   const [dob, setDOB] = useState("");
   const [address, setAddress] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const { isLoading, isSuccess, isError } = useSelector(
+    (state) => state.nominateReducer
+  );
 
   const [error, setError] = useState("");
 
@@ -38,7 +40,6 @@ const UserNominate = ({ setAlert }) => {
     };
 
     dispatch(addNominateThunk(data)).then((data) => {
-      setLoading(true);
       if (!data.payload.success) {
         setAlert({
           show: true,
@@ -121,7 +122,7 @@ const UserNominate = ({ setAlert }) => {
             </div>
             <div class="flex justify-evenly mt-6">
               <button class="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 w-1/3">
-                {loading ? <Loading size={"text-lg"} /> : "Submit"}
+                {isLoading ? <Loading size={"text-lg"} /> : "Submit"}
               </button>
             </div>
           </form>

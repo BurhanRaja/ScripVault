@@ -8,7 +8,11 @@ import {
 } from "../../features/mutualfunds/companyMF";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import MutualFundModal from "../../components/dashboard/modals/MutualFundModal";
-import { buyMFThunk } from "../../features/portfolio/mfTransaction";
+import {
+  clearGetWatchlist,
+  getMFsWatchlistThunk,
+} from "../../features/watchlist/getWatchlist";
+import { addToWatchlistThunk } from "../../features/watchlist/watchlist";
 
 const CompanyMF = ({ setAlert }) => {
   const { name } = useParams();
@@ -23,6 +27,9 @@ const CompanyMF = ({ setAlert }) => {
 
   const { companyMF, isLoading, isSuccess, isError } = useSelector(
     (state) => state.companyMFReducer
+  );
+  const { mfsWatchlist, isLoading: watchlistLoading } = useSelector(
+    (state) => state.getWatchlistReducer
   );
   const dispatch = useDispatch();
 
@@ -57,6 +64,25 @@ const CompanyMF = ({ setAlert }) => {
     }
   };
 
+  const handleAddToWatchlist = (data) => {
+    dispatch(addToWatchlistThunk(data)).then((data) => {
+      if (!data?.payload.success) {
+        setAlert({
+          show: true,
+          type: "warning",
+          message: data?.payload.message,
+        });
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `You added ${mfName} to watchlist.`,
+        });
+        dispatch(clearGetWatchlist());
+        dispatch(getMFsWatchlistThunk());
+      }
+    });
+  };
 
   return (
     <>
@@ -86,6 +112,9 @@ const CompanyMF = ({ setAlert }) => {
                 </>
               ) : (
                 companyMF?.data?.map((el) => {
+                  let watchlistFind = mfsWatchlist?.find(
+                    (wl) => wl.symbol === el.symbol + ".BO"
+                  );
                   return (
                     <MutualFundCards
                       name={el?.fund}
@@ -99,6 +128,8 @@ const CompanyMF = ({ setAlert }) => {
                       setSymbol={(val) => setSymbol(val)}
                       setPrice={(val) => setPrice(val)}
                       setOneYear={(val) => setOneYear(val)}
+                      addToWatchlist={(val) => handleAddToWatchlist(val)}
+                      isWatch={watchlistFind !== undefined ? true : false}
                     />
                   );
                 })

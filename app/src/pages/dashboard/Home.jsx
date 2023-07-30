@@ -134,8 +134,6 @@ const Home = () => {
     dispatch(getTotalProfitThunk());
   }, []);
 
-  console.log(investment);
-  console.log(profit);
 
   useEffect(() => {
     dispatch(clearDepositWithdrawGraph());
@@ -153,7 +151,8 @@ const Home = () => {
   useEffect(() => {
     let timeOut = setInterval(() => {
       let hour = new Date().getHours();
-      if (hour < 16 && hour > 9) {
+      let day = new Date().getDay();
+      if (hour < 16 && hour > 9 && day > 0 && day < 6) {
         dispatch(clearStockIndexesState());
         dispatch(clearStockTopState());
         dispatch(getStockIndexesThunk());
@@ -205,10 +204,6 @@ const Home = () => {
       },
     },
   };
-
-  console.log(deposit);
-  console.log(withdraw);
-
   const labels = [
     "January",
     "February",
