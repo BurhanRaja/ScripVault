@@ -123,7 +123,7 @@ const Watchlist = ({ setAlert }) => {
                 );
               })
             )}
-            {stocksWatchlist === undefined && <p>No Data Avalaibale</p>}
+            {stocksWatchlist === undefined || stocksWatchlist?.length === 0 && <p>No Data Avalaibale</p>}
           </div>
           <div className="mb-8">
             <h1 className="text-2xl font-bold mb-4">Mutual Funds</h1>
@@ -140,13 +140,13 @@ const Watchlist = ({ setAlert }) => {
               mfsWatchlist?.map((el) => {
                 return (
                   <MutualFundCards
-                    name={el?.fund}
+                    name={el?.name}
                     id={el?.id}
                     key={el?.symbol}
                     symbol={el?.symbol?.split(".")[0]}
-                    price={"₹" + el?.nav}
-                    oneYear={el?.return_five_year}
-                    fiveYear={el?.return_one_year}
+                    price={"₹" + el?.curr_price}
+                    oneYear={el?.per_change}
+                    fiveYear={el?.price_change}
                     setName={(val) => setName(val)}
                     setModal={(val) => setMFModal(val)}
                     setSymbol={(val) => setSymbol(val)}
@@ -160,7 +160,7 @@ const Watchlist = ({ setAlert }) => {
                 );
               })
             )}
-            {mfsWatchlist === undefined && <p>No Data Avalaibale</p>}
+            {mfsWatchlist === undefined || mfsWatchlist?.length === 0 && <p>No Data Avalaibale</p>}
           </div>
           <div className="mb-8">
             <h1 className="text-2xl font-bold mb-4">ETFs</h1>
@@ -196,7 +196,7 @@ const Watchlist = ({ setAlert }) => {
                 );
               })
             )}
-            {etfsWatchlist === undefined && <p>No Data Avalaibale</p>}
+            {etfsWatchlist === undefined || etfsWatchlist?.length === 0 && <p>No Data Avalaibale</p>}
           </div>
         </div>
       </div>
