@@ -96,7 +96,7 @@ const Watchlist = ({ setAlert }) => {
         <div className="bg-white rounded-md p-5">
           <div className="mb-8">
             <h1 className="text-2xl font-bold mb-4">Stocks</h1>
-            {isLoading && !isSuccess ? (
+            {isLoading && !isSuccess && !etfsWatchlist ? (
               <>
                 <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
                 <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
@@ -132,7 +132,7 @@ const Watchlist = ({ setAlert }) => {
           </div>
           <div className="mb-8">
             <h1 className="text-2xl font-bold mb-4">Mutual Funds</h1>
-            {isLoading ? (
+            {isLoading && !isSuccess && !etfsWatchlist ? (
               <>
                 {" "}
                 <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>
@@ -145,13 +145,13 @@ const Watchlist = ({ setAlert }) => {
               mfsWatchlist?.map((el) => {
                 return (
                   <MutualFundCards
-                    name={el?.name}
+                    name={el?.fund}
                     id={el?.id}
                     key={el?.symbol}
                     symbol={el?.symbol?.split(".")[0]}
-                    price={"₹" + el?.curr_price}
-                    oneYear={el?.price_change}
-                    fiveYear={el?.per_change}
+                    price={"₹" + el?.nav}
+                    oneYear={el?.return_five_year}
+                    fiveYear={el?.return_one_year}
                     setName={(val) => setName(val)}
                     setModal={(val) => setMFModal(val)}
                     setSymbol={(val) => setSymbol(val)}
@@ -169,7 +169,7 @@ const Watchlist = ({ setAlert }) => {
           </div>
           <div className="mb-8">
             <h1 className="text-2xl font-bold mb-4">ETFs</h1>
-            {isLoading ? (
+            {isLoading && !isSuccess && !etfsWatchlist ? (
               <>
                 {" "}
                 <span className="w-full mb-3 h-5 block rounded bg-gray-200 p-8 animate-pulse"></span>

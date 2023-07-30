@@ -28,121 +28,151 @@ const SellStockModal = ({
   const dispatch = useDispatch();
 
   const handleStockSell = () => {
-    if (Number(nos) < Number(quantity)) {
-      setAlert({
-        show: true,
-        type: "warning",
-        message: `Not Allowed! Quantity of selling is higher than Current total shares.`,
-      });
-      return;
-    }
-
-    let data = {
-      name,
-      symbol,
-      buy_price: price,
-      sell_price: currPrice,
-      no_of_shares: quantity,
-      profit: parseFloat((currPrice - price) * quantity).toFixed(2),
-      stocks_id: id,
-    };
-
-    dispatch(sellStockThunk(data)).then((data) => {
-      if (!data?.payload?.success) {
+    let hour = new Date().getHours();
+    let day = new Date().getDay();
+    if (hour < 16 && hour > 9 && day > 0 && day < 6) {
+      if (Number(nos) < Number(quantity)) {
         setAlert({
           show: true,
-          type: "danger",
-          message: data?.payload.message,
+          type: "warning",
+          message: `Not Allowed! Quantity of selling is higher than Current total shares.`,
         });
-        return;
-      } else {
-        setAlert({
-          show: true,
-          type: "success",
-          message: `Successful! Stock Sold at a price of ${currPrice} with profit/loss ${profit}`,
-        });
-        setQuantity(0);
-        dispatch(clearPortfolioState());
-        dispatch(getStockPortfolioThunk());
-        dispatch(getMutualFundPortfolioThunk());
-        dispatch(getETFPortfolioThunk());
         return;
       }
-    });
+
+      let data = {
+        name,
+        symbol,
+        buy_price: price,
+        sell_price: currPrice,
+        no_of_shares: quantity,
+        profit: parseFloat((currPrice - price) * quantity).toFixed(2),
+        stocks_id: id,
+      };
+
+      dispatch(sellStockThunk(data)).then((data) => {
+        if (!data?.payload?.success) {
+          setAlert({
+            show: true,
+            type: "danger",
+            message: data?.payload.message,
+          });
+          return;
+        } else {
+          setAlert({
+            show: true,
+            type: "success",
+            message: `Successful! Stock Sold at a price of ${currPrice} with profit/loss ${profit}`,
+          });
+          setQuantity(0);
+          dispatch(clearPortfolioState());
+          dispatch(getStockPortfolioThunk());
+          dispatch(getMutualFundPortfolioThunk());
+          dispatch(getETFPortfolioThunk());
+          return;
+        }
+      });
+    } else {
+      setAlert({
+        show: true,
+        type: "danger",
+        message: "Currently, The Market is closed.",
+      });
+    }
   };
 
   const handleMFSell = () => {
-    let data = {
-      name,
-      symbol,
-      mf_id: id,
-      profit,
-    };
+    let hour = new Date().getHours();
+    let day = new Date().getDay();
+    if (hour < 16 && hour > 9 && day > 0 && day < 6) {
+      let data = {
+        name,
+        symbol,
+        mf_id: id,
+        profit,
+      };
 
-    dispatch(sellMFThunk(data)).then((data) => {
-      if (!data?.payload.success) {
-        setAlert({
-          show: true,
-          type: "danger",
-          message: data?.payload.message,
-        });
-        return;
-      } else {
-        setAlert({
-          show: true,
-          type: "success",
-          message: `Successful! Mutual Fund Sold at a NAV of ${currPrice} with profit/loss ${profit}`,
-        });
-        dispatch(clearPortfolioState());
-        dispatch(getStockPortfolioThunk());
-        dispatch(getMutualFundPortfolioThunk());
-        dispatch(getETFPortfolioThunk());
-        return;
-      }
-    });
+      dispatch(sellMFThunk(data)).then((data) => {
+        if (!data?.payload.success) {
+          setAlert({
+            show: true,
+            type: "danger",
+            message: data?.payload.message,
+          });
+          return;
+        } else {
+          setAlert({
+            show: true,
+            type: "success",
+            message: `Successful! Mutual Fund Sold at a NAV of ${currPrice} with profit/loss ${profit}`,
+          });
+          dispatch(clearPortfolioState());
+          dispatch(getStockPortfolioThunk());
+          dispatch(getMutualFundPortfolioThunk());
+          dispatch(getETFPortfolioThunk());
+          return;
+        }
+      });
+    } else {
+      setAlert({
+        show: true,
+        type: "danger",
+        message: "Currently, The Market is closed.",
+      });
+    }
   };
 
   const handleETFSell = () => {
-    if (Number(nos) < Number(quantity)) {
-      setAlert({
-        show: true,
-        type: "warning",
-        message: `Not Allowed! Quantity of selling is higher than Current total shares.`,
-      });
-      return;
-    }
-    // console.log(id);
-    // return;
-    let data = {
-      name,
-      symbol,
-      sell_price: currPrice,
-      profit,
-      etf_id: id,
-      no_of_shares: quantity,
-    };
-
-    dispatch(sellETFThunk(data)).then((data) => {
-      if (!data?.payload.success) {
+    // let hour = new Date().getHours();
+    // let day = new Date().getDay();
+    // if (hour < 16 && hour > 9 && day > 0 && day < 6) {
+      if (Number(nos) < Number(quantity)) {
         setAlert({
           show: true,
-          type: "danger",
-          message: data?.payload.message,
+          type: "warning",
+          message: `Not Allowed! Quantity of selling is higher than Current total shares.`,
         });
-        return;
-      } else {
-        setAlert({
-          show: true,
-          type: "success",
-          message: `Successful! ETF Sold at a Price of ${currPrice} with profit/loss ${profit}`,
-        });
-        dispatch(clearPortfolioState());
-        dispatch(getStockPortfolioThunk());
-        dispatch(getMutualFundPortfolioThunk());
-        dispatch(getETFPortfolioThunk());
         return;
       }
-    });
+      // console.log(id);
+      // return;
+      let data = {
+        name,
+        symbol,
+        sell_price: parseFloat(currPrice),
+        profit,
+        etf_id: id,
+        no_of_shares: parseFloat(quantity),
+      };
+
+      dispatch(sellETFThunk(data)).then((data) => {
+        if (!data?.payload.success) {
+          setAlert({
+            show: true,
+            type: "danger",
+            message: data?.payload.message,
+          });
+          return;
+        } else {
+          setAlert({
+            show: true,
+            type: "success",
+            message: `Successful! ETF Sold at a Price of ${currPrice} with profit/loss ${profit}`,
+          });
+          dispatch(clearPortfolioState());
+          dispatch(getStockPortfolioThunk());
+          dispatch(getMutualFundPortfolioThunk());
+          dispatch(getETFPortfolioThunk());
+          return;
+        }
+      });
+    // } else {
+    //   setAlert({
+    //     show: true,
+    //     type: "danger",
+    //     message: "Currently, The Market is closed.",
+    //   });
+    // }
   };
 
   return (

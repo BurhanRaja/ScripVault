@@ -9,39 +9,49 @@ const ETFModal = ({ name, setModal, symbol, price, setAlert }) => {
   const dispatch = useDispatch();
 
   const handleBuy = () => {
-    if (quantity === "") {
-      setAlert({
-        show: true,
-        type: "warning",
-        message: "Please add Required Data.",
-      });
-    }
-
-    let data = {
-      name,
-      symbol,
-      buy_price: price,
-      no_of_shares: Number(quantity),
-    };
-
-    dispatch(buyETFThunk(data)).then((data) => {
-      if (!data?.payload?.success) {
+    // let hour = new Date().getHours();
+    // let day = new Date().getDay();
+    // if (hour < 16 && hour > 9 && day > 0 && day < 6) {
+      if (quantity === "") {
         setAlert({
           show: true,
           type: "warning",
-          message: data?.payload.message,
+          message: "Please add Required Data.",
         });
-      } else {
-        setAlert({
-          show: true,
-          type: "success",
-          message: `Congratulations! You Successfully bought ${name}.`,
-        });
-        setQuantity("");
-        setModal(false);
-        return;
       }
-    });
+
+      let data = {
+        name,
+        symbol,
+        buy_price: price,
+        no_of_shares: Number(quantity),
+      };
+
+      dispatch(buyETFThunk(data)).then((data) => {
+        if (!data?.payload?.success) {
+          setAlert({
+            show: true,
+            type: "warning",
+            message: data?.payload.message,
+          });
+        } else {
+          setAlert({
+            show: true,
+            type: "success",
+            message: `Congratulations! You Successfully bought ${name}.`,
+          });
+          setQuantity("");
+          setModal(false);
+          return;
+        }
+      });
+    // } else {
+    //   setAlert({
+    //     show: true,
+    //     type: "warning",
+    //     message: "The Market is not Open Yet",
+    //   });
+    // }
   };
 
   return (

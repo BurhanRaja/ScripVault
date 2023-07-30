@@ -24,8 +24,6 @@ const BestETF = ({ setAlert }) => {
   );
   const dispatch = useDispatch();
 
-  console.log(bestETF);
-
   useEffect(() => {
     if (name) {
       dispatch(clearBestETFState());
@@ -78,9 +76,9 @@ const BestETF = ({ setAlert }) => {
         <ETFModal
           name={etfName}
           setModal={(val) => setIsModal(val)}
-          handleBuy={() => handleBuy()}
-          quantity={quantity}
-          setQuantity={(val) => setQuantity(val)}
+          setAlert={setAlert}
+          symbol={etfSymbol}
+          price={etfPrice}
         />
       )}
       <div className="bg-gray-100 p-2">

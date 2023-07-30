@@ -4,7 +4,6 @@ import SoldTicker from "../model/SoldTicker.js";
 import Wallet from "../model/Wallet.js";
 import config from "../config.js";
 import { pow } from "mathjs";
-import mongoose from "mongoose";
 
 // Stock Buy ---------------------------------------------------------------------------
 export const stockBuyTicker = async (req, res) => {
@@ -485,7 +484,7 @@ export const sellMutualFundsTicker = async (req, res) => {
       { user_id: req.user.id },
       {
         $inc: {
-          balance: profit,
+          balance: sell_price * no_of_shares,
         },
       }
     );
@@ -532,12 +531,13 @@ export const sellEtfTicker = async (req, res) => {
     }
 
     if (no_of_shares === etf.no_of_shares) {
-      console.log("Hello Equal");
       portfolio = await Portfolio.findOneAndUpdate(
-        { user_id: req.user.id, "etfs._id": etf_id },
+        { user_id: req.user.id },
         {
           $pull: {
-            "etfs.$.0._id": etf_id,
+            etfs: {
+              _id: etf_id,
+            },
           },
         },
         {
@@ -549,12 +549,11 @@ export const sellEtfTicker = async (req, res) => {
     }
 
     if (etf.no_of_shares > no_of_shares) {
-      console.log("Hello Greater");
       portfolio = await Portfolio.findOneAndUpdate(
         { user_id: req.user.id, "etfs._id": etf_id },
         {
           $inc: {
-            "etfs.$.no_of_shares": -no_of_shares,
+            "etfs.$.0.no_of_shares": -no_of_shares,
             total_profit: profit,
           },
         }
@@ -603,7 +602,7 @@ export const sellEtfTicker = async (req, res) => {
       { user_id: req.user.id },
       {
         $inc: {
-          balance: sell_price,
+          balance: sell_price * no_of_shares,
         },
       }
     );
@@ -615,7 +614,6 @@ export const sellEtfTicker = async (req, res) => {
       message: `${name} successfully Sold.`,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",

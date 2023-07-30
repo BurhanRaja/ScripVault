@@ -49,7 +49,7 @@ const StockModal = ({ name, setModal, price, symbol, setAlert }) => {
       setAlert({
         show: true,
         type: "danger",
-        message: "Currently Market is Closed.",
+        message: "Currently, The Market is closed.",
       });
     }
     return;

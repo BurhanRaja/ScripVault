@@ -49,8 +49,6 @@ const Portfolio = ({ setAlert }) => {
     dispatch(getETFPortfolioThunk());
   }, []);
 
-  // console.log(stocks)
-
   return (
     <>
       {isModal && (

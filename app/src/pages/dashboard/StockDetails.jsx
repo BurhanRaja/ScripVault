@@ -57,6 +57,8 @@ const StockDetails = ({ setAlert }) => {
     }
   }, [id]);
 
+  console.log(balanceSheet);
+
   const handleChangeInPeriod = (prd) => {
     setPeriod(prd);
     dispatch(clearHistoricalState());
@@ -156,13 +158,13 @@ const StockDetails = ({ setAlert }) => {
         <div className="flex justify-between my-5 px-5">
           <div className="w-[48%]">
             <h1 className="text-5xl mb-4 font-bold">
-              {detailsLoading ? (
+              {detailsLoading && priceData ? (
                 <span className="w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
               ) : (
                 priceData?.name
               )}
             </h1>
-            {detailsLoading ? (
+            {detailsLoading && priceData ? (
               <span className="w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
             ) : (
               <button className="bg-black text-white px-2 py-1 text-sm rounded-md">
@@ -172,14 +174,14 @@ const StockDetails = ({ setAlert }) => {
           </div>
           <div className="w-[48%] text-end">
             <div className="flex justify-end items-center">
-              {detailsLoading ? (
+              {detailsLoading && priceData ? (
                 <span className="w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
               ) : (
                 <h2 className="text-3xl font-bold mb-2 me-5">
                   ₹ {priceData?.curr_price}
                 </h2>
               )}
-              {detailsLoading ? (
+              {detailsLoading && priceData ? (
                 <span className="w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
               ) : priceData?.curr_change > 0 ? (
                 <p className={"text-green-500 font-semibold text-lg"}>
