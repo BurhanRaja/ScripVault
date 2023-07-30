@@ -46,8 +46,8 @@ const Login = ({ setAlert }) => {
   };
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token) {
+    let exttoken = localStorage.getItem("token");
+    if (token && exttoken) {
       setAlert({
         show: true,
         type: "success",
