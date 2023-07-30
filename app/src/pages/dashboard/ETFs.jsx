@@ -123,9 +123,7 @@ const ETFs = ({ setAlert }) => {
       }
     });
   };
-
-  console.log(etfsWatchlist)
-
+  
   return (
     <>
       {isModal && (

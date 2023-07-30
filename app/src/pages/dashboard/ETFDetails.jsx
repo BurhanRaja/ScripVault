@@ -39,8 +39,6 @@ const ETFDetails = ({ setAlert }) => {
   };
 
   const handleChangeInInterval = (itl) => {
-    console.log(itl);
-    setInterval(itl);
     dispatch(clearETFHistoricalData());
     dispatch(getETFHistoryThunk({ symbol: id, period, interval: itl }));
   };

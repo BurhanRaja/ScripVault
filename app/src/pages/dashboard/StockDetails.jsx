@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   clearHistoricalState,
   clearStockDetails,
+  getAllStockDetailsThunk,
   getBalanceSheetThunk,
   getCashFlowThunk,
   getFinancialRatiosThunk,
@@ -45,19 +46,10 @@ const StockDetails = ({ setAlert }) => {
 
   useEffect(() => {
     if (id) {
-      dispatch(clearStockDetails());
-      dispatch(getStocksDetailsCurrentPriceThunk(id));
-      dispatch(getCashFlowThunk(id));
-      dispatch(getBalanceSheetThunk(id));
-      dispatch(getRevenueStmtThunk(id));
-      dispatch(getStockSuggestionThunk(id));
-      dispatch(getFinancialRatiosThunk(id));
-      dispatch(getStockInfoThunk(id));
+      dispatch(getAllStockDetailsThunk(id));
       dispatch(getStockHistoricalDataThunk({ symbol: id, period, interval }));
     }
   }, [id]);
-
-  console.log(balanceSheet);
 
   const handleChangeInPeriod = (prd) => {
     setPeriod(prd);
@@ -68,8 +60,6 @@ const StockDetails = ({ setAlert }) => {
   };
 
   const handleChangeInInterval = (itl) => {
-    console.log(itl);
-    setInterval(itl);
     dispatch(clearHistoricalState());
     dispatch(
       getStockHistoricalDataThunk({ symbol: id, period, interval: itl })

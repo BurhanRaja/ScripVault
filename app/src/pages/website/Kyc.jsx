@@ -40,7 +40,6 @@ const Kyc = ({ setAlert }) => {
 
     dispatch(addKycThunk(formData)).then((data) => {
       if (!data?.payload.success) {
-        console.log(data);
         setAlert({
           show: true,
           type: "warning",

@@ -426,7 +426,7 @@ export const sellMutualFundsTicker = async (req, res) => {
       { user_id: req.user.id },
       {
         $pull: {
-          stocks: {
+          mutual_funds: {
             _id: mf_id,
           },
         },
@@ -553,7 +553,7 @@ export const sellEtfTicker = async (req, res) => {
         { user_id: req.user.id, "etfs._id": etf_id },
         {
           $inc: {
-            "etfs.$.0.no_of_shares": -no_of_shares,
+            "etfs.$.no_of_shares": -no_of_shares,
             total_profit: profit,
           },
         }
@@ -614,6 +614,7 @@ export const sellEtfTicker = async (req, res) => {
       message: `${name} successfully Sold.`,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",

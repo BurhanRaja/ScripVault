@@ -85,8 +85,6 @@ const MutualFunds = ({ setAlert }) => {
   );
   const dispatch = useDispatch();
 
-  // console.log(mfsWatchlist);
-
   useEffect(() => {
     dispatch(clearGetWatchlist());
     dispatch(getMFsWatchlistThunk());
@@ -184,13 +182,11 @@ const MutualFunds = ({ setAlert }) => {
                 let watchlistFind = mfsWatchlist?.find(
                   (wl) => wl.symbol === el?.symbol
                 );
-                console.log(watchlistFind);
-                console.log(el?.symbol);
                 return (
                   <MutualFundCards
                     name={el?.fund}
                     key={el?.symbol}
-                    symbol={el?.symbol}
+                    symbol={el?.symbol.split(".")[0]}
                     price={"₹" + el?.nav}
                     oneYear={el?.return_one_year}
                     fiveYear={el?.return_five_year}

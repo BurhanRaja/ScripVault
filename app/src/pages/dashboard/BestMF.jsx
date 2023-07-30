@@ -154,7 +154,6 @@ const BestMF = ({ setAlert }) => {
                 className="px-4 py-2 bg-black text-gray-100 rounded-md hover:bg-gray-800 font-semibold flex items-center"
                 onClick={() => {
                   if (limit < data?.data?.length * data?.total_pages) {
-                    console.log("Hello");
                     setSkip(skip + 10);
                     setLimit(limit + 10);
                   }

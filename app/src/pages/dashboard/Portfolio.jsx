@@ -72,18 +72,18 @@ const Portfolio = ({ setAlert }) => {
             <div className="w-[45%] border p-4">
               <h4 className="text-xl font-bold">Total Investment</h4>
               <p className="text-lg mt-4 text-gray-600 font-semibold">
-                ₹ {investment > 0 ? investment : 0}
+                ₹ {investment > 0 ? parseFloat(investment).toFixed(2) : 0}
               </p>
             </div>
             <div className="w-[45%] border p-4">
               <h4 className="text-xl font-bold ">Total Profit</h4>
               {totalProfit > 0 ? (
                 <p className="text-lg mt-4 text-green-500 font-semibold">
-                  ₹{totalProfit}
+                  ₹{parseFloat(totalProfit).toFixed(2)}
                 </p>
               ) : totalProfit < 0 ? (
                 <p className="text-lg mt-4 text-red-500 font-semibold">
-                  ₹{totalProfit}
+                  ₹{parseFloat(totalProfit).toFixed(2)}
                 </p>
               ) : (
                 <p className="text-lg mt-4 text-gray-800 font-semibold">₹ 0</p>
@@ -131,9 +131,10 @@ const Portfolio = ({ setAlert }) => {
                   />
                 );
               })}
-              {stocks?.stocksPortfolio === undefined && (
-                <p>No Data Avalaibale</p>
-              )}
+              {stocks?.stocksPortfolio === undefined ||
+                (stocks?.stocksPortfolio?.length === 0 && (
+                  <p>No Data Avalaibale</p>
+                ))}
             </div>
             <div className="mb-8">
               <h1 className="text-2xl font-bold mb-4">Your Mutual Funds</h1>
@@ -177,9 +178,10 @@ const Portfolio = ({ setAlert }) => {
                   />
                 );
               })}
-              {mutualFunds?.lumpsumMF === undefined && (
-                <p>No Data Avalaibale</p>
-              )}
+              {mutualFunds?.lumpsumMF === undefined ||
+                (mutualFunds?.lumpsumMF?.length === 0 && (
+                  <p>No Data Avalaibale</p>
+                ))}
               <h3 className="mb-4 text-lg font-semibold mt-7">
                 Your SIP Investments
               </h3>
@@ -219,7 +221,8 @@ const Portfolio = ({ setAlert }) => {
                   />
                 );
               })}
-              {mutualFunds?.sipMF === undefined && <p>No Data Avalaibale</p>}
+              {mutualFunds?.sipMF === undefined ||
+                (mutualFunds?.sipMF?.length === 0 && <p>No Data Avalaibale</p>)}
             </div>
             <div className="mb-8">
               <h1 className="text-2xl font-bold mb-4">Your ETFs</h1>
@@ -260,9 +263,7 @@ const Portfolio = ({ setAlert }) => {
                   />
                 );
               })}
-              {etfs?.etfPortfolio === undefined && (
-                <p>No Data Avalaibale</p>
-              )}
+              {etfs?.etfPortfolio === undefined || etfs?.etfPortfolio?.length === 0 && <p>No Data Avalaibale</p>}
             </div>
           </div>
         </div>

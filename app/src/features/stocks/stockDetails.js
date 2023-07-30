@@ -8,6 +8,7 @@ import {
   getStockInfo,
   getStockSuggestion,
   getCurrentPriceStocks,
+  getAllStockDetails,
 } from "../../api/stocks";
 
 const initialState = {
@@ -109,6 +110,18 @@ export const getFinancialRatiosThunk = createAsyncThunk(
   async (symbol) => {
     try {
       let res = await getFinancialRatios(symbol);
+      return res;
+    } catch (err) {
+      return err?.response?.data;
+    }
+  }
+);
+
+export const getAllStockDetailsThunk = createAsyncThunk(
+  "stockDetails/getall",
+  async (symbol) => {
+    try {
+      let res = await getAllStockDetails(symbol);
       return res;
     } catch (err) {
       return err?.response?.data;
@@ -225,10 +238,29 @@ const stockDetailsSlice = createSlice({
       .addCase(getFinancialRatiosThunk.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(getAllStockDetailsThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllStockDetailsThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.revenueStmt = payload[0];
+        state.balanceSheet = payload[1];
+        state.cashFlow = payload[2];
+        state.suggestion = payload[3];
+        state.info = payload[4];
+        state.priceData = payload[5];
+        state.financial = payload[6];
+      })
+      .addCase(getAllStockDetailsThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
   },
 });
 
-export const { clearStockDetails, clearHistoricalState } = stockDetailsSlice.actions;
+export const { clearStockDetails, clearHistoricalState } =
+  stockDetailsSlice.actions;
 
 export default stockDetailsSlice.reducer;

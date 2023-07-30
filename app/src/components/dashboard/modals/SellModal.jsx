@@ -134,7 +134,6 @@ const SellStockModal = ({
         });
         return;
       }
-      // console.log(id);
       // return;
       let data = {
         name,
@@ -159,6 +158,7 @@ const SellStockModal = ({
             type: "success",
             message: `Successful! ETF Sold at a Price of ${currPrice} with profit/loss ${profit}`,
           });
+          setModal(false);
           dispatch(clearPortfolioState());
           dispatch(getStockPortfolioThunk());
           dispatch(getMutualFundPortfolioThunk());

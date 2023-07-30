@@ -20,8 +20,6 @@ const Sidebar = ({ openSidebar, setSidebar }) => {
     dispatch(getUserThunk());
   }, []);
 
-  console.log(user)
-
   return (
     <>
       <aside

@@ -28,10 +28,6 @@ const Watchlist = ({ setAlert }) => {
     useSelector((state) => state.getWatchlistReducer);
   const dispatch = useDispatch();
 
-  console.log(stocksWatchlist);
-  console.log(mfsWatchlist);
-  console.log(etfsWatchlist);
-
   useEffect(() => {
     dispatch(clearGetWatchlist());
     dispatch(getStocksWatchlistThunk());
@@ -40,7 +36,6 @@ const Watchlist = ({ setAlert }) => {
   }, []);
 
   const handleRemoveWatchlist = (data) => {
-    console.log("Hello");
     dispatch(removeWatchlistThunk(data)).then((data) => {
       if (!data?.payload.success) {
         setAlert({

@@ -79,3 +79,10 @@ export const getStockHistoricalData = async (symbol, period, interval) => {
   );
   return response.data;
 };
+
+export const getAllStockDetails = async (symbol) => {
+  const response = await axios.get(
+    process.env.REACT_APP_STOCK_API + `stock/details/all/${symbol}`
+  );
+  return response.data;
+};

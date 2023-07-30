@@ -114,8 +114,6 @@ const MutualFundDetails = ({ setAlert }) => {
     return;
   };
 
-  console.log(historyData);
-
   const handleBuy = () => {
     let curr_year = new Date().getFullYear();
     let data = {
