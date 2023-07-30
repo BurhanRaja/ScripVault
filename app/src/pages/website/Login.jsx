@@ -3,7 +3,7 @@ import Input from "../../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { userLoginThunk } from "../../features/user/auth";
+import { clearUserAuthState, userLoginThunk } from "../../features/user/auth";
 
 const Login = ({ setAlert }) => {
   const [email, setEmail] = useState("");
@@ -46,14 +46,14 @@ const Login = ({ setAlert }) => {
   };
 
   useEffect(() => {
-    let exttoken = localStorage.getItem("token");
-    if (token && exttoken) {
+    if (token) {
       setAlert({
         show: true,
         type: "success",
         message: "Login Successfully.",
       });
       localStorage.setItem("token", token);
+      dispatch(clearUserAuthState());
       navigate("/dashboard/home");
     }
   }, [token]);
