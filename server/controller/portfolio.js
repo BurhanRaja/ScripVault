@@ -815,6 +815,7 @@ export const getTotalInvestment = async (req, res) => {
       total_investment: portfolio.total_investment,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success,
       message: "Internal Server Error.",
