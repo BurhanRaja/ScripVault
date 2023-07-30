@@ -46,6 +46,7 @@ const Login = ({ setAlert }) => {
   };
 
   useEffect(() => {
+    let token = localStorage.getItem("token");
     if (token) {
       setAlert({
         show: true,
