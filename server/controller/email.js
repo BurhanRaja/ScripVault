@@ -2,6 +2,7 @@ import { encode } from "js-base64";
 import User from "../model/User.js";
 import transporter from "../utils/emailSend.js";
 import template from "../utils/emailTemplate.js";
+import config from "../config.js";
 
 export const sendEmailLogin = async (req, res) => {
   let success = false;
@@ -19,7 +20,7 @@ export const sendEmailLogin = async (req, res) => {
       subject: "Verify your account with ScripVault",
       html: template(
         "Thank you for choosing <b>ScripVault</b> as your Investment Partner. Please Verify the email to login and start investing today.",
-        `http://localhost:3000/verify/${token}`
+        `${config.react_url}/verify/${token}`
       ),
     });
 
