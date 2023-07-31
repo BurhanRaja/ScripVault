@@ -14,13 +14,18 @@ import { kycRouter } from "./routes/kyc.js";
 import { walletRouter } from "./routes/wallet.js";
 import { notificationRouter } from "./routes/notification.js";
 
-
 const app = express();
 const port = config.port;
 
 connectToMongoDB();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["*"],
+    headers: ["Content-Type"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -35,7 +40,7 @@ app.use("/api/portfolio", portfolioRouter);
 app.use("/api/watchlist", watchlistRouter);
 app.use("/api/deposit", depositRouter);
 app.use("/api/withdraw", withdrawRouter);
-app.use("/api/wallet", walletRouter)
+app.use("/api/wallet", walletRouter);
 app.use("/api/soldticker", soldTickerRouter);
 app.use("/api/email", emailRouter);
 app.use("/api/verify", verifyRouter);
