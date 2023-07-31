@@ -126,7 +126,7 @@ const UserAccount = ({ setAlert }) => {
   const handleBankDetailsSubmit = (e) => {
     e.preventDefault();
 
-    if (acctType === "" || acctType === "" || ifsc === "") {
+    if (acctType === "" || acctNo === "" || ifsc === "") {
       setAlert({
         show: true,
         type: "warning",
@@ -136,7 +136,7 @@ const UserAccount = ({ setAlert }) => {
     }
 
     let data = {
-      accountNumber: acctType,
+      accountNumber: acctNo,
       accountType: acctType,
       ifsc,
     };
