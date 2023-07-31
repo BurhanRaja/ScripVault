@@ -21,11 +21,11 @@ connectToMongoDB();
 
 app.use(
   cors({
-    origin: "*",
-    headers: ["Content-Type"],
-    credentials: true,
+    origin: "http://localhost:3000/",
   })
 );
+app.options("*", cors());
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
