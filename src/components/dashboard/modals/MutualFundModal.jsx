@@ -33,7 +33,7 @@ const MutualFundModal = ({
   }, [openSIP]);
 
   const handleBuy = () => {
-    if (investment < price) {
+    if (Number(investment) < price) {
       setAlert({
         show: true,
         type: "warning",
