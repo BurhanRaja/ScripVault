@@ -21,7 +21,7 @@ connectToMongoDB();
 
 app.use(
   cors({
-    origin: ["*"],
+    origin: "*",
     headers: ["Content-Type"],
     credentials: true,
   })
