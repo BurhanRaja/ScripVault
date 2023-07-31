@@ -149,13 +149,13 @@ const StockDetails = ({ setAlert }) => {
         <div className="flex justify-between my-5 px-5">
           <div className="w-[48%]">
             <h1 className="text-5xl mb-4 font-bold">
-              {detailsLoading && priceData ? (
+              {detailsLoading && !priceData?.name ? (
                 <span className="w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
               ) : (
                 priceData?.name
               )}
             </h1>
-            {detailsLoading && priceData ? (
+            {detailsLoading && !priceData?.symbol ? (
               <span className="w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
             ) : (
               <button className="bg-black text-white px-2 py-1 text-sm rounded-md">
@@ -165,14 +165,14 @@ const StockDetails = ({ setAlert }) => {
           </div>
           <div className="w-[48%] text-end">
             <div className="flex justify-end items-center">
-              {detailsLoading && priceData ? (
+              {detailsLoading && !priceData?.curr_price ? (
                 <span className="w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
               ) : (
                 <h2 className="text-3xl font-bold mb-2 me-5">
                   ₹ {priceData?.curr_price}
                 </h2>
               )}
-              {detailsLoading && priceData ? (
+              {detailsLoading && !priceData?.curr_change ? (
                 <span className="w-1/3 p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
               ) : priceData?.curr_change > 0 ? (
                 <p className={"text-green-500 font-semibold text-lg"}>
@@ -198,7 +198,7 @@ const StockDetails = ({ setAlert }) => {
         </div>
         <div className="bg-white rounded-md my-3 p-5">
           <h3 className="text-2xl font-semibold mb-4">Price Summary</h3>
-          {detailsLoading && info ? (
+          {detailsLoading && !info?.summary ? (
             <span className="w-full p-7 h-5 block rounded bg-gray-200 animate-pulse"></span>
           ) : (
             <>
@@ -408,7 +408,7 @@ const StockDetails = ({ setAlert }) => {
               <h3 className="text-2xl font-semibold mb-4">
                 Company Essentials
               </h3>
-              {detailsLoading && info ? (
+              {detailsLoading && !info?.essentialInfo ? (
                 <>
                   <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                   <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
@@ -433,7 +433,7 @@ const StockDetails = ({ setAlert }) => {
                 <FaRegThumbsUp className="text-green-500 text-xl" />
               </div>
               <div className="flex justify-between items-center flex-wrap">
-                {detailsLoading && suggestion ? (
+                {detailsLoading && !suggestion?.strengths ? (
                   <>
                     <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                     <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
@@ -455,7 +455,7 @@ const StockDetails = ({ setAlert }) => {
           <div className="w-[49%]">
             <div className="bg-white p-5 my-3 h-[32rem]">
               <h3 className="text-2xl font-semibold mb-4">Financial Ratios</h3>
-              {detailsLoading && financial ? (
+              {detailsLoading && !financial?.ratios ? (
                 <>
                   <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                   <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
@@ -497,7 +497,7 @@ const StockDetails = ({ setAlert }) => {
                 <FaRegThumbsDown className="text-red-500 text-xl" />
               </div>
               <div className="flex justify-between items-center flex-wrap">
-                {detailsLoading && suggestion ? (
+                {detailsLoading && !suggestion?.limitations ? (
                   <>
                     <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
                     <span className="w-full p-7 mb-3 h-5 block rounded bg-gray-200 animate-pulse"></span>
