@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import Input from "../../Input";
 import { buyETFThunk } from "../../../features/portfolio/etfTransaction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../../Loading";
 
 const ETFModal = ({ name, setModal, symbol, price, setAlert }) => {
   const [quantity, setQuantity] = useState(0);
+  const { isLoading, isSuccess } = useSelector(
+    (state) => state.etfTransactionReducer
+  );
 
   const dispatch = useDispatch();
 
   const handleBuy = () => {
-    // let hour = new Date().getHours();
-    // let day = new Date().getDay();
-    // if (hour < 16 && hour > 9 && day > 0 && day < 6) {
+    let hour = new Date().getHours();
+    let day = new Date().getDay();
+    if (hour < 16 && hour > 9 && day > 0 && day < 6) {
       if (quantity === "") {
         setAlert({
           show: true,
@@ -45,13 +49,13 @@ const ETFModal = ({ name, setModal, symbol, price, setAlert }) => {
           return;
         }
       });
-    // } else {
-    //   setAlert({
-    //     show: true,
-    //     type: "warning",
-    //     message: "The Market is not Open Yet",
-    //   });
-    // }
+    } else {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: "The Market is not Open Yet",
+      });
+    }
   };
 
   return (
@@ -105,7 +109,11 @@ const ETFModal = ({ name, setModal, symbol, price, setAlert }) => {
                   className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-green-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   onClick={() => handleBuy()}
                 >
-                  Buy Now
+                  {isLoading && !isSuccess ? (
+                    <Loading size={"text-lg"} />
+                  ) : (
+                    "Buy Now"
+                  )}
                 </button>
               </div>
             </div>

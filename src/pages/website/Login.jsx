@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserAuthState, userLoginThunk } from "../../features/user/auth";
+import Loading from "../../components/Loading";
 
 const Login = ({ setAlert }) => {
   const [email, setEmail] = useState("");
@@ -101,7 +102,11 @@ const Login = ({ setAlert }) => {
             </div>
             <div class="flex justify-center mt-6">
               <button class="py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-900 rounded-md hover:bg-gray-600focus:outline-none focus:bg-gray-600 w-1/2">
-                Login
+                {isLoading && !isSuccess ? (
+                  <Loading size={"text-lg"} />
+                ) : (
+                  "Login"
+                )}
               </button>
             </div>
             <p className="text-center text-gray-800 mt-4">

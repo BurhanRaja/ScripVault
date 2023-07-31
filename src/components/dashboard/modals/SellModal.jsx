@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Input from "../../Input";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sellStockThunk } from "../../../features/portfolio/stockTransaction";
 import {
   clearPortfolioState,
@@ -10,6 +10,7 @@ import {
 } from "../../../features/portfolio/portfolio";
 import { sellMFThunk } from "../../../features/portfolio/mfTransaction";
 import { sellETFThunk } from "../../../features/portfolio/etfTransaction";
+import Loading from "../../Loading";
 
 const SellStockModal = ({
   name,
@@ -24,6 +25,16 @@ const SellStockModal = ({
   currPrice,
 }) => {
   const [quantity, setQuantity] = useState("");
+
+  const { isLoading: etfLoading, isSuccess: etfSuccess } = useSelector(
+    (state) => state.etfTransactionReducer
+  );
+  const { isLoading: stockLoading, isSuccess: stockSuccess } = useSelector(
+    (state) => state.stockTransactionReducer
+  );
+  const { isLoading: mfLoading, isSuccess: mfSuccess } = useSelector(
+    (state) => state.mfTransactionReducer
+  );
 
   const dispatch = useDispatch();
 
@@ -126,46 +137,46 @@ const SellStockModal = ({
     // let hour = new Date().getHours();
     // let day = new Date().getDay();
     // if (hour < 16 && hour > 9 && day > 0 && day < 6) {
-      if (Number(nos) < Number(quantity)) {
+    if (Number(nos) < Number(quantity)) {
+      setAlert({
+        show: true,
+        type: "warning",
+        message: `Not Allowed! Quantity of selling is higher than Current total shares.`,
+      });
+      return;
+    }
+    // return;
+    let data = {
+      name,
+      symbol,
+      sell_price: parseFloat(currPrice),
+      profit,
+      etf_id: id,
+      no_of_shares: parseFloat(quantity),
+    };
+
+    dispatch(sellETFThunk(data)).then((data) => {
+      if (!data?.payload.success) {
         setAlert({
           show: true,
-          type: "warning",
-          message: `Not Allowed! Quantity of selling is higher than Current total shares.`,
+          type: "danger",
+          message: data?.payload.message,
         });
         return;
+      } else {
+        setAlert({
+          show: true,
+          type: "success",
+          message: `Successful! ETF Sold at a Price of ${currPrice} with profit/loss ${profit}`,
+        });
+        setModal(false);
+        dispatch(clearPortfolioState());
+        dispatch(getStockPortfolioThunk());
+        dispatch(getMutualFundPortfolioThunk());
+        dispatch(getETFPortfolioThunk());
+        return;
       }
-      // return;
-      let data = {
-        name,
-        symbol,
-        sell_price: parseFloat(currPrice),
-        profit,
-        etf_id: id,
-        no_of_shares: parseFloat(quantity),
-      };
-
-      dispatch(sellETFThunk(data)).then((data) => {
-        if (!data?.payload.success) {
-          setAlert({
-            show: true,
-            type: "danger",
-            message: data?.payload.message,
-          });
-          return;
-        } else {
-          setAlert({
-            show: true,
-            type: "success",
-            message: `Successful! ETF Sold at a Price of ${currPrice} with profit/loss ${profit}`,
-          });
-          setModal(false);
-          dispatch(clearPortfolioState());
-          dispatch(getStockPortfolioThunk());
-          dispatch(getMutualFundPortfolioThunk());
-          dispatch(getETFPortfolioThunk());
-          return;
-        }
-      });
+    });
     // } else {
     //   setAlert({
     //     show: true,
@@ -262,21 +273,33 @@ const SellStockModal = ({
                     className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     onClick={() => handleStockSell()}
                   >
-                    Sell Now
+                    {stockLoading && !stockSuccess ? (
+                      <Loading size={"text-lg"} />
+                    ) : (
+                      "Sell Now"
+                    )}
                   </button>
                 ) : type === "etfs" ? (
                   <button
                     className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     onClick={() => handleETFSell()}
                   >
-                    Sell Now
+                    {etfLoading && !etfSuccess ? (
+                      <Loading size={"text-lg"} />
+                    ) : (
+                      "Sell Now"
+                    )}
                   </button>
                 ) : (
                   <button
                     className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     onClick={() => handleMFSell()}
                   >
-                    Sell Now
+                    {mfLoading && !mfSuccess ? (
+                      <Loading size={"text-lg"} />
+                    ) : (
+                      "Sell Now"
+                    )}
                   </button>
                 )}
               </div>

@@ -23,6 +23,7 @@ import addTransactionReducer from "../features/transaction/addTransaction";
 import walletReducer from "../features/transaction/wallet";
 import mfTransactionReducer from "../features/portfolio/mfTransaction";
 import portfolioReducer from "../features/portfolio/portfolio";
+import etfTransactionReducer from "../features/portfolio/etfTransaction";
 
 import stockTransactionReducer from "../features/portfolio/stockTransaction";
 import notificationReducer from "../features/notification";
@@ -69,6 +70,7 @@ const reducers = combineReducers({
   etfDetailsReducer,
   investmentDetailsReducer,
   searchTickerReducer,
+  etfTransactionReducer,
 });
 
 const store = configureStore({

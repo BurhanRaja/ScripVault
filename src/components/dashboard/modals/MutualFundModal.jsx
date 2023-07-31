@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Input from "../../Input";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { buyMFThunk } from "../../../features/portfolio/mfTransaction";
+import Loading from "../../Loading";
 
 const MutualFundModal = ({
   name,
@@ -18,6 +19,9 @@ const MutualFundModal = ({
   const [years, setYears] = useState("");
   const [investment, setInvestment] = useState("");
 
+  const { isLoading, isSuccess } = useSelector(
+    (state) => state.mfTransactionReducer
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -212,7 +216,11 @@ const MutualFundModal = ({
                   className="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-green-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-green-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   onClick={() => handleBuy()}
                 >
-                  Buy Now
+                  {isLoading && !isSuccess ? (
+                    <Loading size={"text-lg"} />
+                  ) : (
+                    "Buy Now"
+                  )}
                 </button>
               </div>
             </div>
