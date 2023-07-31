@@ -46,6 +46,7 @@ const StockDetails = ({ setAlert }) => {
 
   useEffect(() => {
     if (id) {
+      dispatch(clearStockDetails());
       dispatch(getAllStockDetailsThunk(id));
       dispatch(getStockHistoricalDataThunk({ symbol: id, period, interval }));
     }
