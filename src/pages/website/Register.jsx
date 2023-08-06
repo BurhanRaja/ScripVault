@@ -103,7 +103,7 @@ const Register = ({ setAlert }) => {
     };
 
     dispatch(userRegisterThunk(data)).then((data) => {
-      if (!data.payload.success) {
+      if (!data?.payload?.success) {
         setAlert({
           show: true,
           type: "warning",
