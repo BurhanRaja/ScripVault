@@ -6,7 +6,7 @@ import Header from "../../components/website/Header";
 import Footer from "../../components/website/Footer";
 import Testimony from "../../components/website/Testimony";
 
-const Home = ({ setAlert }) => {
+export const Home = ({ setAlert }) => {
   return (
     <>
       <Header />
